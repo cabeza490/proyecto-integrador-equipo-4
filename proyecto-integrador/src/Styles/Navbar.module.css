@@ -2,3 +2,30 @@
     display: flex;
     gap: 20px;
 }
+
+.createAccount {
+    background: #FFFFFF;
+    color: #003366;
+    width: 122px;
+    height: 40px;
+    border-radius: 50px;
+    font-size: 12px;
+}
+
+.createAccount:hover{
+    border:2px solid #FFFFFF;
+}
+
+.newSesion {
+    background: #003366;
+    color: #FFFFFF;
+    border:2px solid #FFFFFF;
+    width: 122px;
+    height: 40px;
+    border-radius: 50px;
+    font-size: 12px;
+}
+
+.newSesion:hover{
+    border:2px solid #FFFFFF;
+}
