@@ -5,11 +5,13 @@ const Navbar = () => {
 
     return (
         <nav>
-            <h4>ACA VA EL LOGO</h4>
+            <a href="/">
+                <img src='../../public/logo_lema.png' alt='Logo' />
+            </a>
 
             <div className={NavbarStyle.buttons}>
-                <h4>BOTON 1</h4>
-                <h4>BOTON 2</h4>
+                <button className={NavbarStyle.createAccount}>Crear cuenta</button>
+                <button className={NavbarStyle.newSesion}>Iniciar sesión</button>
             </div>
         </nav>
     )
