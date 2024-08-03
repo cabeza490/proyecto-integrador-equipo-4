@@ -1,5 +1,6 @@
 
 import './App.css'
+import Footer from './Components/Footer';
 import Navbar from './Components/Navbar'
 import Home from './Routes/Home'
 import { routes } from './utils/routes'
@@ -9,12 +10,14 @@ function App() {
   
 
   return (
-    <div>
+    <div className="app">
       <Navbar />
-      <Routes>
-        <Route path={routes.home} element={<Home />} />
-      </Routes>
+      
+        <Routes>
+          <Route path={routes.home} element={<Home />} />
+        </Routes>
      
+      <Footer />
     </div>
   )
 }
