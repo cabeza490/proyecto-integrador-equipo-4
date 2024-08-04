@@ -1,15 +1,19 @@
-
 import './App.css'
-import Navbar from './Components/Navbar'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Home from './Components/Home'
 
 function App() {
   
 
   return (
-    <div>
-      <Navbar />
-     
-    </div>
+    <BrowserRouter>
+          <Routes>
+              <Route path="/" element= {<Home/>}/>
+              <Route path="/detail/:id" element={<Detail/>}/>
+              <Route path="/contact" element={<Contact/>}/>
+              <Route path="*" element={<h1>404 not found</h1>} />
+          </Routes>
+      </BrowserRouter>
   )
 }
 
