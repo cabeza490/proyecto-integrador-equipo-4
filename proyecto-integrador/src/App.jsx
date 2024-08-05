@@ -9,11 +9,12 @@ function App() {
       
       <BrowserRouter>
         <Routes>
-          <Route element={<Layout />}/>
-          <Route path="/" element= {<Home/>}/>
-          <Route path="/detail/:id" element={<Detail/>}/>
-          {/* <Route path="/contact" element={<Contact/>}/> */}
-          <Route path="*" element={<h1>404 not found</h1>} />
+          <Route path="/" element={<Layout />}> 
+            <Route index element= {<Home/>}/>
+            <Route path="/detail/:id" element={<Detail/>}/>
+            {/* <Route path="/contact" element={<Contact/>}/> */}
+            <Route path="*" element={<h1>404 not found</h1>} />
+          </Route>
         </Routes>
       </BrowserRouter>
 
