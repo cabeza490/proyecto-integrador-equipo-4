@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import Navbar from './Navbar'
 
-useEffect(() =>{
-    
-}, [])
+const Detail = () => {
+
+    useEffect(() =>{}, [])
+}
+
+export default Detail
