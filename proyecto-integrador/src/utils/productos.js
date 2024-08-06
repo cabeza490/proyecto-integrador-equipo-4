@@ -1,4 +1,4 @@
-export let productos = [
+export const productos = [
     {
         id: 1,
         titulo: "Cumpleaños pequeño",
