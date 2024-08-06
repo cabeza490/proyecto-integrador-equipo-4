@@ -6,8 +6,8 @@ const Footer = () => {
     return (
         <footer>
             <div className={FooterStyle.footer}>
-                <div>
-                    <img src='../../public/logo_footer.png' alt='Logo footer' />
+                <div className={FooterStyle.footerLogo}>
+                    <img src='../../public/logo_footer.png' alt='Logo footer' className={FooterStyle.logo}/>
                 </div>
 
                 <div className={FooterStyle.icons}>
