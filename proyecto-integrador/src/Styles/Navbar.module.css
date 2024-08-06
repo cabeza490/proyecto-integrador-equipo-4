@@ -29,3 +29,25 @@
 .newSesion:hover{
     border:2px solid #FFFFFF;
 }
+
+
+
+@media (max-width:480px) {
+    .navLogo {
+      height: 34px;
+      width: 180px;   
+    }
+    
+    .buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .createAccount, .newSesion {
+        width: 110px;
+        height: 25px;
+        font-size: 10px;
+    }
+  
+  }

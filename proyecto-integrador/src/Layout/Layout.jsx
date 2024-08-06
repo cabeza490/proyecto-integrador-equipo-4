@@ -5,9 +5,11 @@ import Footer from "../Components/Footer";
 
 function Layout() {
     return(
-        <div>
+        <div className="layout">
             <Navbar />
-            <Outlet/>
+            <div className="content">
+                <Outlet />
+            </div>
             <Footer />
         </div>
         );
