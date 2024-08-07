@@ -9,7 +9,7 @@ export const getProductos = async () => {
     }
 }
 
-export const getProductosById = async (id) => {
+export const getProductoById = async (id) => {
     try {
         let response = await axios.get(`http://localhost:8080/productos/${id}`)
         return response.data
