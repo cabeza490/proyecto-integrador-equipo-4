@@ -8,13 +8,21 @@ function Home() {
     return (
         <main className="main">
             <h1 className="title">Recomendados</h1>
+<<<<<<< HEAD
             <Galeria />
+=======
+            <div><Galeria /></div>
+>>>>>>> 68c751262d68816d933610312fdbf452ab11eed4
         </main>
+        
     );
 }
 
 export default Home;
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 68c751262d68816d933610312fdbf452ab11eed4
