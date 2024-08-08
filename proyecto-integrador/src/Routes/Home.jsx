@@ -5,19 +5,12 @@ import Galeria from '../Components/Galeria';
 
 function Home() {
     return (
-<<<<<<< HEAD
-        <main className="">
-            <h1>Recomendados</h1>
-            <Galeria />
+        <main className="main">
+            <h1 className="title">Recomendados</h1>
+            <div><Galeria /></div>
         </main>
+        
     );
-=======
-        <div>
-            <h1>Home</h1>
-        </div>
-    )
->>>>>>> 0cdc9695570717667e855163549cb0da4ea2f4c4
 }
 
 export default Home;
-
