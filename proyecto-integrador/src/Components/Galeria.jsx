@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/Galeria.css'; // Importa los estilos CSS
+import { Link } from 'react-router-dom';
 
 const Galeria = () => {
   const [shuffledImages, setShuffledImages] = useState([]);
@@ -24,7 +25,8 @@ const Galeria = () => {
           const images = productos.flatMap(producto => producto.imagenes.map(imagen => ({
             src: imagen.url,
             title: producto.nombre,
-            description: producto.descripcion
+            description: producto.descripcion,
+            id: producto.id
           })));
           const shuffled = shuffleArray(images);
           setShuffledImages(shuffled.slice(0, numberOfImages));
@@ -59,6 +61,7 @@ const Galeria = () => {
           <div className="image-info">
             <h2>{image.title}</h2>
             <p>{image.description}</p>
+            <Link to={`/detail/${image.id}`}>Ver detalle</Link>
           </div>
         </div>
       ))}
