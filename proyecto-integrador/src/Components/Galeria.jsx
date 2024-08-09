@@ -1,6 +1,8 @@
 // src/Components/Galeria.jsx
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
+import { Link, useParams } from "react-router-dom";
+import { getProductos } from '../api/productos-Apis';
 
 const images = [
   { src: '/product_img/boda_grande.jpg', title: 'Boda Grande' },
@@ -28,11 +30,22 @@ const shuffleArray = (array) => {
 
 const Galeria = () => {
   const [shuffledImages, setShuffledImages] = useState([]);
-
+  const [productSelected, setProductSelected] = useState([])
+  const {id} = useParams()
   useEffect(() => {
     const shuffled = shuffleArray(images);
-    setShuffledImages(shuffled.slice(0, 9)); 
+    setShuffledImages(shuffled.slice(0, 9));
+    console.log(getProductos());
   }, []);
+  
+    useEffect(() => {
+        const getData = async() => {
+            let getProductData = await getProductoById(id);
+            setProductSelected(getProductData)
+        } 
+        getData()
+        console.log(productSelected);
+    }, [id])
 
   return (
     <div style={galleryStyle}>

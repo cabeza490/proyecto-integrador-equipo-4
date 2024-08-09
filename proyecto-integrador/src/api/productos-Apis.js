@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const getProductos = async () => {
     try {
-        let response = await axios.get('http://localhost:8080/productos')
+        let response = await axios.get('http://localhost:3000/api/productos')
         return response.data
     } catch (error) {
         console.log(error);
@@ -11,7 +11,7 @@ export const getProductos = async () => {
 
 export const getProductoById = async (id) => {
     try {
-        let response = await axios.get(`http://localhost:8080/productos/${id}`)
+        let response = await axios.get(`http://localhost:3000/api/productos/${id}`)
         return response.data
     } catch (error) {
         console.log(error);

@@ -4,6 +4,9 @@ import React from 'react';
 import Galeria from '../Components/Galeria';
 
 function Home() {
+
+    
+
     return (
         <main className="main">
             <h1 className="title">Recomendados</h1>
