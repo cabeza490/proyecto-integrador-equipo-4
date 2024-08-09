@@ -1,47 +1,13 @@
 // src/Components/Galeria.jsx
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import { Link, useParams } from "react-router-dom";
-import { getProductos } from '../api/productos-Apis';
-=======
+import axios from 'axios';
 import '../Styles/Galeria.css'; // Importa los estilos CSS
->>>>>>> c67e39a7a313da7adc2f789829a99901fbc0e0a7
-
-const images = [
-  { src: '/product_img/boda_grande.jpg', title: 'Boda Grande' },
-  { src: '/product_img/boda_mediana.jpeg', title: 'Boda Mediana' },
-  { src: '/product_img/boda_pequeña.jpg', title: 'Boda Pequeña' },
-  { src: '/product_img/cumple_infantil.jpg', title: 'Cumple Infantil' },
-  { src: '/product_img/cumple_mediano.jpg', title: 'Cumple Mediano' },
-  { src: '/product_img/cumple_pequeño.jpg', title: 'Cumple Pequeño' },
-  { src: '/product_img/empresarial_grande.jpeg', title: 'Empresarial Grande' },
-  { src: '/product_img/empresarial_mediano.jpg', title: 'Empresarial Mediano' },
-  { src: '/product_img/evento_banda.jpg', title: 'Evento Banda' },
-  { src: '/product_img/empresarial_pequeño.jpg', title: 'Empresarial Pequeño' },
-  { src: '/product_img/evento_dj.jpeg', title: 'Evento DJ' },
-  { src: '/product_img/mesa_dulces.jpg', title: 'Mesa Dulces' },
-];
-
-const shuffleArray = (array) => {
-  let shuffledArray = array.slice();
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-  }
-  return shuffledArray;
-};
 
 const Galeria = () => {
   const [shuffledImages, setShuffledImages] = useState([]);
-  const [productSelected, setProductSelected] = useState([])
-  const {id} = useParams()
+
   useEffect(() => {
-<<<<<<< HEAD
-    const shuffled = shuffleArray(images);
-    setShuffledImages(shuffled.slice(0, 9));
-    console.log(getProductos());
-=======
     const handleResize = () => {
       const width = window.innerWidth;
       let numberOfImages = 8; // Default for desktop and tablets
@@ -49,25 +15,41 @@ const Galeria = () => {
       if (width <= 480) {
         numberOfImages = 4; // For mobile devices
       }
-      const shuffled = shuffleArray(images);
-      setShuffledImages(shuffled.slice(0, numberOfImages));
+
+      // Obtener imágenes desde el backend
+      const fetchImages = async () => {
+        try {
+          const response = await axios.get('http://localhost:3000/api/productos');
+          const productos = response.data.productos;
+          const images = productos.flatMap(producto => producto.imagenes.map(imagen => ({
+            src: imagen.url,
+            title: producto.nombre,
+            description: producto.descripcion
+          })));
+          const shuffled = shuffleArray(images);
+          setShuffledImages(shuffled.slice(0, numberOfImages));
+        } catch (error) {
+          console.error('Error al obtener las imágenes:', error);
+        }
+      };
+
+      fetchImages();
     };
 
     handleResize(); // Set images based on initial screen size
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
->>>>>>> c67e39a7a313da7adc2f789829a99901fbc0e0a7
   }, []);
-  
-    useEffect(() => {
-        const getData = async() => {
-            let getProductData = await getProductoById(id);
-            setProductSelected(getProductData)
-        } 
-        getData()
-        console.log(productSelected);
-    }, [id])
+
+  const shuffleArray = (array) => {
+    let shuffledArray = array.slice();
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  };
 
   return (
     <div className="gallery">
@@ -76,10 +58,7 @@ const Galeria = () => {
           <img src={image.src} alt={`img-${index}`} />
           <div className="image-info">
             <h2>{image.title}</h2>
-            <p>20 personas</p>
-            <p>Comida a elección standard</p>
-            <p>1 postre</p>
-            <p>1 mozo</p>
+            <p>{image.description}</p>
           </div>
         </div>
       ))}
@@ -88,3 +67,5 @@ const Galeria = () => {
 };
 
 export default Galeria;
+
+
