@@ -1,0 +1,90 @@
+/* src/Styles/Galeria.css */
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas por defecto */
+    gap: 20px;
+}
+
+.image-card {
+    display: flex;
+    flex-direction: row; /* Organizar en una fila */
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    color: black;
+    margin: 5px;
+}
+
+.image-card img {
+    width: 150px; /* Ancho de la imagen */
+    height: 150px; /* Altura de la imagen */
+    object-fit: cover;
+}
+
+.image-info {
+    padding: 10px;
+    text-align: left; /* Alinear el texto a la izquierda */
+    flex: 1; /* Ocupa el resto del espacio */
+}
+
+.image-info h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.image-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Media Queries */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+        gap: 15px;
+    }
+
+    .image-info h2 {
+        font-size: 16px;
+    }
+
+    .image-info p {
+        font-size: 12px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+    .gallery {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+        gap: 10px;
+    }
+
+    .image-card {
+        flex-direction: column; /* Organizar en columna */
+        text-align: center;
+    }
+
+    .image-card img {
+        width: 100%; /* Imagen toma todo el ancho */
+        height: auto; /* Altura automática para mantener la proporción */
+    }
+
+    .image-info {
+        padding: 10px;
+        text-align: center; /* Centrar el texto */
+    }
+
+    .image-info h2 {
+        font-size: 14px; /* Ajustar tamaño de la fuente */
+    }
+
+    .image-info p {
+        font-size: 12px; /* Ajustar tamaño de la fuente */
+    }
+}

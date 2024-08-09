@@ -68,5 +68,9 @@ main {
   footer {
     height:116px;
   }
+  
+  main {
+    padding: 10px;
+  }
 
 }

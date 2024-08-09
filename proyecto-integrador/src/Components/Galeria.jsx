@@ -1,8 +1,12 @@
 // src/Components/Galeria.jsx
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
 import { Link, useParams } from "react-router-dom";
 import { getProductos } from '../api/productos-Apis';
+=======
+import '../Styles/Galeria.css'; // Importa los estilos CSS
+>>>>>>> c67e39a7a313da7adc2f789829a99901fbc0e0a7
 
 const images = [
   { src: '/product_img/boda_grande.jpg', title: 'Boda Grande' },
@@ -33,9 +37,27 @@ const Galeria = () => {
   const [productSelected, setProductSelected] = useState([])
   const {id} = useParams()
   useEffect(() => {
+<<<<<<< HEAD
     const shuffled = shuffleArray(images);
     setShuffledImages(shuffled.slice(0, 9));
     console.log(getProductos());
+=======
+    const handleResize = () => {
+      const width = window.innerWidth;
+      let numberOfImages = 8; // Default for desktop and tablets
+
+      if (width <= 480) {
+        numberOfImages = 4; // For mobile devices
+      }
+      const shuffled = shuffleArray(images);
+      setShuffledImages(shuffled.slice(0, numberOfImages));
+    };
+
+    handleResize(); // Set images based on initial screen size
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+>>>>>>> c67e39a7a313da7adc2f789829a99901fbc0e0a7
   }, []);
   
     useEffect(() => {
@@ -48,66 +70,21 @@ const Galeria = () => {
     }, [id])
 
   return (
-    <div style={galleryStyle}>
+    <div className="gallery">
       {shuffledImages.map((image, index) => (
-        <div key={index} style={imageCardStyle(index)}>
-          <img src={image.src} alt={`img-${index}`} style={imageStyle} />
-          <div style={imageInfoStyle}>
-            <h2 style={titleStyle}>{image.title}</h2>
-            <p style={textStyle}>20 personas</p>
-            <p style={textStyle}>Comida a elección standard</p>
-            <p style={textStyle}>1 postre</p>
-            <p style={textStyle}>1 mozo</p>
+        <div key={index} className="image-card">
+          <img src={image.src} alt={`img-${index}`} />
+          <div className="image-info">
+            <h2>{image.title}</h2>
+            <p>20 personas</p>
+            <p>Comida a elección standard</p>
+            <p>1 postre</p>
+            <p>1 mozo</p>
           </div>
         </div>
       ))}
     </div>
   );
-};
-
-const galleryStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: '20px',
-  '@media (max-width: 768px)': {
-    gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: '10px',
-  },
-  '@media (max-width: 480px)': {
-    gridTemplateColumns: '1fr',
-    gap: '10px',
-  },
-};
-
-const imageCardStyle = (index) => ({
-  display: index >= 4 && window.innerWidth <= 480 ? 'none' : 'flex',
-  flexDirection: 'column',
-  border: '1px solid #ddd',
-  borderRadius: '10px',
-  overflow: 'hidden',
-  backgroundColor: 'white',
-  color: 'black',
-  margin: '5px',
-});
-
-const imageStyle = {
-  width: '100%',
-  height: '200px',
-  objectFit: 'cover',
-};
-
-const imageInfoStyle = {
-  padding: '10px',
-  textAlign: 'center',
-};
-
-const titleStyle = {
-  margin: '0',
-  fontSize: '18px',
-};
-
-const textStyle = {
-  margin: '5px 0',
 };
 
 export default Galeria;
