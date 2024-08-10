@@ -58,11 +58,13 @@ const Galeria = () => {
       {shuffledImages.map((image, index) => (
         <div key={index} className="image-card">
           <img src={image.src} alt={`img-${index}`} />
+          <Link to={`/detail/${image.id}`}>
           <div className="image-info">
             <h2>{image.title}</h2>
             <p>{image.description}</p>
-            <Link to={`/detail/${image.id}`}>Ver detalle</Link>
+            
           </div>
+          </Link>
         </div>
       ))}
     </div>

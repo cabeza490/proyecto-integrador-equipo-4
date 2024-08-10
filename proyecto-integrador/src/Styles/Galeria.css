@@ -32,24 +32,20 @@
   }
   
   .image-info h2 {
-    margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
+    color: black;
   }
   
   .image-info p {
-    margin: 5px 0;
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: 12px;
+    color: black;
   }
   .image-card a{
     text-decoration: none;
-    color: #FFFFFF;
-    background-color: #003366;
-    border-radius: 8px;
-    padding: 3px 6px
+ 
   }
-  
+
   @media (min-width: 481px) {
     .gallery {
       grid-template-columns: repeat(2, 1fr); 
