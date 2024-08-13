@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import NavbarStyle from "../Styles/Navbar.module.css"
 
 const Navbar = () => {
@@ -11,7 +12,7 @@ const Navbar = () => {
 
             <div className={NavbarStyle.buttons}>
                 <button className={NavbarStyle.createAccount}>Crear cuenta</button>
-                <button className={NavbarStyle.newSesion}>Iniciar sesión</button>
+                <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
             </div>
         </nav>
     )
