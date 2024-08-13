@@ -1,7 +1,7 @@
 .formulario {
-    width: 100%; /* Para que el formulario ocupe todo el ancho disponible */
-    max-width: 600px; /* Limita el ancho máximo del formulario */
-    margin: 50px auto; /* Centra el formulario horizontalmente y añade margen superior e inferior */
+    width: 100%; 
+    max-width: 600px;
+    margin: 50px auto; 
     padding: 30px;
     background-color: #fff;
     border-radius: 10px;
@@ -40,13 +40,13 @@
 
 .form__content input {
     width: 100%;
-    padding: 10px 40px 10px 15px; /* Espacio para el icono */
+    padding: 10px 40px 10px 15px; 
     border-radius: 25px;
     border: 1px solid #ccc;
     outline: none;
     background-color: #f7f7f7;
     margin-bottom: 10px;
-    box-sizing: border-box; /* Incluye el padding en el ancho del input */
+    box-sizing: border-box;
 }
 
 .form__content input:focus {
@@ -63,13 +63,13 @@
 }
 
 .form__content .icon:hover {
-    color: #000; /* Cambia el color del icono cuando se hace hover */
+    color: #000; 
 }
 
 .form__buttons {
     display: flex;
-    justify-content: space-between; /* Asegura que los botones queden uno al lado del otro */
-    align-items: center; /* Alinea los botones verticalmente en el centro */
+    justify-content: space-between;
+    align-items: center; 
     margin-top: 20px;
 }
 
@@ -79,18 +79,18 @@
     text-decoration: none;
     color: #fff;
     font-weight: bold;
-    text-align: center; /* Centra el texto dentro del botón */
+    text-align: center; 
     cursor: pointer;
     min-width: 120px;
     display: flex;
-    justify-content: center; /* Asegura que el texto esté centrado horizontalmente */
-    align-items: center; /* Asegura que el texto esté centrado verticalmente */
+    justify-content: center;
+    align-items: center; 
 }
 
 .buttons__1 {
     background-color: #00275b;
     flex-grow: 1.387;
-    margin-right: 10px; /* Espacio entre los dos botones */
+    margin-right: 10px; 
 }
 
 .buttons__2 {
