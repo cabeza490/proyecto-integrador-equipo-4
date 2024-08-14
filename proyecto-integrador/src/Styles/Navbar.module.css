@@ -4,7 +4,9 @@
 }
 a {
     display: flex;
-    gap: 20px;
+    align-items: center; 
+    justify-content: center; 
+    text-decoration: none;
 }
 
 .createAccount {
@@ -16,24 +18,15 @@ a {
     font-size: 12px;
 }
 
-.createAccount:hover{
-    border:2px solid #FFFFFF;
-}
-
 .newSesion {
     background: #003366;
     color: #FFFFFF;
     border:2px solid #FFFFFF;
     width: 122px;
-    height: 40px;
+    /*height: 40px;*/
     border-radius: 50px;
     font-size: 12px;
 }
-
-.newSesion:hover{
-    border:2px solid #FFFFFF;
-}
-
 
 
 @media (max-width:480px) {

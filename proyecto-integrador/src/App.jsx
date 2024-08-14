@@ -4,6 +4,7 @@ import Layout from './Layout/Layout'
 import Home from './Routes/Home'
 import Detail from './Components/Detail'
 import Login from './Routes/Login'
+import Register from './Routes/Register'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             {/* <Route path="/contact" element={<Contact/>}/> */}
             <Route path="*" element={<h1>404 not found</h1>} />
             <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
