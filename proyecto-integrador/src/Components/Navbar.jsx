@@ -11,7 +11,7 @@ const Navbar = () => {
             </a>
 
             <div className={NavbarStyle.buttons}>
-                <button className={NavbarStyle.createAccount}>Crear cuenta</button>
+                <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
                 <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
             </div>
         </nav>
