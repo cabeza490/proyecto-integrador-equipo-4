@@ -3,10 +3,12 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './Contexts/AuthContext';
 import Layout from './Layout/Layout';
+
 import Home from './Routes/Home';
 import Detail from './Components/Detail';
 import Login from './Routes/Login';
 import Register from './Routes/Register';
+
 
 function App() {
   return (

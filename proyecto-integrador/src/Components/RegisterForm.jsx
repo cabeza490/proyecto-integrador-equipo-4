@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { setUser } from '../api/register-Apis'
-
+import FormStyle from '../Styles/RegisterForm.module.css';
 
 const RegisterForm = () => {
     const [usuario, setUsuario] = useState({
@@ -39,32 +39,42 @@ const RegisterForm = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Nombre" value={usuario.nombre}
+        <div className={FormStyle.formContainer}>
+            <form onSubmit={handleSubmit} className={FormStyle.registerForm}>
+                <h3 className={FormStyle.title}>Crear cuenta</h3>
+                <input type="text" placeholder="Nombre" className={FormStyle.formInput} value={usuario.nombre}
                     onChange={(event) => setUsuario({
                         ...usuario, nombre: event.target.value
                     })} />
+                
+                <input type="text" placeholder="Apellido" className={FormStyle.formInput} value={usuario.apellido}
+                    onChange={(event) => setUsuario({
+                        ...usuario, apellido: event.target.value
+                    })} />
 
-                <input type="email" placeholder="Email" value={usuario.email}
+                <input type="email" placeholder="Email" className={FormStyle.formInput} value={usuario.email}
                     onChange={(event) => setUsuario({
                         ...usuario, email: event.target.value
                     })} />
 
-                <input type="email" placeholder="Confirmar email" value={usuario.confirmarmail}
+                <input type="email" placeholder="Confirmar email" className={FormStyle.formInput} value={usuario.confirmarmail}
                     onChange={(event) => setUsuario({
                         ...usuario, confirmarmail: event.target.value
                     })} />
 
-                <input type="password" placeholder="Contraseña" value={usuario.password}
+                <input type="password" placeholder="Contraseña" className={FormStyle.formInput} value={usuario.password}
                     onChange={(event) => setUsuario({
                         ...usuario, password: event.target.value
                     })} />
-                <input type="password" placeholder="Confirmar contraseña" value={usuario.confirmarcontraseña}
+                <input type="password" placeholder="Confirmar contraseña" className={FormStyle.formInput} value={usuario.confirmarcontraseña}
                     onChange={(event) => setUsuario({
                         ...usuario, confirmarcontraseña: event.target.value
                     })} />
-                <button type="submit">Registrarse</button>
+
+                 <div className={FormStyle.formButtons}>
+                    <button type="button" className={FormStyle.backButton}>Volver</button>
+                    <button type="submit" className={FormStyle.submitButton}>Crear cuenta</button>
+                </div>
             </form>
         </div>
     );

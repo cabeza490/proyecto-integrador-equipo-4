@@ -1,0 +1,71 @@
+.formContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.registerForm {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.formInput {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    box-shadow: 0px 5px 5px rgba(13, 12, 70, 0.08);
+    border-radius: 50px;
+    font-size: 16px;
+}
+
+.inputGroup.error .formInput {
+    border-color: #e74c3c;
+}
+
+.errorMessage {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.formButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.backButton {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 50px 0 0 50px;
+    font-size: 14px;
+    cursor: pointer;
+    background: #003366;
+    color: #FFFFFF;
+}
+
+.submitButton {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 0 50px 50px 0;
+    font-size: 14px;
+    cursor: pointer;
+    background: #003366;
+    color: #FFFFFF;
+}
+
+.title {
+    font-size: 24px;
+    color: #333;
+    margin: 0px;
+    text-align: center;
+}
