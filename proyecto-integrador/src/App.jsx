@@ -1,10 +1,10 @@
 // src/App.jsx
-// eslint-disable-next-line no-unused-vars
-import React from 'react';
+import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './Contexts/AuthContext';
-import Navbar from './Components/Navbar';
+import Layout from './Layout/Layout';
 import Home from './Routes/Home';
+import Detail from './Components/Detail';
 import Login from './Routes/Login';
 import Register from './Routes/Register';
 
@@ -12,12 +12,14 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<h1>404 not found</h1>} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/detail/:id" element={<Detail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="*" element={<h1>404 not found</h1>} />
+          </Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
@@ -25,7 +27,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
