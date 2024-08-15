@@ -2,6 +2,7 @@
     display: flex;
     gap: 20px;
 }
+
 a {
     display: flex;
     align-items: center; 
@@ -21,30 +22,49 @@ a {
 .newSesion {
     background: #003366;
     color: #FFFFFF;
-    border:2px solid #FFFFFF;
+    border: 2px solid #FFFFFF;
     width: 122px;
-    /*height: 40px;*/
+    height: 40px;
     border-radius: 50px;
     font-size: 12px;
 }
+.logoutButton {
+    background: #FFFFFF;
+    color: #003366;
+    border: 2px solid #003366;
+    width: 122px;
+    height: 40px;
+    border-radius: 50px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
+.logoutButton:hover {
+    background: #003366;
+    color: #FFFFFF;
+    border-color: #003366;
+}
 
-@media (max-width:480px) {
+@media (max-width: 480px) {
     .navLogo {
-      height: 34px;
-      width: 180px;   
+        height: 34px;
+        width: 180px;
     }
-    
+
     .buttons {
         flex-direction: column;
         align-items: center;
         gap: 10px;
     }
-    
-    .createAccount, .newSesion {
+
+    .createAccount, .newSesion, .logoutButton {
         width: 110px;
         height: 25px;
         font-size: 10px;
     }
-  
-  }
+}
+

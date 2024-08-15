@@ -1,27 +1,31 @@
-import './App.css'
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Layout from './Layout/Layout'
-import Home from './Routes/Home'
-import Detail from './Components/Detail'
-import Login from './Routes/Login'
-import Register from './Routes/Register'
+// src/App.jsx
+// eslint-disable-next-line no-unused-vars
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './Contexts/AuthContext';
+import Navbar from './Components/Navbar';
+import Home from './Routes/Home';
+import Login from './Routes/Login';
+import Register from './Routes/Register';
 
 function App() {
   return (
-      
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Layout />}> 
-            <Route index element= {<Home/>}/>
-            <Route path="/detail/:id" element={<Detail/>}/>
-            {/* <Route path="/contact" element={<Contact/>}/> */}
-            <Route path="*" element={<h1>404 not found</h1>} />
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/register" element={<Register/>}/>
-          </Route>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<h1>404 not found</h1>} />
         </Routes>
-      </BrowserRouter>
+      </AuthProvider>
+    </BrowserRouter>
+  );
+}
 
-  )
-  }
-export default App
+export default App;
+
+
+
+

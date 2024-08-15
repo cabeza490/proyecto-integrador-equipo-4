@@ -2,22 +2,18 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import Galeria from '../Components/Galeria';
-import '../Styles/Home.css'; // Importa los estilos
+import '../Styles/Home.css';
 import Search from '../Components/Search';
 
 function Home() {
-
-    
-
     return (
         <main className="main">
-            <Search/>
+            <Search />
             <h1 className="title">Recomendados</h1>
-
-            <div><Galeria /></div>
-
+            <div>
+                <Galeria />
+            </div>
         </main>
-        
     );
 }
 
