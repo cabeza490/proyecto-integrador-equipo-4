@@ -24,15 +24,39 @@
     font-size: 16px;
 }
 
-.inputGroup.error .formInput {
-    border-color: #e74c3c;
+.formInput:focus {
+    border: 2px solid rgb(2, 2, 143);
+    outline: none;
+  }
+
+.errorInput {
+    border: 2px solid #e74c3c;
+}
+
+.validInput {
+    border: 2px solid green;
 }
 
 .errorMessage {
     color: #e74c3c;
     font-size: 14px;
     margin-top: -10px;
-    margin-bottom: 10px;
+    padding-left: 10px;
+    margin-bottom: 0px;;
+}
+.successMessage{
+    color: green;
+    text-align: center;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-bottom: 0px;;
+}
+.errorMessageValid{
+    color: #e74c3c;
+    text-align: center;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-bottom: 0px;;
 }
 
 .formButtons {
@@ -52,6 +76,10 @@
     color: #FFFFFF;
 }
 
+.backButton:hover, .submitButton:hover{
+    opacity: 50%;
+}
+
 .submitButton {
     width: 48%;
     padding: 10px;
@@ -68,4 +96,23 @@
     color: #333;
     margin: 0px;
     text-align: center;
+}
+
+.passwordContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.showPasswordIcon {
+    background-color: transparent;
+    border: none;
+    color: #888888; 
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 8px; 
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
 }
