@@ -145,6 +145,7 @@ const RegisterForm = () => {
             try {
                 const usuarioData = {
                     nombre: usuario.nombre,
+                    apellido: usuario.apellido,
                     email: usuario.email,
                     password: usuario.password,
                 };
