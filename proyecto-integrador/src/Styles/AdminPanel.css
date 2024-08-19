@@ -1,14 +1,12 @@
+
 .admin-panel {
     background-color: white;
     margin: 60px;
     border-radius: 20px;
-
     display: flex;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.250);
-
     transition: all 1s linear;
 }
-
 .left-side {
     background-color: #013365;
     width: 25%;
@@ -16,25 +14,21 @@
     text-align: center;
     color: white;
     padding: 5%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
-
 .user-avatar {
     background-color: white;
     color: #013365;
     aspect-ratio: 1/1;
     border-radius: 100%;
     margin-bottom: 10px;
-    
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 7vw;
 }
-
 .left-side p {
     margin: 0px;
     text-align: left;
@@ -50,26 +44,173 @@
     color: gray;
     font-size: 10px;
 }
-
 .tabs {
     padding: 20px 60px;
     width: 75%;
+    position: relative;
 }
 
 .tab-list {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    position: relative;
 }
 
 .tab-button {
     border: none;
     background-color: white;
-    color: gray;
+    color: black;
     cursor: pointer;
     font-size: 1.1em;
     font-weight: bold;
+    position: relative;
+    z-index: 1;
 }
 
 .tab-selected {
     color: #013365;
 }
+
+.tab-button:not(.tab-selected) {
+    color: gray;
+}
+.info-dropdown {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    padding-left: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 0;
+    background-color: white;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0; 
+}
+
+.info-dropdown button {
+    background: none;
+    border: none;
+    color: #888888;
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1.2em; 
+}
+
+.info-dropdown button:hover,
+.info-dropdown button.selected {
+    color: #000000;
+}
+.user-dropdown {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    padding: 20px;
+    background-color: white;
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 0;
+}
+.user-dropdown h2 {
+    color: black;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; 
+}
+
+.search-input {
+    border-radius: 20px; 
+    border: 1px solid #F0F0F0;
+    background-color: #F0F0F0;
+    color: black; 
+    padding: 10px;
+    flex: 1; 
+    font-size: 1em;
+}
+
+.search-icon {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.user-dropdown ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.user-dropdown li {
+    margin-bottom: 10px;
+}
+.permissions-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+    margin-bottom: 20px;
+}
+.permission-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.permission-button {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.permission-checkbox {
+    appearance: none;
+    border: 1px solid #888888;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.permission-checkbox:checked::before {
+    content: '✔';
+    color: black;
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.permission-checkbox:focus {
+    outline: none;
+}
+.save-button {
+    background-color: #013365;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 4px;
+    align-self: flex-start;
+}
+
+.save-button:hover {
+    background-color: #014f8a;
+}
+
