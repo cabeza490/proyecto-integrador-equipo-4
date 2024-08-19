@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { usuariosPH } from "../utils/usuarios";
+import "../Styles/ListaUsuarios.css"
 
 
 const ListaUsuarios = () => {
@@ -19,22 +20,13 @@ const ListaUsuarios = () => {
         <>
             {cargando ? (<p>Cargando datos de usuarios...</p>) : (
                 <div className='list-container'>
-                    <table className='list-table'>
-                        <thead>
-                            <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {usuarios.map(usuario => (
-                            <tr key={usuario.id}>
-                                <td>{usuario.id}</td>
-                                <td>{usuario.nombre} {usuario.apellido}</td>
-                            </tr>
-                            ))}
-                        </tbody>
-                    </table> 
+                    <ol className="list-usuarios">
+                        {usuarios.map(usuario => (
+                            <li key={usuario.id} id={usuario.id}>
+                                {usuario.nombre} {usuario.apellido}
+                            </li>
+                        ))}
+                    </ol>
                 </div>
             )}
         </>

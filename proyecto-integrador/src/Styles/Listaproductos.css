@@ -7,13 +7,13 @@
 .list-table {
     table-layout: fixed;
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
 }
 
 
 .list-table td {
     /* background-color: white; */
-    border-bottom: 1px solid lightgray;
+    /* border-bottom: 1px solid lightgray; */
     padding: 5px;
 }
 
@@ -27,4 +27,13 @@ thead th:nth-child(2) {
   
 thead th:nth-child(3) {
     width: 80px;
+}
+
+.list-table td:first-child {
+    /* border: 1px solid red;
+    border-radius: 20px; */
+}
+
+.list-table tbody tr {
+    border: 1px solid grey;
 }

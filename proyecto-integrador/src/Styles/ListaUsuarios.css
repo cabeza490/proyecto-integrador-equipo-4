@@ -1,30 +1,22 @@
-.list-container {
-    background-color: white;
-    /* width:fit-content; */
-    padding: 10px 10px;
+.list-usuarios {
+    list-style-type: none;
+    padding: 0px;
 }
 
-.list-table {
-    table-layout: fixed;
-    width: 100%;
-    border-collapse: collapse;
+.list-usuarios li {
+    border: 1px solid #F0F0F0;
+    border-radius: 20px;
+    padding: 3px 15px;
+    margin: 5px;
+
+    font-weight: normal;
 }
 
-
-.list-table td {
-    /* background-color: white; */
-    border-bottom: 1px solid lightgray;
-    padding: 5px;
+.list-usuarios li:hover {
+    border-width: 2px;
+    box-shadow: 4px 4px 4px #00000022;
 }
 
-thead th:nth-child(1) {
-    width: 30px;
-}
-  
-thead th:nth-child(2) {
-    width: auto;
-}
-  
-thead th:nth-child(3) {
-    width: 80px;
+.selecccionado {
+    
 }
