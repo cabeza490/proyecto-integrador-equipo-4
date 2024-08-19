@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/AdminPanel.css';
 import ListaProductos from "../Components/Listaproductos";
+import ListaUsuarios from '../Components/ListaUsuarios';
 
 function AdminPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -37,6 +38,7 @@ function AdminPanel() {
                         </button>
                     </div>
                         {activeTab === 2 && (<ListaProductos />)}
+                        {activeTab === 1 && (<ListaUsuarios />)}                                                 
 
                 </section>
             </div>

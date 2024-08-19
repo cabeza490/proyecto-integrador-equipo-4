@@ -16,7 +16,7 @@ const ListaProductos = () => {
                 console.error("Error al obtener los productos");
             } finally {
                 setCargando(false);
-            }
+            };
         } 
         getData()
     }, [])
@@ -61,6 +61,6 @@ const ListaProductos = () => {
         </>
 
     )
-}
+};
 
-export default ListaProductos
+export default ListaProductos;
