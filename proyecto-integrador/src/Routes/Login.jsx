@@ -2,15 +2,18 @@
 // eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { userLogin } from '../api/login-Apis';
 import '../Styles/Login.css';
 
 const Login = () => {
   const { register, formState: { errors }, handleSubmit } = useForm();
+  const navigate = useNavigate();
+
   const onSubmit = async(data) => {
     try {
       await userLogin(data)
+      navigate('/');
       console.log(data);
     } catch (error) {
       console.log(error);
