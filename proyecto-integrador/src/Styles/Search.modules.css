@@ -18,7 +18,7 @@
     margin-bottom: 30px;
 }
 
-.search-input {
+.search-input-init {
     width: 546px;
     padding: 15px;
     margin-right: 10px;
@@ -96,7 +96,7 @@
         margin-bottom: 20px;
     }
 
-    .search-input {
+    .search-input-init {
         width: 97%;
         margin: 0;
         margin-bottom: 10px;
@@ -155,7 +155,7 @@
         margin-bottom: 20px;
     }
 
-    .search-input {
+    .search-input-init {
         width: 92%;
         margin: 0;
         margin-bottom: 10px;

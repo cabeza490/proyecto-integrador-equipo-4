@@ -7,12 +7,12 @@ const Search = () => {
             <h3 className="search-heading">Encontrá todo lo que necesitás para tu evento</h3>
 
             <div className="search-bar">
-                <input type="text" className="search-input" placeholder="Estoy buscando..." />
+                <input type="text" className="search-input-init" placeholder="Estoy buscando..." />
                 <div className="search-date-container">
                     <input type="text" className="search-date" placeholder='Check in' id="in" />
                     <input type="text" className="search-date-out" placeholder='Check out' id="out" />
                     <button className="search-button">
-                        <img src='../../public/search-icon.png' alt="search-icon" className='search-icon ' />
+                        <img src='../../public/search-icon.png' alt="search-icon" className='search-icon' />
                 </button>
                 </div>
                

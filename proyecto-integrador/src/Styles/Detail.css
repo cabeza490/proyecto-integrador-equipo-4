@@ -75,12 +75,110 @@ h3 {
 }
 
 .caracteristicas {
-    display: flex;
-    flex-direction: row;
-    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
     border: 1px solid black;
-    padding: 10px;
     border-radius: 8px;
-    margin-bottom: 20px;
+    max-width: 100%;
+    margin: 10px;
 }
 
+.caracteristica-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: left;
+}
+
+.caracteristica-icon {
+    margin-right: 8px;
+    font-size: 1.5rem;
+}
+
+.caracteristica-item p {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333333;
+}
+
+.goBack {
+    background-color: transparent;
+    border: none;
+    color: #000000;
+    cursor: pointer;
+    font-size: 36px;
+}
+
+@media (max-width: 480px) {
+    .card_container {
+        width: 95%;
+        margin: 10px auto;
+        padding: 0px;
+        border-radius: 8px;
+        color: #000000;
+        background-color: #FFFFFF;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .card_title h2 {
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    .card_image {
+        width: 100%;
+        margin: 10px 0;
+        height: 200px;
+    }
+
+    .card_image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .card_content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .card_container p {
+        font-size: 1rem;
+        padding: 10px;
+       
+    }
+
+    .caracteristicas {
+        display: flex;
+        flex-direction: column;
+        padding: 0px;
+        border: 1px solid black;
+        border-radius: 8px;
+        margin-top: 10px;
+        margin: 10px;
+        text-align: left;
+    }
+
+    .caracteristica-item {
+        flex: 1;
+        margin-bottom: 10px;
+        text-align: left; /* Asegura que cada característica esté alineada a la izquierda */
+    }
+
+    .caracteristica-item span {
+        display: inline-block;
+        font-size: 1.5rem;
+        margin-right: 8px;
+        vertical-align: middle; /* Asegura que el icono esté alineado verticalmente con el texto */
+    }
+
+    .goBack {
+        font-size: 24px;
+    }
+}
