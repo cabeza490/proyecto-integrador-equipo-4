@@ -19,6 +19,7 @@ const RegisterForm = () => {
         confirmarmail: "",
         password: "",
         confirmarcontraseña: "",
+        rolId: 2
     });
 
     const [errors, setErrors] = useState({});
@@ -148,6 +149,7 @@ const RegisterForm = () => {
                     apellido: usuario.apellido,
                     email: usuario.email,
                     password: usuario.password,
+                    rolId: usuario.rolId,
                 };
 
                 const response = await setUser(usuarioData);

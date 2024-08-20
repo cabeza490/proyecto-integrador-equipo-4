@@ -19,7 +19,6 @@ const Detail = () => {
     useEffect(() => {
         const getData = async () => {
             let getProductData = await getProductoById(id);
-            console.log("Product data", getProductData);
             setProductSelected(getProductData);
 
             if (getProductData.caracteristicas && getProductData.caracteristicas.length > 0) {
