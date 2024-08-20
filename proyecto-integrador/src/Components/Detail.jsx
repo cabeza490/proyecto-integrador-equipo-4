@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Detail = () => {
     const { id } = useParams();
     const [productSelected, setProductSelected] = useState({});
-    const [displayedFeatures, setDisplayedFeatures] = useState([]);
+    const [randomDisplay, setRandomDisplay] = useState([]);
     const navigate = useNavigate();
 
     const handleBackClick = () => {
@@ -23,10 +23,10 @@ const Detail = () => {
             setProductSelected(getProductData);
 
             if (getProductData.caracteristicas && getProductData.caracteristicas.length > 0) {
-                const shuffledFeatures = getProductData.caracteristicas
+                const random = getProductData.caracteristicas
                     .sort(() => Math.random() - 0.5)
                     .slice(0, 8);
-                setDisplayedFeatures(shuffledFeatures);
+                setRandomDisplay(random);
             }
         };
         getData();
@@ -64,8 +64,8 @@ const Detail = () => {
             <div className="card_container">
                 <h3>Características</h3>
                 <div className="caracteristicas">
-                    {displayedFeatures.length > 0 ? (
-                        displayedFeatures.map((caracteristica) => (
+                    {randomDisplay.length > 0 ? (
+                        randomDisplay.map((caracteristica) => (
                             <div key={caracteristica.id} className="caracteristica-item">
                                 <span className="caracteristica-icon">{caracteristica.icono}</span>
                                 <p>{caracteristica.nombre}</p>
