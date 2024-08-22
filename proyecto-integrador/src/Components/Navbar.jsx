@@ -19,7 +19,9 @@ const Navbar = () => {
             dispatch({ type: "SET_USER_DATA", payload: null }); // Opcional: Resetea userData al hacer logout
             navigate('/');
         }
-    };
+    };  
+    console.log('Viendo userData desde navbar ', userData);
+    
 
     return (
         <nav className={NavbarStyle.nav}>
@@ -30,10 +32,10 @@ const Navbar = () => {
       <div className={NavbarStyle.buttons}>
         <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
         {!isAuthenticated && userData ? (
-          <>
-            <Avatar/>
-            <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
-          </>
+              <>
+              <Avatar/>
+              <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
+            </>
             ) : (
               <>
                 <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
