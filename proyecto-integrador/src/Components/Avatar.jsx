@@ -25,13 +25,15 @@ const Avatar = () => {
 
     return (
         <div className={NavbarStyle.profile}>
-            <div className={NavbarStyle.avatar}>
-                {getInitials(userData.nombre, userData.apellido)}
-            </div>
+            <Link to="/UserPanel" className={NavbarStyle.avatarLink}>
+                <div className={NavbarStyle.avatar}>
+                    {getInitials(userData.nombre, userData.apellido)}
+                </div>
+            </Link>
             <span className={NavbarStyle.userName}>
                 {getFirstNameAndSurname(userData.nombre, userData.apellido)}
             </span>
-            {userData.rolId === 2 && (
+            {userData.rolId === 1 && (
                 <Link to='/adminpanel' className={NavbarStyle.panelButton}>
                     Ir al panel
                 </Link>
@@ -41,6 +43,7 @@ const Avatar = () => {
 };
 
 export default Avatar;
+
 
 
 
