@@ -1,6 +1,7 @@
 // src/Routes/AdminPanel.jsx
 // eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../Styles/AdminPanel.css';
 import ListaProductos from '../Components/ListaProductos';
 import UserManagement from '../Components/UserManagement';
@@ -13,10 +14,27 @@ function AdminPanel() {
     const [userDropdownVisible, setUserDropdownVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState(null);
+    const [user, setUser] = useState(null);
+    const { userId } = useAuth(); // Obtener el ID del usuario logueado desde el contexto de autenticación
 
-    const { user } = useAuth(); // Asegúrate de obtener el usuario
+    // Fetch user data from API by user ID
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/api/usuarios');
+            const usuarios = response.data;
+            // Buscar el usuario logueado por su ID
+            const loggedInUser = usuarios.find(usuario => usuario.id === userId);
+            setUser(loggedInUser);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
 
-    console.log('User:', user);
+    useEffect(() => {
+        if (userId) {
+            fetchUserData();
+        }
+    }, [userId]);
 
     const cambiarTab = (index) => {
         if (isEditing) {
@@ -53,7 +71,7 @@ function AdminPanel() {
         <div className='admin-panel'>
             <section className='left-side'>
                 <div className='user-avatar'>{user ? user.nombre[0] : 'U'}</div>
-                <p className='name'>{user ? user.nombre : 'Usuario'}</p>
+                <p className='name'>{user ? `${user.nombre} ${user.apellido}` : 'Usuario'}</p>
                 <p className='email'>{user ? user.email : ''}</p>
                 {!isEditing && (
                     <button className='edit-button' onClick={() => handleEditClick(user?.id)}>Editar</button>
@@ -100,3 +118,7 @@ function AdminPanel() {
 }
 
 export default AdminPanel;
+
+
+
+

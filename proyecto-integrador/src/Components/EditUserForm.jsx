@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from "react";
 import { updateUser } from '../api/updateUser';
 import FormStyle from "../Styles/EditUserForm.module.css"; 

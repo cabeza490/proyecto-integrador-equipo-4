@@ -36,17 +36,30 @@ function UserManagement({ handleEditClick }) {
         }
     };
 
-    const handlePermissionToggle = (userId) => {
+    const handlePermissionToggle = async (userId) => {
         const userIndex = users.findIndex(user => user.id === userId);
         const updatedUsers = [...users];
-
         const user = updatedUsers[userIndex];
+
+        // Determine the new rolId
+        const newRolId = user.rolId === 1 ? 2 : 1; // Toggle between 1 and 2
 
         const confirmation = window.confirm("¿Seguro que quiere cambiar permisos de administrador?");
 
         if (confirmation) {
-            user.isAdmin = !user.isAdmin;
-            setUsers(updatedUsers);
+            try {
+                // Call the backend to update the role
+                await axios.put('http://localhost:3000/api/usuarios/cambiar-rol', {
+                    id: userId,
+                    nuevoRolId: newRolId
+                });
+
+                // Update the local state
+                user.rolId = newRolId;
+                setUsers(updatedUsers);
+            } catch (error) {
+                console.error('Error al cambiar el rol:', error);
+            }
         }
     };
 
@@ -77,10 +90,10 @@ function UserManagement({ handleEditClick }) {
                         <div key={user.id} className='user-item'>
                             {user.nombre} {user.apellido}
                             <button
-                                className={`permission-button ${user.isAdmin ? 'is-admin' : 'not-admin'}`}
+                                className={`permission-button ${user.rolId === 1 ? 'is-admin' : 'not-admin'}`}
                                 onClick={() => handlePermissionToggle(user.id)}
                             >
-                                {user.isAdmin ? 'Sí' : 'No'}
+                                {user.rolId === 1 ? 'Sí' : 'No'}
                             </button>
                         </div>
                     ))
@@ -93,4 +106,7 @@ function UserManagement({ handleEditClick }) {
 }
 
 export default UserManagement;
+
+
+
 
