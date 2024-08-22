@@ -29,10 +29,15 @@ const Navbar = () => {
 
       <div className={NavbarStyle.buttons}>
         <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
-        {!isAuthenticated ? (
-          <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
-        ) : (
-          <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
+        {!isAuthenticated && userData ? (
+          <>
+            <Avatar/>
+            <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
+          </>
+            ) : (
+              <>
+                <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
+              </>
         )}
       </div>
     </nav>
