@@ -26,7 +26,7 @@ const Navbar = () => {
       <div className={NavbarStyle.buttons}>
         <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
         {!isAuthenticated ? (
-          <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
+          <Link to='/login' className={NavbarStyle.createAccount}>Iniciar sesión</Link>
         ) : (
           <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
         )}

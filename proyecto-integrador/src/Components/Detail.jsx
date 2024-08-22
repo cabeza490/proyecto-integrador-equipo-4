@@ -1,15 +1,38 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getProductoById } from '../api/productos-Apis';
 import '../Styles/Detail.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import { faArrowLeft, faBurger, faCookie, faMusic, faLightbulb, faCircleHalfStroke, faEye, faIcons, faPeopleRoof, faGuitar, faVolumeHigh, faPersonDress, faCakeCandles, faHeadphones, faPalette, faCamera, faPeopleGroup, faDrum, faPlay, faChildDress, faIceCream } from '@fortawesome/free-solid-svg-icons';
+
+const iconMap = {
+    "https://fontawesome.com/icons/burger?f=classic&s=light": faBurger,
+    "https://fontawesome.com/icons/cookie?f=classic&s=solid": faCookie,
+    "https://fontawesome.com/icons/music?f=classic&s=solid": faMusic,
+    "https://fontawesome.com/icons/circle-half-stroke?f=classic&s=solid": faCircleHalfStroke,
+    "https://fontawesome.com/icons/eye?f=classic&s=solid": faEye,
+    "https://fontawesome.com/icons/icons?f=classic&s=solid": faIcons,
+    "https://fontawesome.com/icons/people-roof?f=classic&s=solid": faPeopleRoof,
+    "https://fontawesome.com/icons/guitar?f=classic&s=solid": faGuitar,
+    "https://fontawesome.com/icons/volume-high?f=classic&s=solid": faVolumeHigh,
+    "https://fontawesome.com/icons/person-dress?f=classic&s=solid": faPersonDress,
+    "https://fontawesome.com/icons/cake-candles?f=classic&s=solid": faCakeCandles,
+    "https://fontawesome.com/icons/headphones?f=classic&s=solid": faHeadphones,
+    "https://fontawesome.com/icons/palette?f=classic&s=solid": faPalette,
+    "https://fontawesome.com/icons/camera?f=classic&s=solid": faCamera,
+    "https://fontawesome.com/icons/people-group?f=classic&s=solid": faPeopleGroup,
+    "https://fontawesome.com/icons/drum?f=classic&s=solid": faDrum,
+    "https://fontawesome.com/icons/play?f=classic&s=solid": faPlay,
+    "https://fontawesome.com/icons/child-dress?f=classic&s=solid": faChildDress,
+    "https://fontawesome.com/icons/ice-cream?f=classic&s=light": faIceCream,
+    "https://fontawesome.com/icons/lightbulb?f=classic&s=regular": faLightbulb,
+};
 
 const Detail = () => {
     const { id } = useParams();
     const [productSelected, setProductSelected] = useState({});
-    const [randomDisplay, setRandomDisplay] = useState([]);
+
     const navigate = useNavigate();
 
     const handleBackClick = () => {
@@ -20,13 +43,6 @@ const Detail = () => {
         const getData = async () => {
             let getProductData = await getProductoById(id);
             setProductSelected(getProductData);
-
-            if (getProductData.caracteristicas && getProductData.caracteristicas.length > 0) {
-                const random = getProductData.caracteristicas
-                    .sort(() => Math.random() - 0.5)
-                    .slice(0, 8);
-                setRandomDisplay(random);
-            }
         };
         getData();
     }, [id]);
@@ -63,11 +79,14 @@ const Detail = () => {
             <div className="card_container">
                 <h3>Características</h3>
                 <div className="caracteristicas">
-                    {randomDisplay.length > 0 ? (
-                        randomDisplay.map((caracteristica) => (
+                    {productSelected.caracteristicas && productSelected.caracteristicas.length > 0 ? (
+                        productSelected.caracteristicas.map((caracteristica) => (
                             <div key={caracteristica.id} className="caracteristica-item">
-                                <span className="caracteristica-icon">{caracteristica.icono}</span>
-                                <p>{caracteristica.nombre}</p>
+                                <FontAwesomeIcon
+                                    icon={iconMap[caracteristica.icono]}
+                                    className="caracteristica-icon"
+                                />
+                                <p>{caracteristica.valor}</p>
                             </div>
                         ))
                     ) : (
@@ -75,7 +94,6 @@ const Detail = () => {
                     )}
                 </div>
             </div>
-
         </div>
     );
 };
