@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { userLogin } from '../api/login-Apis';
+import { useCateringStates } from '../Components/utils/globalContext';  // Importa el hook para usar el contexto
 import '../Styles/Login.css';
 
 const Login = () => {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState('');
+  const { state, dispatch } = useCateringStates(); // Obtén la función dispatch del contexto
 
   const onSubmit = async (data) => {
     try {
       const response = await userLogin(data);
       if (response.status === 200) {
-        navigate('/'); // Redirige al home en caso de éxito
+        dispatch({ type: "SET_USER_DATA", payload: response.data }); // Despacha la acción para actualizar los datos del usuario
+        console.log(state);
+        navigate('/'); 
       } else {
-        setLoginError('Datos incorrectos. Por favor, inténtalo de nuevo.'); // Maneja los casos donde el status no es 200
+        setLoginError('Datos incorrectos. Por favor, inténtalo de nuevo.');
       }
     } catch (error) {
-      // Si ocurre un error en la solicitud, mostrar un mensaje de error
       setLoginError('Datos incorrectos. Por favor, inténtalo de nuevo.');
     }
   };
