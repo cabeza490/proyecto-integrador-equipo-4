@@ -31,7 +31,7 @@ const Avatar = () => {
             <span className={NavbarStyle.userName}>
                 {getFirstNameAndSurname(userData.nombre, userData.apellido)}
             </span>
-            {userData.rolId === 2 && (
+            {userData.rolId === 1 && (
                 <Link to='/adminpanel' className={NavbarStyle.panelButton}>
                     Ir al panel
                 </Link>
