@@ -1,17 +1,12 @@
-.avatarContainer {
-    display: flex;
-    align-items: center;
-}  
 
-.avatar {
+
+.profile .avatar {
     width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: #007bff; /* Cambia el color de fondo si lo necesitas */
-    color: white;
     font-size: 16px;
     font-weight: bold;
     margin-right: 10px;

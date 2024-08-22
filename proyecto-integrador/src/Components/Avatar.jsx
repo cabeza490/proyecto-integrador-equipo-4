@@ -1,25 +1,25 @@
 import React from 'react';
-import { useCateringStates } from '../Components/utils/globalContext'; // Importa el hook para usar el contexto global
+import { useCateringStates } from '../Components/utils/globalContext';
 
 const Avatar = () => {
-    const { state } = useCateringStates(); //
-    const userData = state.userData; // 
+    const { state } = useCateringStates();
+    const { userData } = state;
 
     if (!userData) {
-        return null; // No renderiza nada si no hay userData
+        return null;
     }
 
-    const getInitials = (name) => {
-        const initials = name.split(' ').map(word => word[0]).join('');
-        return initials.toUpperCase();
+    const getInitials = (nombre, apellido) => {
+        const firstInitial = nombre[0].toUpperCase();
+        const lastInitial = apellido[0].toUpperCase();
+        return `${firstInitial}${lastInitial}`;
     };
 
     return (
         <div className="profile">
             <div className="avatar">
-                {getInitials(userData.nombre)}
+                {getInitials(userData.nombre, userData.apellido)}
             </div>
-            <span>{userData.nombre}</span>
         </div>
     );
 };
