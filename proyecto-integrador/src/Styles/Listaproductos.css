@@ -1,13 +1,49 @@
+:root {
+    --primary-color: #013365;
+
+    --border-row-color: gray;
+    --border-row-width: 1px;
+    --border-row-radius: 50px;
+}
+
 .list-container {
-    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: white; */
     /* width:fit-content; */
     padding: 10px 10px;
+}
+
+.create-product {
+    font-size: 1rem;
+    font-weight: bolder;
+    color: white;
+
+    background-color: var(--primary-color);
+
+    padding: 15px;
+    border-radius: 100px;
+    border: 3px solid var(--primary-color);
+
+    cursor: pointer;
+}
+
+.create-product:hover {
+    color: var(--primary-color);
+    background-color: white;
+}
+
+.create-product:active {
+    color: var(--primary-color);
+    background-color: lightgray;
 }
 
 .list-table {
     table-layout: fixed;
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0px 5px;
 }
 
 
@@ -15,35 +51,56 @@
     /* background-color: white; */
     /* padding: 5px; */
     padding: 6px 5px;
+    /* margin: 10px; */
+    border-color: var(--border-row-color);
+    border-style: solid;
+    border-width: 0px;
+    border-top-width: var(--border-row-width);
+    border-bottom-width: var(--border-row-width);
+}
+
+.list-table td:first-child {
+    border-top-left-radius: var(--border-row-radius);
+    border-bottom-left-radius: var(--border-row-radius);
+    border-left-width: var(--border-row-width);
+    /* border-color: blue; */
+    text-align: right;
+}
+
+.list-table td:last-child {
+    border-top-right-radius: var(--border-row-radius);
+    border-bottom-right-radius: var(--border-row-radius);
+    border-right-width: var(--border-row-width);
+    text-align: center;
 }
 
 thead th:nth-child(1) {
-    width: 30px;
+    width: 40px;
+    text-align: right;
 }
-  
+
 thead th:nth-child(2) {
     width: auto;
 }
-  
+
 thead th:nth-child(3) {
     width: 80px;
 }
 
-.list-table tbody tr {
-    /* border: 1px solid red;
-    border-radius: 20px; */
-    border-bottom: 1px solid lightgray;
-}
 
-.list-table tbody tr:hover {
+.list-table tbody tr:hover td {
     /* border: 1px solid grey; */
-    background-color: #F0F0F0;
+    /* background-color: #F0F0F0; */
+    border-color: var(--primary-color);
+    --border-row-width: 3px;
+    padding: 4px 5px;
 }
 
 .list-table button {
     aspect-ratio: 1/1;
-    border: 1px solid lightgrey;
+    border: 1px solid white;
     cursor: pointer;
+    /* font-size: 10px; */
 }
 
 .list-table button:first-child {
@@ -54,4 +111,15 @@ thead th:nth-child(3) {
 .list-table button:last-child {
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
+}
+
+.list-table button:hover {
+    /* background-color: #013365; */
+    background-color: grey;
+    /* border-color: black; */
+    color: white;
+}
+
+.list-table button:active {
+    background-color: darkgray;
 }

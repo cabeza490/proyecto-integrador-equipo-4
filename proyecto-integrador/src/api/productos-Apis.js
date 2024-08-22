@@ -17,3 +17,12 @@ export const getProductoById = async (id) => {
         console.log(error);
     }
 }
+
+export const getAllProductos = async (page = 1, pageSize = 10) => {
+    try {
+        let response = await axios.get(`http://localhost:3000/api/productos?page=${page}&pageSize=${pageSize}`)
+        return response.data
+    } catch (error) {
+        console.log(error);
+    }
+}

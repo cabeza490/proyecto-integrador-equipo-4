@@ -1,7 +1,9 @@
 import React from 'react';
-import { getProductos } from '../api/productos-Apis';
+import { getProductos, getAllProductos } from '../api/productos-Apis';
 import { useState, useEffect } from 'react';
 import "../Styles/Listaproductos.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const ListaProductos = () => {
     const [productos, setProductos] = useState([])
@@ -10,7 +12,7 @@ const ListaProductos = () => {
     useEffect(() => {
         const getData = async() => {
             try {
-                let getProducts = await getProductos();
+                let getProducts = await getAllProductos(1,99);
                 setProductos(getProducts.productos)
             } catch (error) {
                 console.error("Error al obtener los productos");
@@ -27,6 +29,7 @@ const ListaProductos = () => {
         <>
             {cargando ? (<p>cargando...</p>) : (
                 <div className='list-container'>
+                    <button className='create-product'>+ AGREGAR PRODUCTO</button>
                     <table className='list-table'>
                         <thead>
                             <tr>
@@ -36,7 +39,8 @@ const ListaProductos = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {productos.map(producto => (
+                            {productos.length > 0 ?
+                            (productos.map(producto => (
                             <tr key={producto.id}>
                                 <td>{producto.id}</td>
                                 <td className='nombre-producto'>
@@ -44,18 +48,14 @@ const ListaProductos = () => {
                                 </td>
                                 <td>
                                     <button>
-                                        <img src="../../public/edit-svgrepo-com.svg" 
-                                        width="15"
-                                        alt="editar elemento" />
+                                        <FontAwesomeIcon icon={faPen} fixedWidth />
                                     </button>
                                     <button>
-                                        <img src="../../public/close-svgrepo-com.svg" 
-                                        width="15"
-                                        alt="eliminar elemento" />
+                                        <FontAwesomeIcon icon={faXmark} fixedWidth  />
                                     </button>
                                 </td>
-                            </tr>
-                            ))}
+                            </tr>)
+                            )): (<p>No se encontraron productos</p>)}
                         </tbody>
                     </table> 
                 </div>
