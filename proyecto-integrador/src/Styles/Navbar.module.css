@@ -31,7 +31,18 @@ a {
     justify-content: center; 
     text-decoration: none;
 }
-
+.profile .avatar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: antiquewhite;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
 .createAccount {
     background: #FFFFFF;
     color: #003366;

@@ -32,7 +32,9 @@
     background-color: #f7f7f7;
     margin-bottom: 10px;
 }
-
+.form__content span{
+    cursor: pointer;
+}
 .form__content {
     position: relative;
     margin-bottom: 15px;

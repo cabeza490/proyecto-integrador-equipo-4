@@ -1,58 +1,49 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCateringStates } from '../Components/utils/globalContext';
+import { useAuth } from '../Contexts/useAuth'; 
+import { useCateringStates } from '../Components/utils/globalContext'; // Importa el hook para usar el contexto global
 import NavbarStyle from '../Styles/Navbar.module.css';
 import Avatar from './Avatar';
 
 const Navbar = () => {
+    const { isAuthenticated, logout } = useAuth();
     const { state, dispatch } = useCateringStates();
-    const { userData } = state;
+    const { userData } = state; // Obtén userData del estado del contexto global
     const navigate = useNavigate();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleLogout = () => {
         const confirmLogout = window.confirm("¿Está seguro de cerrar sesión?");
+        
         if (confirmLogout) {
-            dispatch({ type: "SET_USER_DATA", payload: null });
+            logout();
+            dispatch({ type: "SET_USER_DATA", payload: null }); // Opcional: Resetea userData al hacer logout
             navigate('/');
         }
-    };
+    };  
+    console.log('Viendo userData desde navbar ', userData);
+    
 
     return (
         <nav className={NavbarStyle.nav}>
             <a href="/">
                 <img src='../../public/logo_lema.png' alt='Logo' className={NavbarStyle.navLogo} />
             </a>
-            
-            <button 
-                className={NavbarStyle.menuButton} 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-                ☰
-            </button>
 
-            <div className={`${NavbarStyle.buttons} ${isMenuOpen ? NavbarStyle.menuOpen : ''}`}>
-                {userData ? (
-                    <div className={NavbarStyle.profileContainer}>
-                        <Avatar />
-                        <div className={NavbarStyle.logoutContainer}>
-                            <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
-                        </div>
-                    </div>
-                ) : (
-                    <>
-                        <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
-                        <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
-                    </>
-                )}
-            </div>
-        </nav>
-    );
+      <div className={NavbarStyle.buttons}>
+        <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
+        {!isAuthenticated && userData ? (
+          <>
+            <Avatar/>
+            <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
+          </>
+          ) : (
+          <>
+            <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
+          </>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;
-
-
-
-
