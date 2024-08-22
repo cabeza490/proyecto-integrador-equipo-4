@@ -1,14 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Asegúrate de importar Link
 import { useCateringStates } from '../Components/utils/globalContext';
-import { Link } from 'react-router-dom';
-
 
 const Avatar = () => {
     const { state } = useCateringStates();
     const { userData } = state;
 
     if (!userData) {
-        return null;
+        return null; // Retorna null si no hay userData
     }
 
     const getInitials = (nombre, apellido) => {
@@ -16,8 +15,6 @@ const Avatar = () => {
         const lastInitial = apellido[0].toUpperCase();
         return `${firstInitial}${lastInitial}`;
     };
-    console.log('Renderizando Avatar con userData:', userData);
-    };  
 
     return (
         <div className="profile">
@@ -27,5 +24,6 @@ const Avatar = () => {
             </div>
         </div>
     );
+};
 
 export default Avatar;
