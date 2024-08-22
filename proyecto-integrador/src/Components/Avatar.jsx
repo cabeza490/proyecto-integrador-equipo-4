@@ -13,7 +13,8 @@ const Avatar = () => {
         const firstInitial = nombre[0].toUpperCase();
         const lastInitial = apellido[0].toUpperCase();
         return `${firstInitial}${lastInitial}`;
-    };
+    };  
+    console.log('Renderizando Avatar con userData:', userData);
 
     return (
         <div className="profile">
