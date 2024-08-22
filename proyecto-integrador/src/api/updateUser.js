@@ -1,11 +1,19 @@
-import axios from 'axios';
-
+// updateUser.js
 export const updateUser = async (id, userData) => {
-    try {
-        const response = await axios.put(`http://localhost:3000/api/usuarios/${id}`, userData);
-        return response.data;
-    } catch (error) {
-        console.error('Error updating user data:', error);
-        throw error;
+    const response = await fetch(`/api/usuarios/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+    });
+
+    if (!response.ok) {
+        throw new Error('Error al actualizar el usuario');
     }
+
+    return response.json();
 };
+
+
+

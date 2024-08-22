@@ -6,24 +6,26 @@ import '../Styles/AdminPanel.css';
 import ListaProductos from '../Components/ListaProductos';
 import UserManagement from '../Components/UserManagement';
 import EditUserForm from '../Components/EditUserForm'; 
-import { useAuth } from '../Contexts/useAuth'; // Asegúrate de la ruta correcta
+import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
 
 function AdminPanel() {
     const [activeTab, setActiveTab] = useState(null);
     const [infoDropdownVisible, setInfoDropdownVisible] = useState(false);
     const [userDropdownVisible, setUserDropdownVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [, setSelectedUserId] = useState(null);
     const [user, setUser] = useState(null);
-    const { userId } = useAuth(); // Obtener el ID del usuario logueado desde el contexto de autenticación
+    const { state } = useCateringStates();
+    const { userData } = state;
 
     // Fetch user data from API by user ID
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const fetchUserData = async () => {
         try {
             const response = await axios.get('http://localhost:3000/api/usuarios');
             const usuarios = response.data;
             // Buscar el usuario logueado por su ID
-            const loggedInUser = usuarios.find(usuario => usuario.id === userId);
+            const loggedInUser = usuarios.find(usuario => usuario.id === userData.id);
             setUser(loggedInUser);
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -31,10 +33,10 @@ function AdminPanel() {
     };
 
     useEffect(() => {
-        if (userId) {
+        if (userData && userData.id) {
             fetchUserData();
         }
-    }, [userId]);
+    }, [fetchUserData, userData]);
 
     const cambiarTab = (index) => {
         if (isEditing) {
@@ -67,11 +69,21 @@ function AdminPanel() {
         setIsEditing(true);
     };
 
+    const getInitials = (nombre, apellido) => {
+        const firstInitial = nombre ? nombre[0].toUpperCase() : ' ';
+        const lastInitial = apellido ? apellido[0].toUpperCase() : ' ';
+        return `${firstInitial}${lastInitial}`;
+    };
+
     return (
         <div className='admin-panel'>
             <section className='left-side'>
-                <div className='user-avatar'>{user ? user.nombre[0] : 'U'}</div>
-                <p className='name'>{user ? `${user.nombre} ${user.apellido}` : 'Usuario'}</p>
+                <div className='user-avatar'>
+                    {user ? getInitials(user.nombre, user.apellido) : 'U'}
+                </div>
+                <p className='name'>
+                    {user ? `${user.nombre} ${user.apellido}` : 'Usuario'}
+                </p>
                 <p className='email'>{user ? user.email : ''}</p>
                 {!isEditing && (
                     <button className='edit-button' onClick={() => handleEditClick(user?.id)}>Editar</button>
@@ -108,8 +120,8 @@ function AdminPanel() {
                 </div>
 
                 {isEditing ? (
-                    <EditUserForm userId={selectedUserId} />
-                ) : (
+    <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
+) : (
                     activeTab === 2 && (<ListaProductos />)
                 )}
             </section>

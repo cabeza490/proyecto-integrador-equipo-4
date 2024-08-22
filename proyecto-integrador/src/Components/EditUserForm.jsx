@@ -1,21 +1,20 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from "react";
-import { updateUser } from '../api/updateUser';
+import React, { useState, useEffect, useCallback } from "react";
 import FormStyle from "../Styles/EditUserForm.module.css"; 
-import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import { useCateringStates } from '../Components/utils/globalContext';
+import { useNavigate } from 'react-router-dom';
 
 const EditUserForm = () => {
     const navigate = useNavigate();
-    const { id } = useParams(); // Obtener el ID del usuario desde la URL
+    const { state } = useCateringStates(); // Obtener el estado desde el contexto
+    const user = state.userData; // Obtener los datos del usuario desde el estado
 
     const [usuario, setUsuario] = useState({
         nombre: "",
         apellido: "",
         email: "",
-        currentPassword: "",
         newPassword: "",
         confirmNewPassword: "",
     });
@@ -23,15 +22,10 @@ const EditUserForm = () => {
     const [errors, setErrors] = useState({});
     const [valid, setValid] = useState({});
     const [touched, setTouched] = useState({});
-    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
     const [submitMessage, setSubmitMessage] = useState(""); 
     const [isFormValid, setIsFormValid] = useState(false);
-
-    const toggleCurrentPasswordVisibility = () => {
-        setShowCurrentPassword(!showCurrentPassword);
-    };
 
     const toggleNewPasswordVisibility = () => {
         setShowNewPassword(!showNewPassword);
@@ -41,10 +35,11 @@ const EditUserForm = () => {
         setShowConfirmNewPassword(!showConfirmNewPassword);
     };
 
-    const validate = () => {
+    const validate = useCallback(() => {
         const newErrors = {};
         const newValid = {};
 
+        // Validación de nombre
         if (touched.nombre) {
             if (!usuario.nombre) {
                 newErrors.nombre = "El nombre es requerido.";
@@ -55,6 +50,7 @@ const EditUserForm = () => {
             }
         }
 
+        // Validación de apellido
         if (touched.apellido) {
             if (!usuario.apellido) {
                 newErrors.apellido = "El apellido es requerido.";
@@ -65,7 +61,8 @@ const EditUserForm = () => {
             }
         }
 
-        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        // Validación de email
+        const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
         if (touched.email) {
             if (!usuario.email) {
                 newErrors.email = "El email es requerido.";
@@ -76,13 +73,7 @@ const EditUserForm = () => {
             }
         }
 
-        // Validación de la contraseña actual
-        if (touched.currentPassword) {
-            if (!usuario.currentPassword) {
-                newErrors.currentPassword = "La contraseña actual es requerida.";
-            }
-        }
-
+        // Validación de nueva contraseña
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
         if (touched.newPassword) {
             if (!usuario.newPassword) {
@@ -94,6 +85,7 @@ const EditUserForm = () => {
             }
         }
 
+        // Validación de confirmación de contraseña
         if (touched.confirmNewPassword) {
             if (!usuario.confirmNewPassword) {
                 newErrors.confirmNewPassword = "La confirmación de la nueva contraseña es requerida.";
@@ -107,48 +99,36 @@ const EditUserForm = () => {
         setErrors(newErrors);
         setValid(newValid);
 
-        const isFormValid = Object.keys(newValid).length === 4 && Object.values(newValid).every((value) => value === true);
+        // Verifica que todos los campos sean válidos
+        const isFormValid = Object.keys(newValid).length === 5 && Object.values(newValid).every((value) => value === true);
         setIsFormValid(isFormValid);
-    };
+    }, [usuario, touched]);
 
     useEffect(() => {
         validate();
-    }, [usuario, touched]);
+    }, [validate]);
 
     useEffect(() => {
         if (submitMessage) {
             const timer = setTimeout(() => {
                 setSubmitMessage("");
-            }, 4000);
+                navigate("/admin"); // Navega al AdminPanel después de 5 segundos
+            }, 5000);
             return () => clearTimeout(timer);
         }
-    }, [submitMessage]);
+    }, [submitMessage, navigate]);
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            if (!id) {
-                console.error("ID de usuario no está definido");
-                return;
-            }
-
-            try {
-                const response = await axios.get(`http://localhost:3000/api/usuarios/${id}`);
-                setUsuario({
-                    nombre: response.data.nombre,
-                    apellido: response.data.apellido,
-                    email: response.data.email,
-                    currentPassword: "",
-                    newPassword: "",
-                    confirmNewPassword: "",
-                });
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-                setSubmitMessage("Error al obtener datos del usuario.");
-            }
-        };
-
-        fetchUserData();
-    }, [id]);
+        if (user) {
+            setUsuario({
+                nombre: user.nombre || "",
+                apellido: user.apellido || "",
+                email: user.email || "",
+                newPassword: "",
+                confirmNewPassword: "",
+            });
+        }
+    }, [user]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -164,17 +144,10 @@ const EditUserForm = () => {
         }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         if (isFormValid) {
-            try {
-                await updateUser(id, usuario);
-                setSubmitMessage("Usuario actualizado exitosamente.");
-                navigate("/admin");
-            } catch (error) {
-                setSubmitMessage("Error al actualizar usuario.");
-                console.error("Error updating user:", error);
-            }
+            setSubmitMessage("Sus cambios fueron guardados exitosamente.");
         } else {
             setSubmitMessage("Por favor, corrija los errores en el formulario.");
         }
@@ -224,30 +197,12 @@ const EditUserForm = () => {
             </div>
 
             <div className={FormStyle.formGroup}>
-                <label className={FormStyle.formLabel}>Contraseña actual:</label>
-                <div className={FormStyle.passwordContainer}>
-                    <input
-                        type={showCurrentPassword ? "text" : "password"}
-                        name="currentPassword"
-                        className={`${FormStyle.formInput} ${errors.currentPassword ? FormStyle.errorInput : ''}`}
-                        value={usuario.currentPassword}
-                        onChange={handleChange}
-                        onBlur={() => setTouched({ ...touched, currentPassword: true })}
-                    />
-                    <button type="button" className={FormStyle.showPasswordIcon} onClick={toggleCurrentPasswordVisibility}>
-                        <FontAwesomeIcon icon={showCurrentPassword ? faEyeSlash : faEye} />
-                    </button>
-                </div>
-                {errors.currentPassword && <div className={FormStyle.errorMessage}>{errors.currentPassword}</div>}
-            </div>
-
-            <div className={FormStyle.formGroup}>
                 <label className={FormStyle.formLabel}>Nueva contraseña:</label>
                 <div className={FormStyle.passwordContainer}>
                     <input
                         type={showNewPassword ? "text" : "password"}
                         name="newPassword"
-                        className={`${FormStyle.formInput} ${errors.newPassword ? FormStyle.errorInput : ''}`}
+                        className={`${FormStyle.formInput} ${errors.newPassword ? FormStyle.errorInput : ''} ${valid.newPassword ? FormStyle.validInput : ''}`}
                         value={usuario.newPassword}
                         onChange={handleChange}
                         onBlur={() => setTouched({ ...touched, newPassword: true })}
@@ -265,7 +220,7 @@ const EditUserForm = () => {
                     <input
                         type={showConfirmNewPassword ? "text" : "password"}
                         name="confirmNewPassword"
-                        className={`${FormStyle.formInput} ${errors.confirmNewPassword ? FormStyle.errorInput : ''}`}
+                        className={`${FormStyle.formInput} ${errors.confirmNewPassword ? FormStyle.errorInput : ''} ${valid.confirmNewPassword ? FormStyle.validInput : ''}`}
                         value={usuario.confirmNewPassword}
                         onChange={handleChange}
                         onBlur={() => setTouched({ ...touched, confirmNewPassword: true })}
@@ -278,13 +233,13 @@ const EditUserForm = () => {
             </div>
 
             <button type="submit" className={FormStyle.submitButton} disabled={!isFormValid}>
-                Guardar
+                Guardar cambios
             </button>
-
             {submitMessage && <div className={FormStyle.submitMessage}>{submitMessage}</div>}
         </form>
     );
 };
 
 export default EditUserForm;
+
 
