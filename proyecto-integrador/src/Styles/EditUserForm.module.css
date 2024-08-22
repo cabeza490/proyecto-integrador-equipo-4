@@ -121,3 +121,34 @@
     top: 50%;
     transform: translateY(-50%);
 }
+@media (max-width: 768px) {
+    .registerForm {
+        width: 70%; /* Ocupa el 90% del ancho disponible */
+        padding: 20px; /* Reduce el padding */
+    }
+
+    .formLabel, .formInput {
+        font-size: 14px; /* Tamaño de fuente ajustado */
+    }
+
+    .formButtons {
+        flex-direction: column; /* Alineación vertical para botones */
+        gap: 10px; /* Espacio entre botones */
+    }
+
+    .backButton, .submitButton {
+        width: 70%; /* Botones ocupan el 100% del ancho */
+        font-size: 16px; /* Tamaño de fuente ajustado */
+    }
+    
+    .passwordContainer {
+        flex-direction: column; /* Alineación vertical para el icono de mostrar contraseña */
+        align-items: flex-end; /* Alineación a la izquierda */
+    }
+
+    .showPasswordIcon {
+        margin-left: 0; /* Elimina margen izquierdo */
+        margin-top: -5px; /* Añade margen superior para separación */
+        right: auto; /* Elimina la posición derecha */
+    }
+}

@@ -25,9 +25,11 @@ const Avatar = () => {
 
     return (
         <div className={NavbarStyle.profile}>
-            <div className={NavbarStyle.avatar}>
-                {getInitials(userData.nombre, userData.apellido)}
-            </div>
+            <Link to="/UserPanel" className={NavbarStyle.avatarLink}>
+                <div className={NavbarStyle.avatar}>
+                    {getInitials(userData.nombre, userData.apellido)}
+                </div>
+            </Link>
             <span className={NavbarStyle.userName}>
                 {getFirstNameAndSurname(userData.nombre, userData.apellido)}
             </span>
@@ -41,6 +43,7 @@ const Avatar = () => {
 };
 
 export default Avatar;
+
 
 
 
