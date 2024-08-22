@@ -115,7 +115,7 @@ function AdminPanel() {
                     )}
                     <button className={'tab-button ' + (activeTab === 2 && "tab-selected")}
                         onClick={() => cambiarTab(2)}>
-                        Mis publicaciones
+                        Lista de Productos
                     </button>
                 </div>
 
