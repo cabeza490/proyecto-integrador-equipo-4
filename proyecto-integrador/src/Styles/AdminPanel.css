@@ -186,19 +186,6 @@
     cursor: pointer;
 }
 
-.permission-checkbox:checked::before {
-    content: '✔';
-    color: black;
-    font-size: 16px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.permission-checkbox:focus {
-    outline: none;
-}
 .save-button {
     background-color: #013365;
     color: white;
@@ -213,4 +200,15 @@
 .save-button:hover {
     background-color: #014f8a;
 }
+.edit-button{
+background-color: #F0F0F0;
+color:#013365;
+border: none;
+margin-top: 10px;
+    padding: 10px 40px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 40px;
+    align-self: flex-start;
 
+}

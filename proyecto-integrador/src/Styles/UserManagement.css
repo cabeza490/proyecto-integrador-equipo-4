@@ -1,0 +1,84 @@
+.user-dropdown {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Mantiene un espacio generoso entre los elementos */
+    background-color: #FFFFFF;
+    border-radius: 8px; /* Ajusta el radio para que sea más uniforme */
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 10px; /* Ajusta el margen superior según el diseño general */
+    max-height: 400px; /* Limita la altura para evitar el desbordamiento */
+    overflow-y: auto; /* Agrega scroll si el contenido es demasiado grande */
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px; /* Espacio debajo de la barra de búsqueda */
+}
+
+.search-input {
+    border-radius: 20px;
+    border: 1px solid #F0F0F0;
+    background-color: #F0F0F0;
+    color: black;
+    padding: 10px;
+    flex: 1;
+    font-size: 1em;
+}
+
+.search-icon {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Espacio debajo del encabezado */
+}
+
+.admin-permissions-title {
+    margin: 0;
+    color: black;
+    font-size: 1.2em; /* Ajusta el tamaño para que se ajuste mejor */
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espacio entre elementos */
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between; /* Alinea el contenido a los extremos */
+    align-items: center;
+    background-color: #F0F0F0;
+    border: 1px solid #DDDDDD;
+    border-radius: 8px; /* Ajusta el borde redondeado */
+    padding: 10px;
+    padding-left: 30px; /* Añade espacio extra a la izquierda */
+    font-size: 16px;
+    font-weight: 500;
+    box-sizing: border-box;
+}
+
+.permission-button {
+    padding: 5px 10px; /* Ajusta el tamaño del botón */
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 20px; /* Ajusta el radio del borde */
+}
+
+.is-admin {
+    background-color: green;
+}
+
+.not-admin {
+    background-color: red;
+}
+

@@ -1,0 +1,123 @@
+/* Contenedor del formulario, centrado en la página */
+.formContainer {
+    display: flex;
+    justify-content: flex-start; /* Alineación a la izquierda */
+    align-items: flex-start; /* Alineación superior */
+    width: 100%; /* Asegúrate de que ocupe el ancho disponible */
+    padding: 20px; /* Añade padding si es necesario */
+}
+
+/* Estilos generales del formulario */
+.registerForm {
+    background: #FFFFFF; /* Cambia el fondo del formulario a blanco */
+    padding: 30px;
+    border-radius: 15px;
+    width: 450px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: none; /* Eliminado para integración con el fondo del AdminPanel */
+}
+
+/* Estilos de los campos del formulario */
+.formInput {
+    width: 95%;
+    padding: 10px;
+    margin: 5px 0 15px 0; /* Espacio para los títulos */
+    border: 1px solid #ccc;
+    box-shadow: none;
+    border-radius: 40px; /* Bordes redondeados */
+    font-size: 16px;
+    background-color: #F0F0F0; /* Color de fondo */
+}
+
+/* Estilos para los títulos de los campos del formulario */
+.formLabel {
+    font-size: 16px;
+    color: #003366;
+    margin-bottom: 5px;
+    text-align: left;
+    display: block;
+}
+
+/* Estilos para campos de entrada válidos y con errores */
+.errorInput {
+    border: 2px solid #e74c3c;
+}
+
+.validInput {
+    border: 2px solid green;
+}
+
+/* Mensajes de error y éxito */
+.errorMessage {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: -10px;
+    padding-left: 10px;
+    margin-bottom: 0px;
+}
+
+.successMessage {
+    color: green;
+    text-align: center;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-bottom: 0px;
+}
+
+.errorMessageValid {
+    color: #e74c3c;
+    text-align: center;
+    font-size: 16px;
+    margin-top: -10px;
+    margin-bottom: 0px;
+}
+
+/* Estilos para los botones del formulario */
+.formButtons {
+    display: flex;
+    justify-content: space-between; /* Botones alineados uno al lado del otro */
+    margin-top: 20px;
+}
+
+.backButton, .submitButton {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 50px; /* Bordes redondeados para ambos botones */
+    font-size: 14px;
+    cursor: pointer;
+    background: #003366; /* Color de fondo azul para ambos botones */
+    color: #FFFFFF;
+}
+
+.backButton:hover, .submitButton:hover {
+    opacity: 50%;
+}
+/* Estilo del título 'Editar usuario' */
+.title {
+    font-size: 24px;
+    color: #003366; /* Color azul del título */
+    margin: 0;
+    text-align: left; /* Alineación a la izquierda */
+}
+
+/* Estilos adicionales para el contenedor de contraseña y el ícono de mostrar contraseña */
+.passwordContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.showPasswordIcon {
+    background-color: transparent;
+    border: none;
+    color: #888888;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 8px;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+}
