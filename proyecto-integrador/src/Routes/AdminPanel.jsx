@@ -76,6 +76,10 @@ function AdminPanel() {
     };
 
     return (
+        <>
+            <div className='mobile-message'>
+                Este panel no está disponible en dispositivos móviles. Por favor, visualízalo en un computador.
+            </div>
         <div className='admin-panel'>
             <section className='left-side'>
                 <div className='user-avatar'>
@@ -126,10 +130,13 @@ function AdminPanel() {
                 )}
             </section>
         </div>
+        </>
     );
 }
 
 export default AdminPanel;
+
+
 
 
 

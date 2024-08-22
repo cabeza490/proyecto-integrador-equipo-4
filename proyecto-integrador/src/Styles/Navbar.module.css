@@ -1,6 +1,28 @@
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #003366;
+}
+
 .buttons {
     display: flex;
+    align-items: center;
     gap: 20px;
+}
+
+.profileContainer {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos estén uno debajo del otro */
+    align-items: flex-end; /* Alinea el contenido a la derecha */
+}
+
+.logoutContainer {
+    display: flex;
+    justify-content: flex-end; /* Alinea el botón a la derecha */
+    margin-top: 10px; /* Espacio entre el Avatar y el botón */
 }
 
 a {
@@ -34,6 +56,7 @@ a {
     border-radius: 50px;
     font-size: 12px;
 }
+
 .logoutButton {
     background: #FFFFFF;
     color: #003366;
@@ -55,22 +78,126 @@ a {
     border-color: #003366;
 }
 
-@media (max-width: 480px) {
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre el avatar, el nombre y el botón */
+}
+
+.avatar {
+    background-color: white;
+    color: #013365;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.5em;
+    width: 50px;
+    height: 50px;
+}
+
+.userName {
+    color: white;
+    font-size: 1.2em;
+    font-weight: normal;
+}
+
+.panelButton {
+    background: #FFFFFF;
+    color: #003366;
+    border: 2px solid #003366;
+    width: 122px;
+    height: 40px;
+    border-radius: 50px;
+    font-size: 0.8em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.panelButton:hover {
+    background: #003366;
+    color: #FFFFFF;
+    border-color: #FFFFFF;
+}
+
+/* Nuevas reglas para el menú hamburguesa */
+
+.menuButton {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.menuOpen {
+    display: flex !important;
+    flex-direction:row;
+    position: absolute;
+    top: 60px; /* Ajusta según la altura del navbar */
+    left: 0;
+    background-color: #003366;
+    width: 100%;
+    padding: 10px;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
     .navLogo {
         height: 34px;
         width: 180px;
     }
-
     .buttons {
-        flex-direction: column;
         align-items: center;
         gap: 10px;
     }
 
-    .createAccount, .newSesion, .logoutButton {
+    .createAccount, .newSesion{
+        width: 110px;
+        height: 25px;
+        font-size: 10px;
+
+    }
+    .logoutButton {
+        width: 110px;
+        height: 25px;
+        font-size: 10px;
+        
+    }
+    .profile {
+        align-items: center;
+    }
+
+    .userName{
+        font-size: 20px;
+    }
+    .panelButton {
         width: 110px;
         height: 25px;
         font-size: 10px;
     }
+    .avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+
+    .menuButton {
+        display: block;
+    }
+
+    .buttons {
+        display: none;
+    }
+
+    .menuOpen {
+        display: flex;
+    }
 }
+
 
