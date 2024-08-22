@@ -212,3 +212,29 @@ margin-top: 10px;
     align-self: flex-start;
 
 }
+/* Ocultar todo el contenido del admin-panel en pantallas pequeñas */
+@media (max-width: 768px) {
+    .admin-panel {
+        display: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .mobile-message {
+        display: block;
+        text-align: center;
+        padding: 20px;
+        font-size: 18px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        position: fixed; 
+        top: 40%;
+        left: 20%; 
+        width: 50%; 
+    }
+}
+@media (min-width: 769px){
+    .mobile-message{
+        display: none;
+    }
+}

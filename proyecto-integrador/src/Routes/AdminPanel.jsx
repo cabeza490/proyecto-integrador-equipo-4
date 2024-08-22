@@ -76,6 +76,10 @@ function AdminPanel() {
     };
 
     return (
+        <>
+            <div className='mobile-message'>
+                Este panel no está disponible en dispositivos móviles. Por favor, visualízalo en un computador.
+            </div>
         <div className='admin-panel'>
             <section className='left-side'>
                 <div className='user-avatar'>
@@ -115,7 +119,7 @@ function AdminPanel() {
                     )}
                     <button className={'tab-button ' + (activeTab === 2 && "tab-selected")}
                         onClick={() => cambiarTab(2)}>
-                        Mis publicaciones
+                        Lista de productos
                     </button>
                 </div>
 
@@ -126,10 +130,13 @@ function AdminPanel() {
                 )}
             </section>
         </div>
+        </>
     );
 }
 
 export default AdminPanel;
+
+
 
 
 

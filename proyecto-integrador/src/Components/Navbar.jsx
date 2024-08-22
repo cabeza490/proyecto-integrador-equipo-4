@@ -27,10 +27,12 @@ const Navbar = () => {
 
             <div className={NavbarStyle.buttons}>
                 {userData ? (
-                    <>
+                    <div className={NavbarStyle.profileContainer}>
                         <Avatar />
-                        <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
-                    </>
+                        <div className={NavbarStyle.logoutContainer}>
+                            <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
+                        </div>
+                    </div>
                 ) : (
                     <>
                         <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
@@ -43,4 +45,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
 
