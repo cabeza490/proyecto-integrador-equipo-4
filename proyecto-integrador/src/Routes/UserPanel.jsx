@@ -1,14 +1,11 @@
-// src/Routes/AdminPanel.jsx
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import '../Styles/AdminPanel.css';
-import ListaProductos from '../Components/ListaProductos';
-import UserManagement from '../Components/UserManagement';
+import '../Styles/UserPanel.css';
 import EditUserForm from '../Components/EditUserForm'; 
 import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
 
-function AdminPanel() {
+function UserPanel() {
     const [activeTab, setActiveTab] = useState(null);
     const [infoDropdownVisible, setInfoDropdownVisible] = useState(false);
     const [userDropdownVisible, setUserDropdownVisible] = useState(false);
@@ -50,7 +47,7 @@ function AdminPanel() {
         return <div className="error-message">No hay sesión activa. Inicie sesión para continuar.</div>;
     }
 
-    if (userData.rolId !== 1) {
+    if (userData.rolId !== 2) {
         return <div className="error-message">No tiene permiso para ingresar.</div>;
     }
 
@@ -93,9 +90,6 @@ function AdminPanel() {
 
     return (
         <>
-            <div className='mobile-message'>
-                Este panel no está disponible en dispositivos móviles. Por favor, visualízalo en un computador.
-            </div>
             <div className='admin-panel'>
                 <section className='left-side'>
                     <div className='user-avatar'>
@@ -108,22 +102,7 @@ function AdminPanel() {
                     {!isEditing && (
                         <button className='edit-button' onClick={() => handleEditClick(user?.id)}>Editar</button>
                     )}
-<<<<<<< HEAD
-                    <button className={'tab-button ' + (activeTab === 1 && "tab-selected")}
-                        onClick={() => cambiarTab(1)}>
-                        Gestión de usuarios
-                    </button>
-                    {userDropdownVisible && (
-                        <UserManagement handleEditClick={handleEditClick} />
-                    )}
-                    <button className={'tab-button ' + (activeTab === 2 && "tab-selected")}
-                        onClick={() => cambiarTab(2)}>
-                        Lista de Productos
-                    </button>
-                </div>
-=======
                 </section>
->>>>>>> lamprea
 
                 <section className='tabs'>
                     <div className='tab-list'>
@@ -141,29 +120,15 @@ function AdminPanel() {
                                 <button>Contacto</button>
                             </div>
                         )}
-                        <button className={'tab-button ' + (activeTab === 1 && "tab-selected")}
-                            onClick={() => cambiarTab(1)}>
-                            Gestión de usuarios
-                        </button>
-                        {userDropdownVisible && (
-                            <UserManagement handleEditClick={handleEditClick} />
-                        )}
-                        <button className={'tab-button ' + (activeTab === 2 && "tab-selected")}
-                            onClick={() => cambiarTab(2)}>
-                            Lista de productos
-                        </button>
                     </div>
 
                     {isEditing ? (
                         <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
-                    ) : (
-                        activeTab === 2 && (<ListaProductos />)
-                    )}
+                    ) : ( null)}
                 </section>
             </div>
         </>
     );
 }
 
-export default AdminPanel;
-
+export default UserPanel;
