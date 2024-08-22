@@ -17,8 +17,7 @@ const Avatar = () => {
         return `${firstInitial}${lastInitial}`;
     };
     console.log('Renderizando Avatar con userData:', userData);
-    };  
-
+    
     return (
         <div className="profile">
             <div className="avatar">
@@ -27,5 +26,6 @@ const Avatar = () => {
             </div>
         </div>
     );
-
+}
+    
 export default Avatar;
