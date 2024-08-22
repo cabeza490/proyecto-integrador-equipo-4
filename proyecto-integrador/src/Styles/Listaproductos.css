@@ -9,32 +9,38 @@
 .list-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items:end;
+    justify-content: space-evenly;
     /* background-color: white; */
     /* width:fit-content; */
     padding: 10px 10px;
 }
 
-.create-product {
-    font-size: 1rem;
-    font-weight: bolder;
+.button-primary {
+    font-size: small;
     color: white;
 
     background-color: var(--primary-color);
 
-    padding: 15px;
+    /* padding: 15px; */
     border-radius: 100px;
     border: 3px solid var(--primary-color);
 
     cursor: pointer;
 }
 
-.create-product:hover {
+.button-primary:hover {
     color: var(--primary-color);
     background-color: white;
 }
 
-.create-product:active {
+.create-product {
+    font-weight: bolder;
+    font-size: 30px;
+    aspect-ratio: 1/1;
+}
+
+.button-primary:active{
     color: var(--primary-color);
     background-color: lightgray;
 }
@@ -44,8 +50,13 @@
     width: 100%;
     border-collapse: separate;
     border-spacing: 0px 5px;
+    font-weight: bold;
 }
 
+.list-table th {
+    color: grey;
+    font-weight: normal;
+}
 
 .list-table td {
     /* background-color: white; */
@@ -71,7 +82,7 @@
     border-top-right-radius: var(--border-row-radius);
     border-bottom-right-radius: var(--border-row-radius);
     border-right-width: var(--border-row-width);
-    text-align: center;
+    text-align: right;
 }
 
 thead th:nth-child(1) {
@@ -84,7 +95,9 @@ thead th:nth-child(2) {
 }
 
 thead th:nth-child(3) {
-    width: 80px;
+    width: auto;
+    text-align: right;
+    padding-right: 20px;
 }
 
 
@@ -96,11 +109,11 @@ thead th:nth-child(3) {
     padding: 4px 5px;
 }
 
-.list-table button {
+/* .list-table button {
     aspect-ratio: 1/1;
     border: 1px solid white;
     cursor: pointer;
-    /* font-size: 10px; */
+    font-size: 10px;
 }
 
 .list-table button:first-child {
@@ -114,12 +127,12 @@ thead th:nth-child(3) {
 }
 
 .list-table button:hover {
-    /* background-color: #013365; */
+    background-color: #013365;
     background-color: grey;
-    /* border-color: black; */
+    border-color: black;
     color: white;
 }
 
 .list-table button:active {
     background-color: darkgray;
-}
+} */

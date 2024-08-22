@@ -29,7 +29,6 @@ const ListaProductos = () => {
         <>
             {cargando ? (<p>cargando...</p>) : (
                 <div className='list-container'>
-                    <button className='create-product'>+ AGREGAR PRODUCTO</button>
                     <table className='list-table'>
                         <thead>
                             <tr>
@@ -47,17 +46,18 @@ const ListaProductos = () => {
                                     {producto.nombre}
                                 </td>
                                 <td>
-                                    <button>
-                                        <FontAwesomeIcon icon={faPen} fixedWidth />
+                                    <button className='button-primary'>Editar
+                                        {/* <FontAwesomeIcon icon={faPen} fixedWidth /> */}
                                     </button>
-                                    <button>
-                                        <FontAwesomeIcon icon={faXmark} fixedWidth  />
+                                    <button className='button-primary'>Eliminar
+                                        {/* <FontAwesomeIcon icon={faXmark} fixedWidth  /> */}
                                     </button>
                                 </td>
                             </tr>)
                             )): (<p>No se encontraron productos</p>)}
                         </tbody>
                     </table> 
+                    <button className='button-primary create-product'>+</button>
                 </div>
             )}
         </>
