@@ -27,21 +27,16 @@ const Navbar = () => {
                 <img src='../../public/logo_lema.png' alt='Logo' className={NavbarStyle.navLogo} />
             </a>
 
-            <div className={NavbarStyle.buttons}>
-                {isAuthenticated && userData ? (
-                    <>
-                        <Avatar /> {/* Mostrar avatar con las iniciales*/}
-                        <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
-                    </>
-                ) : (
-                    <>
-                        <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
-                        <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
-                    </>
-                )}
-            </div>
-        </nav>
-    );
+      <div className={NavbarStyle.buttons}>
+        <Link to='/register' className={NavbarStyle.createAccount}>Crear cuenta</Link>
+        {!isAuthenticated ? (
+          <Link to='/login' className={NavbarStyle.newSesion}>Iniciar sesión</Link>
+        ) : (
+          <button onClick={handleLogout} className={NavbarStyle.logoutButton}>Cerrar sesión</button>
+        )}
+      </div>
+    </nav>
+  );
 };
 
 export default Navbar;
