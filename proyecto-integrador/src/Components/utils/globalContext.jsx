@@ -15,7 +15,7 @@ export const initialState = {
   favs: getInitialFavs(),
   cart: [],
   theme: "light",
-  userData: ''
+  userData: null
 };
 
 export const cateringReducer = (state, action) => {
@@ -29,7 +29,7 @@ export const cateringReducer = (state, action) => {
       return { ...state, favs: [] };
     case "CHANGE_MODE":
       return { ...state, theme: state.theme === "light" ? "dark" : "light" };
-      case "SET_USER_DATA":
+    case "SET_USER_DATA":
       return { ...state, userData: action.payload };
     default:
       return state;

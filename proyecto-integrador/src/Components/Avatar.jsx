@@ -2,6 +2,7 @@ import React from 'react';
 import { useCateringStates } from '../Components/utils/globalContext';
 import { Link } from 'react-router-dom';
 
+
 const Avatar = () => {
     const { state } = useCateringStates();
     const { userData } = state;
@@ -16,7 +17,7 @@ const Avatar = () => {
         return `${firstInitial}${lastInitial}`;
     };
     console.log('Renderizando Avatar con userData:', userData);
-
+    };  
 
     return (
         <div className="profile">
@@ -26,6 +27,5 @@ const Avatar = () => {
             </div>
         </div>
     );
-};
 
 export default Avatar;
