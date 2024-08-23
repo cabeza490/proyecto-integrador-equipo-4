@@ -11,11 +11,16 @@ const getInitialFavs = () => {
   }
 };
 
+const getInitialUserData = () => {
+  const userData = localStorage.getItem('userData');
+  return userData ? JSON.parse(userData) : null;
+};
+
 export const initialState = {
   favs: getInitialFavs(),
   cart: [],
   theme: "light",
-  userData: null
+  userData: getInitialUserData()
 };
 
 export const cateringReducer = (state, action) => {
@@ -23,14 +28,15 @@ export const cateringReducer = (state, action) => {
     case "ADD_FAVORITES":
       return { ...state, favs: [...state.favs, action.payload] };
     case "REMOVE_BY_ID":
-      let newArr = state.favs.filter((product) => product.id !== action.payload);
-      return { ...state, favs: newArr };
+      return { ...state, favs: state.favs.filter(product => product.id !== action.payload) };
     case "REMOVE_ALL":
       return { ...state, favs: [] };
     case "CHANGE_MODE":
       return { ...state, theme: state.theme === "light" ? "dark" : "light" };
     case "SET_USER_DATA":
       return { ...state, userData: action.payload };
+    case "CLEAR_USER_DATA":
+      return { ...state, userData: null };
     default:
       return state;
   }
@@ -42,6 +48,14 @@ const CateringContext = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('favs', JSON.stringify(state.favs));
   }, [state.favs]);
+
+  useEffect(() => {
+    if (state.userData) {
+      localStorage.setItem('userData', JSON.stringify(state.userData));
+    } else {
+      localStorage.removeItem('userData');
+    }
+  }, [state.userData]);
 
   return (
     <cateringStates.Provider value={{ state, dispatch }}>
@@ -58,3 +72,4 @@ export const ThemeWrapper = ({ children, theme }) => {
   const themeClass = theme === 'dark' ? 'dark' : 'light';
   return <div className={themeClass}>{children}</div>;
 };
+
