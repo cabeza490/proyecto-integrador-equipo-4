@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types'; // Importa prop-types
 import axios from 'axios';
 import searchIcon from '../../public/search-icon.png';
 import '../Styles/UserManagement.css'; 
@@ -105,8 +106,9 @@ function UserManagement({ handleEditClick }) {
     );
 }
 
+// Define la validación de propiedades
+UserManagement.propTypes = {
+    handleEditClick: PropTypes.func
+};
+
 export default UserManagement;
-
-
-
-

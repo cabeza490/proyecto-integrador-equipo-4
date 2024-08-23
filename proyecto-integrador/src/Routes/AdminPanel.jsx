@@ -62,6 +62,7 @@ function AdminPanel() {
 
         setActiveTab(index);
 
+        // Solo cambia la visibilidad si la pestaña cambia
         if (index === 0) {
             setInfoDropdownVisible(!infoDropdownVisible);
             setUserDropdownVisible(false);
@@ -129,19 +130,19 @@ function AdminPanel() {
                             onClick={() => cambiarTab(1)}>
                             Gestión de usuarios
                         </button>
-                        {userDropdownVisible && (
-                            <UserManagement handleEditClick={handleEditClick} />
-                        )}
                         <button className={'tab-button ' + (activeTab === 2 && "tab-selected")}
                             onClick={() => cambiarTab(2)}>
                             Lista de productos
                         </button>
                     </div>
 
+                    {/* Renderiza el componente basado en la pestaña activa */}
                     {isEditing ? (
                         <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
                     ) : (
-                        activeTab === 1 && (<ListaProductos />)
+                        activeTab === 1 ? <UserManagement handleEditClick={handleEditClick} /> : 
+                        activeTab === 2 ? <ListaProductos /> : 
+                        null
                     )}
                 </section>
             </div>
@@ -150,3 +151,4 @@ function AdminPanel() {
 }
 
 export default AdminPanel;
+
