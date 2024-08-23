@@ -59,6 +59,13 @@ function UserManagement({ handleEditClick }) {
                 // Update the local state
                 updatedUsers[userIndex] = { ...user, rolId: newRolId };
                 setUsers(updatedUsers);
+
+                // Show success message based on new rolId
+                const message = newRolId === 1 
+                    ? "Permisos de administrador agregados exitosamente" 
+                    : "Permisos de administrador eliminados exitosamente";
+                    
+                alert(message);
             } catch (error) {
                 console.error('Error al cambiar el rol:', error);
             }
@@ -113,3 +120,4 @@ UserManagement.propTypes = {
 };
 
 export default UserManagement;
+
