@@ -1,8 +1,9 @@
+// Avatar.jsx
+// eslint-disable-next-line no-unused-vars
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de que la ruta sea correcta
 import NavbarStyle from '../Styles/Navbar.module.css';
-
 
 const Avatar = () => {
     const { state } = useCateringStates();
@@ -22,8 +23,6 @@ const Avatar = () => {
         return `${firstName} ${firstSurname}`;
     };
 
-    console.log('Renderizando Avatar con userData:', userData);
-    
     return (
         <div className={NavbarStyle.profile}>
             <Link to="/UserPanel" className={NavbarStyle.avatarLink}>
@@ -42,9 +41,3 @@ const Avatar = () => {
         </div>
     );
 };
-
-export default Avatar;
-
-
-
-
