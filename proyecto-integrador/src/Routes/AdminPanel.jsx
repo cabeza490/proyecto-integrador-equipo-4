@@ -1,10 +1,12 @@
+// src/Routes/AdminPanel.jsx
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../Styles/AdminPanel.css';
 import ListaProductos from '../Components/ListaProductos';
 import UserManagement from '../Components/UserManagement';
-import EditUserForm from '../Components/EditUserForm';
-import { useCateringStates } from '../Components/utils/globalContext'; 
+import EditUserForm from '../Components/EditUserForm'; 
+import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
 
 function AdminPanel() {
     const [activeTab, setActiveTab] = useState(null);
@@ -13,7 +15,7 @@ function AdminPanel() {
     const [isEditing, setIsEditing] = useState(false);
     const [, setSelectedUserId] = useState(null);
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); // Estado para manejar la carga
     const { state } = useCateringStates();
     const { userData } = state;
 
@@ -21,25 +23,27 @@ function AdminPanel() {
         try {
             const response = await axios.get('http://localhost:3000/api/usuarios');
             const usuarios = response.data;
+            // Buscar el usuario logueado por su ID
             const loggedInUser = usuarios.find(usuario => usuario.id === userData.id);
             setUser(loggedInUser);
         } catch (error) {
             console.error('Error fetching user data:', error);
         } finally {
-            setLoading(false);
+            setLoading(false); // Marca la carga como completada
         }
-    }, [userData.id]);
+    }, [userData.id]); // Dependencia en userData.id
 
     useEffect(() => {
         if (userData && userData.id) {
             fetchUserData();
         } else {
-            setLoading(false);
+            setLoading(false); // Marca la carga como completada si no hay datos de usuario
         }
-    }, [userData, fetchUserData]);
+    }, [userData, fetchUserData]); // Añade fetchUserData a las dependencias
 
+    // Verifica si el usuario está logueado y tiene rolId: 1
     if (loading) {
-        return <div className="loading-message">Cargando datos...</div>;
+        return <div className="loading-message">Cargando datos...</div>; // Mensaje mientras se cargan los datos
     }
 
     if (!userData) {
@@ -105,7 +109,6 @@ function AdminPanel() {
                         <button className='edit-button' onClick={() => handleEditClick(user?.id)}>Editar</button>
                     )}
                 </section>
-
                 <section className='tabs'>
                     <div className='tab-list'>
                         <button className={'tab-button ' + (activeTab === 0 && "tab-selected")}
@@ -136,9 +139,9 @@ function AdminPanel() {
                     </div>
 
                     {isEditing ? (
-                        <EditUserForm userData={user} />
+                        <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
                     ) : (
-                        activeTab === 2 && (<ListaProductos />)
+                        activeTab === 1 && (<ListaProductos />)
                     )}
                 </section>
             </div>
