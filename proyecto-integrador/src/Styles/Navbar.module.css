@@ -51,7 +51,9 @@ a {
     border-radius: 50px;
     font-size: 12px;
 }
-
+._avatar_wb27o_67{
+    color: #003366;
+}
 .createAccount:hover {
     background: #003366;
     color: #FFFFFF;
