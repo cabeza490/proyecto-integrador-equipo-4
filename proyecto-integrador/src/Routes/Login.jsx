@@ -11,7 +11,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState('');
   const { state, dispatch } = useCateringStates(); // Obtén la función dispatch del contexto
-  const [showPassword, setShowPassword] = useState(false); // Estado para controlar la visibilidad de la contraseña
 
   const onSubmit = async (data) => {
     try {
@@ -26,11 +25,6 @@ const Login = () => {
     } catch (error) {
       setLoginError('Datos incorrectos. Por favor, inténtalo de nuevo.');
     }
-  };
-
-  // Función para alternar la visibilidad de la contraseña
-  const toggleShowPassword = () => {
-    setShowPassword(prevState => !prevState);
   };
 
   return (
@@ -53,16 +47,14 @@ const Login = () => {
           </div>
           <div className="form__content">
             <input 
-              type={showPassword ? 'text' : 'password'}  // Cambia el tipo de input según el estado
+              type="password" 
               placeholder="Contraseña" 
               {...register('password', {
                 required: true,
                 minLength: 8
               })} 
             />
-            <span className="icon" onClick={toggleShowPassword}>
-              {showPassword ? '👁️' : '👁️'}  {/* Cambia el ícono dependiendo del estado */}
-            </span>
+            <span className="icon">&#128065;</span>
             {errors.password?.type === "required" && <p>El campo contraseña es requerido</p>}
             {errors.password?.type === "minLength" && <p>La contraseña debe tener al menos 8 caracteres</p>}
           </div>
@@ -78,5 +70,4 @@ const Login = () => {
 };
 
 export default Login;
-
 
