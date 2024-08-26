@@ -14,7 +14,7 @@ const Navbar = () => {
     const handleLogout = () => {
         const confirmLogout = window.confirm("¿Está seguro de cerrar sesión?");
         if (confirmLogout) {
-            dispatch({ type: "SET_USER_DATA", payload: null });
+            dispatch({ type: 'CLEAR_USER_DATA' }); // Usar 'CLEAR_USER_DATA' para limpiar el estado y localStorage
             navigate('/');
         }
     };
@@ -52,3 +52,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types'; // Importa prop-types
 import axios from 'axios';
 import searchIcon from '../../public/search-icon.png';
 import '../Styles/UserManagement.css'; 
 
+// eslint-disable-next-line no-unused-vars
 function UserManagement({ handleEditClick }) {
     const [users, setUsers] = useState([]);
     const [searchText, setSearchText] = useState('');
@@ -50,13 +52,20 @@ function UserManagement({ handleEditClick }) {
             try {
                 // Call the backend to update the role
                 await axios.put('http://localhost:3000/api/usuarios/cambiar-rol', {
-                    id: userId,
-                    nuevoRolId: newRolId
+                    id: userId, // Asegúrate de enviar el id
+                    rolId: newRolId // Asegúrate de enviar rolId en lugar de nuevoRolId
                 });
 
                 // Update the local state
-                user.rolId = newRolId;
+                updatedUsers[userIndex] = { ...user, rolId: newRolId };
                 setUsers(updatedUsers);
+
+                // Show success message based on new rolId
+                const message = newRolId === 1 
+                    ? "Permisos de administrador agregados exitosamente" 
+                    : "Permisos de administrador eliminados exitosamente";
+                    
+                alert(message);
             } catch (error) {
                 console.error('Error al cambiar el rol:', error);
             }
@@ -105,8 +114,10 @@ function UserManagement({ handleEditClick }) {
     );
 }
 
+// Define la validación de propiedades
+UserManagement.propTypes = {
+    handleEditClick: PropTypes.func
+};
+
 export default UserManagement;
-
-
-
 

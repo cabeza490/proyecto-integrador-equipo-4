@@ -1,5 +1,5 @@
 /* Estilos generales */
-.admin-panel {
+.user-panel {
     background-color: white;
     margin: 60px;
     border-radius: 20px;
@@ -109,7 +109,7 @@
     color: #000000;
 }
 @media (max-width: 768px) {
-    .admin-panel {
+    .user-panel {
         display: flex;
         flex-direction: column;
         width: 100%;

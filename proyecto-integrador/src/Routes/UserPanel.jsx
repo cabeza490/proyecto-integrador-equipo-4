@@ -90,7 +90,7 @@ function UserPanel() {
 
     return (
         <>
-            <div className='admin-panel'>
+            <div className='user-panel'>
                 <section className='left-side'>
                     <div className='user-avatar'>
                         {user ? getInitials(user.nombre, user.apellido) : 'U'}
