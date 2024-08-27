@@ -75,8 +75,10 @@ h3 {
 }
 
 .caracteristicas {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
     border: 1px solid black;
     border-radius: 8px;
     max-width: 100%;
@@ -96,10 +98,17 @@ h3 {
     font-size: 1.5rem;
 }
 
+.caracteristicas-img {
+    margin-right: 8px;
+    width: 25px;
+    height: 25px;
+}
+
 .caracteristica-item p {
     margin: 0;
     font-size: 1.2rem;
     color: #333333;
+    padding:10px
 }
 
 .goBack {
