@@ -101,3 +101,35 @@
 .buttons__1:hover, .buttons__2:hover {
     opacity: 0.8;
 }
+
+@media (max-width: 480px) {
+    .formulario {
+        padding: 15px;
+        margin: 20px 10px;
+        max-width: 90%;
+    }
+
+    .formulario h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+        padding: 20px;
+    }
+
+    .form__content input {
+        padding: 12px 20px 12px 15px; /* Ajustar el padding para mejor comodidad */
+    }
+    form{
+        padding: 50px 10px;
+    }
+    .form__buttons {
+       
+    }
+
+    .buttons__1, .buttons__2 {
+        width: 100%;
+    }
+    form__content .icon {
+        /* right: 10px; */
+        margin: -4px 5px;
+    }
+}
