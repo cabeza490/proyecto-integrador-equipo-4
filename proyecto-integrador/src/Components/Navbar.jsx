@@ -22,7 +22,7 @@ const Navbar = () => {
     return (
         <nav className={NavbarStyle.nav}>
             <a href="/">
-                <img src='../../public/logo_lema.png' alt='Logo' className={NavbarStyle.navLogo} />
+                <img src='/logo_lema.png' alt='Logo' className={NavbarStyle.navLogo} />
             </a>
             
             <button 

@@ -12,7 +12,7 @@ const Search = () => {
                     <input type="text" className="search-date" placeholder='Check in' id="in" />
                     <input type="text" className="search-date-out" placeholder='Check out' id="out" />
                     <button className="search-button">
-                        <img src='../../public/search-icon.png' alt="search-icon" className='search-icon' />
+                        <img src='/search-icon.png' alt="search-icon" className='search-icon' />
                 </button>
                 </div>
                
