@@ -2,12 +2,14 @@ import React from 'react';
 import { getProductos, getAllProductos } from '../api/productos-Apis';
 import { useState, useEffect } from 'react';
 import "../Styles/Listaproductos.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faXmark } from '@fortawesome/free-solid-svg-icons';
+import Modal from 'react-modal';
+import CreateEdit from './CreateEdit';
+
 
 const ListaProductos = () => {
     const [productos, setProductos] = useState([])
     const [cargando, setCargando] = useState(true);
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         const getData = async() => {
@@ -24,6 +26,17 @@ const ListaProductos = () => {
     }, [])
     console.log(productos);
     console.log(productos.length);
+
+    // Modal 
+    function openModal() {
+        setModalOpen(true);
+    }
+    function afterModalOpen() {
+
+    }
+    function closeModal() {
+        setModalOpen(false);
+    }
 
     return(
         <>
@@ -57,7 +70,15 @@ const ListaProductos = () => {
                             )): (<p>No se encontraron productos</p>)}
                         </tbody>
                     </table> 
-                    <button className='button-primary create-product'>+</button>
+                    <button className='button-primary create-product' onClick={openModal}>+</button>
+                    <Modal portalClassName='modal-product'
+                        isOpen={modalOpen}
+                        onAfterOpen={afterModalOpen}
+                        onRequestClose={closeModal}
+                        contentLabel='Modal create product'
+                    >
+                        <CreateEdit/>
+                    </Modal>
                 </div>
             )}
         </>

@@ -136,3 +136,40 @@ thead th:nth-child(3) {
 .list-table button:active {
     background-color: darkgray;
 } */
+
+.ReactModal__Overlay {
+    z-index: 1000;
+}
+
+.ReactModal__Content {
+    margin: 0px;
+}
+
+.modal-product {
+    text-align: center;
+}
+
+.container {
+  /* position: relative; */
+  overflow: hidden;
+}
+
+.title {
+    /* position: absolute; */
+    /* top: 0;
+    left: 0; */
+    width: 100%;
+    height: 100%;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.activo {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.steps-guide {
+    
+}

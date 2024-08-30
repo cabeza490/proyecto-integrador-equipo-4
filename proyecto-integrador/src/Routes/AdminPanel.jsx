@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../Styles/AdminPanel.css';
-import ListaProductos from '../Components/ListaProductos';
+import ListaProductos from '../Components/Listaproductos';
 import UserManagement from '../Components/UserManagement';
 import EditUserForm from '../Components/EditUserForm'; 
 import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
