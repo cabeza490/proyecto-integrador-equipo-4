@@ -1,11 +1,11 @@
-// src/Components/Galeria.jsx
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
-import '../Styles/Galeria.css'; // Importa los estilos CSS
+import '../Styles/Galeria.css';
 import { Link } from 'react-router-dom';
 
-const Galeria = () => {
+const Galeria = ({ searchTerm = '', setNoResults }) => {  // Agregar setNoResults
   const [shuffledImages, setShuffledImages] = useState([]);
 
   useEffect(() => {
@@ -17,7 +17,6 @@ const Galeria = () => {
         numberOfImages = 4; // For mobile devices
       }
 
-      // Obtener imágenes desde el backend
       const fetchImages = async () => {
         try {
           const response = await axios.get('http://localhost:3000/api/productos');
@@ -29,9 +28,16 @@ const Galeria = () => {
             id: producto.id
           })));
           const shuffled = shuffleArray(images);
-          setShuffledImages(shuffled.slice(0, numberOfImages));
+          
+          const filteredImages = searchTerm
+            ? shuffled.filter(image => image.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            : shuffled;
+
+          setShuffledImages(filteredImages.slice(0, numberOfImages));
+          setNoResults(filteredImages.length === 0); // Actualizar estado si no hay resultados
         } catch (error) {
           console.error('Error al obtener las imágenes:', error);
+          setNoResults(true); // Si ocurre un error, también se considera que no hay resultados
         }
       };
 
@@ -42,7 +48,7 @@ const Galeria = () => {
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [searchTerm, setNoResults]); // Agregar setNoResults como dependencia
 
   const shuffleArray = (array) => {
     let shuffledArray = array.slice();
@@ -59,16 +65,20 @@ const Galeria = () => {
         <div key={index} className="image-card">
           <img src={image.src} alt={`img-${index}`} />
           <Link to={`/detail/${image.id}`}>
-          <div className="image-info">
-            <h2>{image.title}</h2>
-            <p>{image.description}</p>
-            
-          </div>
+            <div className="image-info">
+              <h2>{image.title}</h2>
+              <p>{image.description}</p>
+            </div>
           </Link>
         </div>
       ))}
     </div>
   );
+};
+
+Galeria.propTypes = {
+  searchTerm: PropTypes.string.isRequired,
+  setNoResults: PropTypes.func.isRequired,  // Agregar PropTypes para setNoResults
 };
 
 export default Galeria;

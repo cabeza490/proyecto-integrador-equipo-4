@@ -9,3 +9,11 @@
     text-align: left; 
     margin-bottom: 20px; 
 }
+.search-date-text{
+    color: grey;  
+    font-weight: normal; 
+    align-items: left;
+}
+.search-results-title{
+    align-items: left;
+}
