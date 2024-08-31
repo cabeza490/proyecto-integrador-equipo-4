@@ -26,3 +26,4 @@ export const getAllProductos = async (page = 1, pageSize = 10) => {
         console.log(error);
     }
 }
+
