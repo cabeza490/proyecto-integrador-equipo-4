@@ -32,6 +32,12 @@
     margin: 20px;
 }
 
+.other_information {
+    width: 50%;
+    height: auto;
+    margin: 20px;
+}
+
 .card_image img {
     width: 100%;
     height: auto;
@@ -74,6 +80,9 @@ h3 {
     margin: 0;
 }
 
+.init_sesion {
+    text-align: center;
+}
 .caracteristicas {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -85,6 +94,7 @@ h3 {
     margin: 10px;
 }
 
+
 .caracteristica-item {
     display: flex;
     align-items: center;
@@ -92,6 +102,44 @@ h3 {
     padding: 10px;
     text-align: left;
 }
+
+.none_padding{
+    padding-left: 0px !important;
+}
+
+.datepicker-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.react-datepicker {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto; 
+    margin-bottom:10px ;
+}
+
+.react-datepicker__month-container {
+    width: 100%;
+}
+
+.disabled-date {
+    background-color: #ffcccc !important;
+    color: #e74c3c !important;
+}
+
+.errorMessage {
+    color: #e74c3c !important;
+    font-size: 14px !important;
+    margin-top: -10px !important;
+    padding-left: 10px !important;
+    margin-bottom: 0px !important;
+}
+
+
 
 .caracteristica-icon {
     margin-right: 8px;
@@ -141,6 +189,12 @@ h3 {
         height: 200px;
     }
 
+    .other_information {
+        width: 100%;
+        margin: 10px 0;
+        padding-left: 20px !important;
+    }
+
     .card_image img {
         width: 100%;
         height: 100%;
@@ -187,5 +241,15 @@ h3 {
 
     .goBack {
         font-size: 24px;
+    }
+    .datepicker-container {
+        width: 100%; /* Ocupa el 100% del ancho disponible en pantallas pequeñas */
+        margin-bottom: 20px; /* Espacio adicional debajo del calendario */
+        margin-top: 20px;
+    }
+
+    .react-datepicker {
+        width: 100%; /* Asegura que el calendario ocupe el 100% del contenedor */
+        max-width: none; /* Elimina el máximo ancho para pantallas pequeñas */
     }
 }
