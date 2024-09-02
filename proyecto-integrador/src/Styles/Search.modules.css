@@ -76,6 +76,12 @@
     width: 230px;
     height: 50px;
     align-content: center;
+    text-align: center;
+}
+
+.category-item.selected {
+    background-color: #002E5D; 
+    color: white; 
 }
 
 .search-date-container {

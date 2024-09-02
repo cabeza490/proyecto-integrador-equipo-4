@@ -62,14 +62,6 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
                     </button>
                 </div>
             </div>
-
-            <h3 className="categories-heading">Categorías</h3>
-            <div className="category-container">
-                <div className="category-item">Sonido</div>
-                <div className="category-item">Comida</div>
-                <div className="category-item">Decoración</div>
-                <div className="category-item">Personal</div>
-            </div>
         </div>
     );
 };
