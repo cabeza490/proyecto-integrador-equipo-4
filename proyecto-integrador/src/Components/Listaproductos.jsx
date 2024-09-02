@@ -42,10 +42,14 @@ const ListaProductos = () => {
         <>
             {cargando ? (<p>cargando...</p>) : (
                 <div className='list-container'>
+                    <button className='button-primary create-product' onClick={openModal}>
+                        Agregar producto +
+                    </button>
+
                     <table className='list-table'>
                         <thead>
                             <tr>
-                            <th>ID</th>
+                            <th>Id</th>
                             <th>Nombre</th>
                             <th>Acciones</th>
                             </tr>
@@ -70,7 +74,6 @@ const ListaProductos = () => {
                             )): (<p>No se encontraron productos</p>)}
                         </tbody>
                     </table> 
-                    <button className='button-primary create-product' onClick={openModal}>+</button>
                     <Modal portalClassName='modal-product'
                         isOpen={modalOpen}
                         onAfterOpen={afterModalOpen}
