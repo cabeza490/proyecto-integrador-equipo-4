@@ -35,13 +35,17 @@ function Home() {
         return searchTerm || searchDate || selectedCategories.length > 0;
     };
 
+    const isSearchActive = () => {
+        return searchTerm || searchDate;
+    };
+
     return (
         <main className="main">
             <Search setSearchTerm={setSearchTerm} setSearchDate={setSearchDate} onSearch={handleSearch} />
 
             <Category onCategorySelect={setSelectedCategories} selectedCategories={selectedCategories} />
 
-            {/* Mostrar resultados filtrados solo si hay filtros aplicados */}
+            {/* Mostrar resultados filtrados si hay filtros aplicados */}
             {areFiltersApplied() && (
                 <>
                     <h2 className="title">
@@ -87,8 +91,8 @@ function Home() {
                 </>
             )}
 
-            {/* Mostrar Recomendados solo si NO hay filtros aplicados */}
-            {!areFiltersApplied() && (
+            {/* Mostrar Recomendados si no hay filtros aplicados o si hay búsqueda activa */}
+            {(!areFiltersApplied() || isSearchActive()) && (
                 <>
                     <h1 className="title">Recomendados</h1>
                     <div style={{ marginTop: '20px' }}>
