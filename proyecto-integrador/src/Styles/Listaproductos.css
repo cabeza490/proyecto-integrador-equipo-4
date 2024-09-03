@@ -61,7 +61,7 @@
 .list-table td {
     /* background-color: white; */
     /* padding: 5px; */
-    padding: 2px 5px;
+    padding: 3px 5px;
     /* margin: 10px; */
     border-color: var(--border-row-color);
     border-style: solid;
@@ -88,6 +88,11 @@
     border-bottom-right-radius: var(--border-row-radius);
     border-right-width: var(--border-row-width);
     text-align: right;
+    /* padding-bottom: 5px; */
+}
+
+.list-table td:last-child button {
+    margin-left: 3px;
 }
 
 thead th:nth-child(1) {
@@ -112,7 +117,7 @@ thead th:nth-child(3) {
     /* background-color: #F0F0F0; */
     border-color: var(--primary-color);
     --border-row-width: 3px;
-    padding: 0px 5px;
+    padding: 1px 5px;
 }
 
 /* .list-table button {
@@ -150,7 +155,7 @@ thead th:nth-child(3) {
 
 .ReactModal__Content {
     inset: 5% !important;
-    height: fit-content;
+    /* height: fit-content; */
     margin: 0px;
     background-color: whitesmoke !important;
     border-radius: 20px !important;
@@ -248,4 +253,16 @@ textarea.create-edit-input::-webkit-scrollbar-track {
 
 .no-style:focus {
     border: 0px;
+}
+
+.select-caracteristicas {
+    background-color: white;
+}
+
+.select-caracteristicas.react-select__menu-list {
+    background-color: white;
+}
+
+.input-caracteristica {
+    width: 40%;
 }

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
-import { getAllCategorias } from '../api/categorias-Apis';
+import Select from 'react-select'
+import CustomOption from './utils/CustomOption';
 
-const CreateEdit = () => {
+const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas}) => {
     // Éste comoponente irá dentro de un modal, contendrá un wizard para ayudar en la creación de un producto nuevo o editarlo
     
     // const { nombre, descripcion, categoria_id, precio, imagenes } = req.body;
@@ -18,18 +18,21 @@ const CreateEdit = () => {
     const [imagenes, setImagenes] = useState([""]);
 
     const [caracteristicas, setCaracteristicas] = useState([{
-        nombre: "",
-        valor: "",
-        icono: ""
+        id: "",
+        valor: ""
     }]);
 
-    const [categorias, setCategorias] = useState([]);
+    // const [listaCategorias, setListaCategorias] = useState([]);
     
     const [errors, setErrors] = useState({});
     const [valid, setValid] = useState({});
     const [touched, setTouched] = useState({});
     const [submitMessage, setSubmitMessage] = useState(""); 
     const [isFormValid, setIsFormValid] = useState(false);
+
+    // pciones para el react-form
+    const [opcionesCategorias, setOpcionesCategorias] = useState([]);
+    const [opcionesCaracteristicas, setOpcionesCaracteristicas] = useState([]);
 
 
     const handleChange = (event) => {
@@ -42,7 +45,7 @@ const CreateEdit = () => {
         // console.log(producto);
     };
 
-    const handleCategoriaChange = (event) => {
+    const handleChangeCategoria = (event) => {
         const {name, value} = event.target;
         setProducto((prevState) => ({
             ...prevState,
@@ -72,20 +75,40 @@ const CreateEdit = () => {
     // manejo de las características, array de objetos con nombre, valor e ícono
     const handleAgregarOtraCaracteristica = () => {
         setCaracteristicas([...caracteristicas, {
-            nombre: "",
-            valor: "",
-            icono: ""
+            id: "",
+            valor: ""
         }]);
     };
 
-    const handleEliminarCaracteristica = (index) => {
+    const handleEliminarCaracteristica = (e, index) => {
         let nuevasCaracteristicas = [...caracteristicas];
         nuevasCaracteristicas.splice(index, 1);
         setCaracteristicas(nuevasCaracteristicas);
     };
 
-    const handleChangeCaracteristicas = (event, index) => {
+    const handleChangeCaracteristicasId = (event, index) => {
+
+        let nuevasCaracteristicas = [...caracteristicas];
+        console.log(nuevasCaracteristicas);
         
+        nuevasCaracteristicas[index] = {
+            ...nuevasCaracteristicas[index],
+            id: event.target.value
+        }
+
+        setCaracteristicas(nuevasCaracteristicas)
+    };
+
+    const handleChangeCaracteristicasValor = (event, index) => {
+        
+        let nuevasCaracteristicas = [...caracteristicas];
+        console.log(nuevasCaracteristicas);
+        
+        nuevasCaracteristicas[index] = {
+            ...nuevasCaracteristicas[index],
+            valor: event.target.value
+        }
+        setCaracteristicas(nuevasCaracteristicas);
     };
 
 
@@ -97,21 +120,26 @@ const CreateEdit = () => {
     };
 
     useEffect(() => {
-        const getCategorias = async () => {
-            try {
-                let getCategorias = await getAllCategorias();
-                setCategorias(getCategorias)
-            } catch (error) {
-                console.log("Error al obtener las categorías");
-            };
-        }
-        getCategorias();
+        setOpcionesCategorias(listaCategorias.map((categoria) => ({
+            value: categoria.id,
+            label: categoria.nombre,
+        })));
+        // console.log(listaCaracteristicas);
+        
+
+        setOpcionesCaracteristicas(listaCaracteristicas.map((caracteristica) => ({
+            value: caracteristica.id,
+            label: caracteristica.nombre,
+            icon: caracteristica.icono
+        })));
+
+
     }, [])
 
     // Debugging -------------------------------
-    useEffect(() => {
-        console.log(categorias);
-    }, [categorias])
+    // useEffect(() => {
+    //     console.log(listaCategorias);
+    // }, [listaCategorias])
 
     useEffect(() => {
         console.log(producto);
@@ -234,7 +262,7 @@ const CreateEdit = () => {
                                                 id="categorias-select"
                                                 className='create-edit-input'
                                                 value={producto.categoria_id}
-                                                onChange={handleCategoriaChange}
+                                                onChange={handleChangeCategoria}
                                             >
                                                 <option 
                                                     value=""
@@ -242,7 +270,7 @@ const CreateEdit = () => {
                                                 >
                                                     seleccione la categoría
                                                 </option>
-                                                {categorias.map((categoria, index) => (
+                                                {listaCategorias.map((categoria, index) => (
                                                     <option 
                                                         key={index} 
                                                         value={categoria.id}
@@ -252,6 +280,10 @@ const CreateEdit = () => {
                                                 ))}
                                             </select>
 
+                                            {/* <Select 
+                                                options={opcionesCategorias}
+                                            /> */}
+
                                         </td>
                                     </tr>
                                     <tr>
@@ -260,11 +292,55 @@ const CreateEdit = () => {
                                         </td>
                                         <td>
                                             {caracteristicas.map((caracteristica, index) => (
-                                                <div key={index}>
-                                                    <input type="text" />
+                                                <div key={index} className='create-edit-input'>
+                                                    {/* <Select
+                                                        className='select-caracteristicas'
+                                                        options={opcionesCaracteristicas}
+                                                        components={{Option: CustomOption}}
+                                                    /> */}
+
+                                                    <select 
+                                                        className='input-caracteristica'
+                                                        name="" 
+                                                        id=""
+                                                        value={caracteristica.id}
+                                                        onChange={(e) => handleChangeCaracteristicasId(e, index)}
+                                                    >
+                                                        <option 
+                                                            value=""
+                                                        >
+                                                            tipo
+                                                        </option>
+                                                        {listaCaracteristicas.map((caracteristica, index) => (
+                                                            <option 
+                                                                key={index}
+                                                                value={caracteristica.id}
+                                                            >
+                                                                {caracteristica.nombre}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+
+                                                    <input 
+                                                        className='input-caracteristica'
+                                                        type="text" 
+                                                        placeholder='Detalle...'
+                                                        value={caracteristica.valor}
+                                                        onChange={(e) => handleChangeCaracteristicasValor(e, index)}
+                                                    />
+                                                    <button
+                                                        onClick={(e) => handleEliminarCaracteristica(e, index)}
+                                                    >
+                                                        X
+                                                    </button>
                                                 </div>
                                             ))}
-                                            <p>WIP</p>
+                                            
+                                            <button
+                                                onClick={handleAgregarOtraCaracteristica}
+                                            >
+                                                Agregar característica
+                                            </button>
                                         </td>
                                     </tr>
                                 </table>
