@@ -51,3 +51,13 @@ export const putProducto = async (id, producto) => {
         console.log(error);
     }
 }
+
+// Eliminación de un producto por id
+export const deleteProducto = async (id) => {
+    try {
+        let response = await axios.delete(`http://localhost:3000/api/productos?id=${id}`)
+        return response.data
+    } catch (error) {
+        console.log(error);
+    }
+}
