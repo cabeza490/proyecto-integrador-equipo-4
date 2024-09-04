@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -6,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTotalResults }) => {
   const [shuffledImages, setShuffledImages] = useState([]);
-
+  
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -30,13 +31,18 @@ const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTo
             src: imagen.url,
             title: producto.nombre,
             description: producto.descripcion,
-            id: producto.id
+            id: producto.id,
+            keyword: producto.keyword // Asume que cada producto tiene una propiedad 'keyword'
           })));
 
           const shuffled = shuffleArray(images);
 
+          // Filtrar por término de búsqueda (título o palabra clave)
           const filteredImages = searchTerm
-            ? shuffled.filter(image => image.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            ? shuffled.filter(image => 
+                image.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                image.keyword.toLowerCase().includes(searchTerm.toLowerCase())
+              )
             : shuffled;
 
           setShuffledImages(filteredImages.slice(0, numberOfImages));
@@ -92,3 +98,6 @@ Galeria.propTypes = {
 };
 
 export default Galeria;
+
+
+

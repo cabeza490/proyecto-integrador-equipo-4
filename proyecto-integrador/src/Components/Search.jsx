@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../Styles/Search.modules.css'; // Asegúrate de usar el archivo CSS correcto
+import '../Styles/Search.modules.css';
+import reservas from '../utils/reservas';
 
 const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     const [localSearchTerm, setLocalSearchTerm] = useState('');
@@ -53,29 +54,56 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     };
 
     const handleDateChange = (date) => {
-        setSelectedDate(date); // Solo actualiza el estado local
+        setSelectedDate(date); // Actualiza el estado local
     };
 
     const handleSearchClick = () => {
         if (!localSearchTerm || !selectedDate) {
             alert("Por favor completar todos los campos para la búsqueda");
+            return;
+        }
+
+        console.log("Término de búsqueda:", localSearchTerm);
+        console.log("Fecha seleccionada:", selectedDate);
+
+        // Filtrar los productos que coinciden con el término de búsqueda y no están reservados para la fecha seleccionada
+        const filteredProducts = allProducts.filter(product => {
+            const matchesKeyword = product.nombre.toLowerCase().includes(localSearchTerm.toLowerCase()) ||
+                                    product.descripcion.toLowerCase().includes(localSearchTerm.toLowerCase()) ||
+                                    (product.keyword && product.keyword.toLowerCase().includes(localSearchTerm.toLowerCase()));
+
+            console.log("Producto:", product);
+            console.log("Coincide con palabra clave:", matchesKeyword);
+
+            // Verificar si el producto está reservado en la fecha seleccionada
+            const isAvailable = reservas.some(reserva => 
+                reserva.id === product.id &&
+                new Date(reserva.fecha_reserva).toDateString() === selectedDate.toDateString()
+            );
+
+            console.log("Disponible en la fecha seleccionada:", !isAvailable);
+
+            return matchesKeyword && !isAvailable; // Excluye productos reservados
+        });
+
+        console.log("Productos filtrados:", filteredProducts);
+
+        if (filteredProducts.length === 0) {
+            alert("No hay productos disponibles para la búsqueda y la fecha seleccionada.");
         } else {
             setSearchTerm(localSearchTerm);
             setSearchDate(selectedDate);
             onSearch(); // Llamar a onSearch
         }
+
+        // Ocultar las sugerencias después de hacer la búsqueda
+        setSuggestions([]);
+        setShowSuggestions(false);
     };
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             handleSearchClick(); // Ejecutar búsqueda al presionar Enter
-        }
-    };
-
-    const handleDatePickerKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            event.stopPropagation(); // Evitar que el evento 'Enter' se propague
-            event.preventDefault(); // Evitar el comportamiento predeterminado
         }
     };
 
@@ -113,7 +141,6 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
                         placeholderText="Fecha"
                         className="search-date"
                         id="date"
-                        onKeyDown={handleDatePickerKeyDown} // Manejar evento onKeyDown
                     />
                     <button className="search-button" onClick={handleSearchClick}>
                         <img src='/search-icon.png' alt="search-icon" className='search-icon' />
@@ -131,5 +158,7 @@ Search.propTypes = {
 };
 
 export default Search;
+
+
 
 
