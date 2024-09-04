@@ -30,6 +30,7 @@ const CreateEdit = ({
         descripcion: "",
         categoria_id: 0, //integer
         precio: 0.0, //double
+        keywords: ""
     });
 
     const [imagenes, setImagenes] = useState([""]);
@@ -39,7 +40,7 @@ const CreateEdit = ({
         valor: ""
     }]);
 
-    const [verMensajeExito, setVerMensajeExito] = useState(true);
+    const [verMensajeExito, setVerMensajeExito] = useState(false);
 
     
     // const [errors, setErrors] = useState({});
@@ -59,6 +60,14 @@ const CreateEdit = ({
         }));
         // console.log(producto);
     };
+
+    const handleChangeKeywords = (event) => {
+        const {name, value} = event.target;
+        setProducto((prevState) => ({
+            ...prevState,
+            keywords: value
+        }));
+    }
 
     const handleChangeCategoria = (event) => {
         const {name, value} = event.target;
@@ -165,7 +174,7 @@ const CreateEdit = ({
         console.log(producto);
         console.log(imagenes);
         console.log(caracteristicas);
-        // setVerMensajeExito(false);
+        setVerMensajeExito(false);
     }, [producto, imagenes, caracteristicas])
     // Debugging -------------------------------
 
@@ -180,7 +189,7 @@ const CreateEdit = ({
                 precio: producto.precio,
                 imagenes: imagenes,
                 caracteristicas: caracteristicas,
-                keywords: ""
+                keyword: producto.keywords
             };
 
             console.log(nuevoProducto);
@@ -199,6 +208,7 @@ const CreateEdit = ({
                 descripcion: "",
                 categoria_id: 0, //integer
                 precio: 0.0, //double
+                keywords: ""
             });
 
             setImagenes([""]);
@@ -283,6 +293,30 @@ const CreateEdit = ({
                                                 onChange={handleChange}
                                                 >
                                             </textarea>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td>
+                                            <label>Keywords</label>
+                                        </td>
+                                        <td>
+                                            <input 
+                                                type="text" 
+                                                name='nombre'
+                                                placeholder='keyword1, keyword2...'
+                                                className='create-edit-input'
+                                                value={producto.keywords}
+                                                onChange={handleChangeKeywords}
+                                            />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        </td>
+
+                                        <td>
+                                            <p>introduce las keywords, separadas por una coma</p>
                                         </td>
                                     </tr>
                                 </table>
