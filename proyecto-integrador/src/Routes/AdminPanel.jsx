@@ -91,7 +91,9 @@ function AdminPanel() {
         const lastInitial = apellido ? apellido[0].toUpperCase() : ' ';
         return `${firstInitial}${lastInitial}`;
     };
-
+    const handleNavigateToFavorites = () => {
+        navigate('/favorites');
+    };
     return (
         <>
             <div className='mobile-message'>
@@ -120,6 +122,7 @@ function AdminPanel() {
                             <div className='info-dropdown'>
                                 <button>Historial de compras</button>
                                 <button>Mis reseñas</button>
+                                <button onClick={handleNavigateToFavorites}>Mis Favoritos</button>
                                 <button>Seguridad</button>
                                 <button>Tarjetas</button>
                                 <button>Privacidad</button>
