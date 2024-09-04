@@ -8,10 +8,10 @@ import { useCateringStates } from '../Components/utils/globalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
-const Galeria = ({ searchTerm = '', setNoResults }) => {
+const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTotalResults }) => {
   const { state, dispatch } = useCateringStates();
   const [shuffledImages, setShuffledImages] = useState([]);
-  
+
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -30,20 +30,27 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {
             title: producto.nombre,
             description: producto.descripcion,
             id: producto.id,
-            keyword: producto.keyword // Asume que cada producto tiene una propiedad 'keyword'
+            keyword: producto.keyword,
+            categoria_id: producto.categoria_id // Incluye la categoría del producto
           })));
           const shuffled = shuffleArray(images);
 
-          // Filtrar por término de búsqueda (título o palabra clave)
-          const filteredImages = searchTerm
-            ? shuffled.filter(image => 
-                image.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+          // Filtrar por término de búsqueda (título o palabra clave) y categoría
+          const filteredImages = shuffled.filter(image => {
+            const matchesSearchTerm = searchTerm
+              ? image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 image.keyword.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-            : shuffled;
+              : true;
+
+            const matchesCategory = selectedCategories.length === 0 ||
+              selectedCategories.some(cat => cat === image.categoria_id);
+
+            return matchesSearchTerm && matchesCategory;
+          });
 
           setShuffledImages(filteredImages.slice(0, numberOfImages));
           setNoResults(filteredImages.length === 0);
+          setTotalResults(filteredImages.length); // Actualizar el total de resultados
         } catch (error) {
           console.error('Error al obtener las imágenes:', error);
           setNoResults(true);
@@ -57,7 +64,7 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, [searchTerm, setNoResults]);
+  }, [searchTerm, selectedCategories, setNoResults, setTotalResults]);
 
   useEffect(() => {
     console.log("Favoritos actualizados:", state.favs);
@@ -109,9 +116,9 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {
 Galeria.propTypes = {
   searchTerm: PropTypes.string.isRequired,
   setNoResults: PropTypes.func.isRequired,
+  selectedCategories: PropTypes.array.isRequired,
+  setTotalResults: PropTypes.func.isRequired, // Asegúrate de definirlo en PropTypes
 };
 
 export default Galeria;
-
-
 
