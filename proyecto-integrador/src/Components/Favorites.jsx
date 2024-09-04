@@ -46,21 +46,22 @@ const Favorites = () => {
             <section className="favorites">
                 <h2>Mis Favoritos</h2>
                 <div className="favorites-list">
-                    {favs.map((product, index) => (
-                        <div key={index} className="favorite-card">
-                            <img src={product.src} alt={`favorite-${index}`} />
-                            <div className="favorite-info">
-                                <h3>{product.title}</h3>
-                                <p>{product.description}</p>
-                                <div className="favorite-buttons">
-                                    <button className="delete-button" onClick={() => removeFav(product.id)}>Eliminar</button>
-                                    <Link to={`/detail/${product.id}`} className="detail-button">
-                                        Ver detalle
-                                    </Link>
+                    {favs.length === 0? <p>No hay ningun elemento favorito</p> :
+                        favs.map((product, index) => (
+                            <div key={index} className="favorite-card">
+                                <img src={product.src} alt={`favorite-${index}`} />
+                                <div className="favorite-info">
+                                    <h3>{product.title}</h3>
+                                    <p>{product.description}</p>
+                                    <div className="favorite-buttons">
+                                        <button className="delete-button" onClick={() => removeFav(product.id)}>Eliminar</button>
+                                        <Link to={`/detail/${product.id}`} className="detail-button">
+                                            Ver detalle
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             </section>
         </div>
