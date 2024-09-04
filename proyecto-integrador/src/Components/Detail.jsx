@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProductoById } from '../api/productos-Apis';
 import '../Styles/Detail.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,33 +12,42 @@ import {
     faSnowflake, faExpand, faCameraRetro, faFileImage, faFaceGrinTears,
     faBell, faCubes, faVideo
 } from '@fortawesome/free-solid-svg-icons';
-import chiliSauceIcon from '../../public/flaticons/chili-sauce.png';
-import musicNote from '../../public/flaticons/music-note.png'
-import tiktok from '../../public/flaticons/tik-tok.png'
-import ligthBulb from '../../public/flaticons/light-bulb.png'
-import ligths from '../../public/flaticons/lights.png'
-import inteligentes from '../../public/flaticons/lightbulb.png'
-import rustico from '../../public/flaticons/nature.png'
-import minimalista from '../../public/flaticons/alphabetical-letters.png'
-import artDeco from '../../public/flaticons/art-palette.png'
-import camera from '../../public/flaticons/camera.png'
-import user from '../../public/flaticons/user.png'
-import mediano from '../../public/flaticons/group.png'
-import grande from '../../public/flaticons/grande.png'
-import muyGrande from '../../public/flaticons/people.png'
-import magia from '../../public/flaticons/witch-hat.png'
-import dance from '../../public/flaticons/dancing.png'
-import karaoke from '../../public/flaticons/microphone.png'
-import sonidoAmbiente from '../../public/flaticons/waves.png'
-import semiFormal from '../../public/flaticons/blazer.png'
-import tematico from '../../public/flaticons/mask.png'
-import sastre from '../../public/flaticons/needle-with-thread-to-sew-clothes.png'
-import verano from '../../public/flaticons/sunglasses.png'
-import invierno from '../../public/flaticons/scarf.png'
-import cookie from '../../public/flaticons/cookie.png'
-import brownie from '../../public/flaticons/brownie.png'
-import mousse from '../../public/flaticons/mousse.png'
-import tartaFrutal from '../../public/flaticons/cake.png'
+import chiliSauceIcon from '/chili-sauce.png';
+import musicNote from '/music-note.png'
+import tiktok from '/tik-tok.png'
+import ligthBulb from '/light-bulb.png'
+import ligths from '/lights.png'
+import inteligentes from '/lightbulb.png'
+import rustico from '/nature.png'
+import minimalista from '/alphabetical-letters.png'
+import artDeco from '/art-palette.png'
+import camera from '/camera.png'
+import user from '/user.png'
+import mediano from '/group.png'
+import grande from '/grande.png'
+import muyGrande from '/people.png'
+import magia from '/witch-hat.png'
+import dance from '/dancing.png'
+import karaoke from '/microphone.png'
+import sonidoAmbiente from '/waves.png'
+import semiFormal from '/blazer.png'
+import tematico from '/mask.png'
+import sastre from '/needle-with-thread-to-sew-clothes.png'
+import verano from '/sunglasses.png'
+import invierno from '/scarf.png'
+import cookie from '/cookie.png'
+import brownie from '/brownie.png'
+import mousse from '/mousse.png'
+import tartaFrutal from '/cake.png'
+
+import DatePicker, { registerLocale } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { es } from 'date-fns/locale';
+import reservas from '../utils/reservas';
+import { useCateringStates } from '../Components/utils/globalContext';
+
+// Registrar el idioma español
+registerLocale('es', es);
 
 // Mapeo de nombres de íconos en FontAwesome
 const iconMap = {
@@ -97,15 +106,15 @@ const iconMapFlaticon = {
     "https://www.flaticon.com/free-icon/dancing_2410394?term=dance&page=1&position=4&origin=search&related_id=2410394": dance,
     "https://www.flaticon.com/free-icon/microphone_2168497?term=microphone&page=1&position=8&origin=search&related_id=2168497": karaoke,
     "https://www.flaticon.com/free-icon/waves_17468930?term=waves&page=1&position=1&origin=search&related_id=17468930": sonidoAmbiente,
-    "https://www.flaticon.com/free-icon/blazer_14299588?term=tuxedo&related_id=14299588":semiFormal,
-    "https://www.flaticon.com/free-icon/mask_3743249?term=theater+masks&page=1&position=14&origin=search&related_id=3743249":tematico,
-    "https://www.flaticon.com/free-icon/needle-with-thread-to-sew-clothes_27046?term=needle&page=1&position=1&origin=search&related_id=27046":sastre,
-    "https://www.flaticon.com/free-icon/sunglasses_139929?term=sunglasses&related_id=139929":verano,
-    "https://www.flaticon.com/free-icon/scarf_6251858?related_id=6251858":invierno,
-    "https://www.flaticon.com/free-icon/cookie_14226985?term=cookies&related_id=14226985":cookie,
-    "https://www.flaticon.com/free-icon/brownie_7647922?term=brownies&page=1&position=6&origin=search&related_id=7647922":brownie,
-    "https://www.flaticon.com/free-icon/mousse_1351331?term=mousse&page=1&position=2&origin=search&related_id=1351331":mousse,
-    "https://www.flaticon.com/free-icon/cake_2682340?term=cake&page=1&position=1&origin=search&related_id=2682340":tartaFrutal,
+    "https://www.flaticon.com/free-icon/blazer_14299588?term=tuxedo&related_id=14299588": semiFormal,
+    "https://www.flaticon.com/free-icon/mask_3743249?term=theater+masks&page=1&position=14&origin=search&related_id=3743249": tematico,
+    "https://www.flaticon.com/free-icon/needle-with-thread-to-sew-clothes_27046?term=needle&page=1&position=1&origin=search&related_id=27046": sastre,
+    "https://www.flaticon.com/free-icon/sunglasses_139929?term=sunglasses&related_id=139929": verano,
+    "https://www.flaticon.com/free-icon/scarf_6251858?related_id=6251858": invierno,
+    "https://www.flaticon.com/free-icon/cookie_14226985?term=cookies&related_id=14226985": cookie,
+    "https://www.flaticon.com/free-icon/brownie_7647922?term=brownies&page=1&position=6&origin=search&related_id=7647922": brownie,
+    "https://www.flaticon.com/free-icon/mousse_1351331?term=mousse&page=1&position=2&origin=search&related_id=1351331": mousse,
+    "https://www.flaticon.com/free-icon/cake_2682340?term=cake&page=1&position=1&origin=search&related_id=2682340": tartaFrutal,
 
 
 };
@@ -113,13 +122,18 @@ const iconMapFlaticon = {
 const Detail = () => {
     const { id } = useParams();
     const [productSelected, setProductSelected] = useState({});
+    const [disabledDates, setDisabledDates] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [errorMessage, setErrorMessage] = useState('');
+    const { state, dispatch } = useCateringStates()
+    const { userData } = state;
 
     const navigate = useNavigate();
 
     const handleBackClick = () => {
         navigate('/');
     };
-
+    
     useEffect(() => {
         const getData = async () => {
             let getProductData = await getProductoById(id);
@@ -127,10 +141,44 @@ const Detail = () => {
         };
         getData();
     }, [id]);
+    
 
     const extractFontAwesomeIconName = (url) => {
         const match = url.match(/icons\/([^?]+)/);
         return match ? match[1] : null;
+    };
+
+
+    useEffect(() => {
+        const getData = async () => {
+            let getProductData = await getProductoById(id);
+            setProductSelected(getProductData);
+        };
+        getData();
+
+        const reservedDates = reservas.map(reserva => new Date(reserva.fecha_reserva));
+        setDisabledDates(reservedDates);
+    }, [id]);
+
+    const isDateDisabled = (date) => {
+        return disabledDates.some(disabledDate =>
+            disabledDate.toDateString() === date.toDateString()
+        );
+    };
+
+    const handleDateChange = (date) => {
+        if (isDateDisabled(date)) {
+            setErrorMessage('Esta fecha ya está reservada y no está disponible');
+            setSelectedDate(null);
+
+            // Mostrar el mensaje por 4 segundos y luego ocultarlo
+            setTimeout(() => {
+                setErrorMessage('');
+            }, 4000);
+        } else {
+            setErrorMessage('');
+            setSelectedDate(date);
+        }
     };
 
     return (
@@ -188,6 +236,44 @@ const Detail = () => {
                     )}
                 </div>
             </div>
+
+            <div className='card_container'>
+                <h3>Mas detalles y disponibilidad</h3>
+                <div className="card_content">
+                    <div className="other_information">
+                        <p className='none_padding'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati tempore veniam dolorum possimus soluta hic nulla iure quia, maxime magni est ducimus quas quidem illum odit impedit dicta maiores repellat.</p>
+                        <p className='none_padding'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos blanditiis debitis totam dicta illo, magnam accusamus fuga doloremque laboriosam necessitatibus sit doloribus nisi. Voluptate culpa illo placeat doloremque, cupiditate nihil?</p>
+                    </div>
+
+                    {userData ? (
+                        <div className="datepicker-container">
+                            <DatePicker
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                inline
+                                locale="es"
+                                dayClassName={date =>
+                                    isDateDisabled(date) ? 'disabled-date' : undefined
+                                }
+                            />
+                            {errorMessage && (
+                                <p className="errorMessage">{errorMessage}</p>
+                            )}
+                        </div>
+                    ) : (
+
+                        <div className="other_information">
+                            <p className='init_sesion'>
+                                Debes iniciar sesión para ver las fechas disponibles
+                            </p>
+                        </div>
+                    )
+                    }
+                </div>
+
+            </div>
+
+
         </div>
     );
 };
