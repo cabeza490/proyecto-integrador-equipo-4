@@ -18,7 +18,8 @@ const CreateEdit = ({
         }]
     }, 
     listaCategorias, 
-    listaCaracteristicas
+    listaCaracteristicas,
+    closeModal
 }) => {
     // Éste comoponente irá dentro de un modal, contendrá un wizard para ayudar en la creación de un producto nuevo o editarlo
 
@@ -198,10 +199,9 @@ const CreateEdit = ({
             const response = await postProducto(userData.rolId, nuevoProducto);
             if (response.status === 400) {
                 console.log("El nombre del producto ya está en uso");
+                window.alert("El nombre del producto ya está en uso");
                 return;
             }
-
-            console.log("Producto registrado exitosamente");
 
             setProducto({
                 nombre: "",
@@ -219,10 +219,15 @@ const CreateEdit = ({
             }])
 
             setVerMensajeExito(true);
+            window.alert("Producto registrado exitosamente");
             console.log("Producto registrado exitosamente");
             
 
+
             // resetear estados auxiliares
+
+            // Cerrar el modal
+            closeModal();
 
         } catch (error) {
             console.log(error);

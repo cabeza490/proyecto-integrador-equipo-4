@@ -1,5 +1,5 @@
 import React from 'react';
-import { getProductos, getAllProductos } from '../api/productos-Apis';
+import { getProductos, getAllProductos, deleteProducto } from '../api/productos-Apis';
 import { useState, useEffect } from 'react';
 import "../Styles/Listaproductos.css";
 import Modal from 'react-modal';
@@ -11,7 +11,12 @@ import { getAllCaracteristicas } from '../api/caracteristicas-Apis';
 const ListaProductos = () => {
     const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [update, setUpdate] = useState(Date.now())
+
+    // Estados para el modal
     const [modalOpen, setModalOpen] = useState(false);
+
+    // Estados para el panel de editar
     const [verEdit, setVerEdit] = useState([]);
     const [panelEditar, setPanelEditar] = useState(false)
 
@@ -31,22 +36,20 @@ const ListaProductos = () => {
     const [listaCategorias, setListaCategorias] = useState([]);
     const [listaCaracteristicas, setListaCaracteristicas] = useState([]);
 
-    useEffect(() => {
-        const getData = async() => {
-            try {
-                let getProducts = await getAllProductos(1,99);
-                setProductos(getProducts.productos)
-            } catch (error) {
-                console.error("Error al obtener los productos");
-            } finally {
-                setCargando(false);
-            };
-        } 
-        getData()
-    }, [])
-    // console.log(productos);
-    // console.log(productos.length);
+    const getData = async() => {
+        try {
+            let getProducts = await getAllProductos(1,99);
+            setProductos(getProducts.productos)
+        } catch (error) {
+            console.error("Error al obtener los productos");
+        } finally {
+            setCargando(false);
+        };
+    } ;
 
+    useEffect(() => {
+        getData();
+    }, [])
     
     useEffect(() => {
 
@@ -74,6 +77,10 @@ const ListaProductos = () => {
         getListaCaracteristicas();
 
     }, [])
+
+    useEffect(() => {
+        getData();
+    }, [update]);
 
     useEffect(() => {
         setVerEdit(productos.map(() => false))
@@ -108,18 +115,38 @@ const ListaProductos = () => {
         
         setPanelEditar(!panelEditar);
         
-    }
+    };
+
+    // Eliminar producto
+    const eliminarProducto = async(id) => {
+        const confirmar = window.confirm("¿Estas seguro de que quieres eliminar el producto?")
+
+        if (confirmar) {
+            try {
+                await deleteProducto(id);
+            } catch (error) {
+                console.log("Error al intentar eliminar el producto")
+                return
+            } finally {
+                setUpdate(Date.now())
+            }
+            console.log("Producto eliminado correctamente");
+            window.alert("Producto eliminado correctamente");
+        }
+
+    };
 
     // Modal 
     function openModal() {
         setModalOpen(true);
-    }
+    };
     function afterModalOpen() {
 
-    }
+    };
     function closeModal() {
         setModalOpen(false);
-    }
+        setUpdate(Date.now())
+    };
 
     return(
         <>
@@ -148,15 +175,23 @@ const ListaProductos = () => {
                                             {producto.nombre}
                                         </td>
                                         <td className='list-cell'>
-                                            <button 
+
+                                            {/* <button 
+                                                type='button'
                                                 className='button-primary'
                                                 onClick={() => verPanelEditar(index)}
                                             >
                                                 Editar
-                                            </button>
-                                            <button className='button-primary'>
+                                            </button> */}
+
+                                            <button 
+                                                type='button'
+                                                className='button-primary'
+                                                onClick={() => eliminarProducto(producto.id)}
+                                            >
                                                 Eliminar
                                             </button>
+
                                         </td>
                                     </tr>
                                     {/* <tr
@@ -191,6 +226,7 @@ const ListaProductos = () => {
                             editProducto={editProducto}
                             listaCategorias={listaCategorias}
                             listaCaracteristicas={listaCaracteristicas}
+                            closeModal={closeModal}
                         />
                     </Modal>
                 </div>
