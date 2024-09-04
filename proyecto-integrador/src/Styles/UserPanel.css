@@ -10,7 +10,7 @@
 
 .left-side {
     background-color: #013365;
-    width: 25%;
+    width: clamp(50px, 20%, 150px);
     border-radius: 20px;
     text-align: center;
     color: white;
@@ -49,7 +49,7 @@
 }
 
 .tabs {
-    padding: 20px 60px;
+    padding: 20px 20px;
     width: 75%;
     position: relative;
 }

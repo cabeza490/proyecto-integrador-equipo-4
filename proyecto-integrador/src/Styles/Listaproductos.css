@@ -3,14 +3,14 @@
 
     --border-row-color: gray;
     --border-row-width: 1px;
-    --border-row-radius: 50px;
+    --border-row-radius: 20px;
 }
 
 .list-container {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    align-items:end;
-    justify-content: space-evenly;
+    align-items:start;
+    justify-content: space-evenly; */
     /* background-color: white; */
     /* width:fit-content; */
     padding: 10px 10px;
@@ -35,9 +35,9 @@
 }
 
 .create-product {
-    font-weight: bolder;
-    font-size: 30px;
-    aspect-ratio: 1/1;
+    font-weight: bold;
+    font-size: medium;
+    /* aspect-ratio: 1/1; */
 }
 
 .button-primary:active{
@@ -61,13 +61,14 @@
 .list-table td {
     /* background-color: white; */
     /* padding: 5px; */
-    padding: 6px 5px;
+    padding: 3px 5px;
     /* margin: 10px; */
     border-color: var(--border-row-color);
     border-style: solid;
     border-width: 0px;
     border-top-width: var(--border-row-width);
     border-bottom-width: var(--border-row-width);
+    font-size: large;
 }
 
 .list-table td:first-child {
@@ -78,11 +79,29 @@
     text-align: right;
 }
 
+.list-table td:nth-child(2) {
+    text-align: center;
+}
+
 .list-table td:last-child {
     border-top-right-radius: var(--border-row-radius);
     border-bottom-right-radius: var(--border-row-radius);
     border-right-width: var(--border-row-width);
     text-align: right;
+    /* padding-bottom: 5px; */
+}
+
+.list-table td:last-child button {
+    margin-left: 3px;
+}
+
+.list-table .edit-row {
+    background-color: lightgray;
+    border-color: lightgray;
+}
+
+.hidden-row {
+    display: none;
 }
 
 thead th:nth-child(1) {
@@ -92,21 +111,22 @@ thead th:nth-child(1) {
 
 thead th:nth-child(2) {
     width: auto;
+    text-align: center;
 }
 
 thead th:nth-child(3) {
-    width: auto;
+    width: 25%;
     text-align: right;
     padding-right: 20px;
 }
 
 
-.list-table tbody tr:hover td {
+.list-table tbody tr:hover td.list-cell {
     /* border: 1px solid grey; */
     /* background-color: #F0F0F0; */
     border-color: var(--primary-color);
     --border-row-width: 3px;
-    padding: 4px 5px;
+    padding: 1px 5px;
 }
 
 /* .list-table button {
@@ -136,3 +156,155 @@ thead th:nth-child(3) {
 .list-table button:active {
     background-color: darkgray;
 } */
+
+.edit-container {
+    width: 100%;
+}
+
+.ReactModal__Overlay {
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.ReactModal__Content {
+    inset: 5% !important;
+    /* height: fit-content; */
+    margin: 0px;
+    background-color: whitesmoke !important;
+    border-radius: 20px !important;
+    border-width: 0px !important;
+    box-shadow: 0px 7px 25px rgba(0, 0, 0, 0.7);
+}
+
+.modal-product {
+    text-align: center;
+}
+
+.title {
+    text-align: center;
+    width: 100%;
+}
+
+.row-table {
+    width: 100%;
+    font-size: large;
+    font-weight: bold;
+}
+
+
+.row-table tr td {
+    border: unset;
+    vertical-align: top;
+    text-align: left;
+}
+
+.column-table {
+    width: 100%;
+    padding: 0px 10px;
+}
+
+.column-table tr {
+    /* padding: 0px; */
+}
+
+.create-edit-input {
+    border-radius: 20px;
+    border: 1px solid gray;
+    padding: 5px;
+    width: 100%;
+
+    font-size: large;
+}
+
+textarea.create-edit-input {
+    height: 100px;
+    scrollbar-color: black;
+}
+
+textarea.create-edit-input::-webkit-scrollbar {
+    background-color: unset;
+    width: 10px;
+    height: 80%;
+}
+textarea.create-edit-input::-webkit-scrollbar-thumb {
+    background: lightgray;
+    border-radius: 5px;
+}
+textarea.create-edit-input::-webkit-scrollbar-track {
+    background-color: unset;
+}
+
+.create-edit-input.container {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 5px 10px;
+    background-color: white;
+}
+
+.create-edit-input.container {
+    margin-top: 2px;
+    width: auto;
+}
+
+.cost {
+    display: flex;
+    /* justify-content: space-between; */
+    gap: 10px;
+
+    background-color: white;
+}
+
+.no-style {
+    border: 0px;
+    padding: 0px;
+    width: auto;
+    background-color: unset;
+    font-size: large;
+    display: inline;
+}
+
+.delete-img {
+    cursor: pointer;
+}
+
+.no-style:focus {
+    border: 0px;
+}
+
+.select-caracteristicas {
+    background-color: white;
+}
+
+.select-caracteristicas.react-select__menu-list {
+    background-color: white;
+}
+
+.input-caracteristica {
+    width: 40%;
+}
+
+.add-btn {
+    background-color: grey;
+    color: white;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.bottom-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 0px 10px;
+}
+
+.create-edit {
+    font-size: large;
+    margin: 5px;
+}
+
+.mensaje-exito {
+    color: green;
+    font-weight: bold;
+    font-size: larger;
+}
