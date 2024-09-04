@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import Select from 'react-select'
-import CustomOption from './utils/CustomOption';
+import { postProducto } from '../api/productos-Apis';
 
-const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas}) => {
+
+const CreateEdit = ({
+    nuevoProducto = true, 
+    editProducto = {
+        nombre: "",
+        descripcion: "",
+        categoria_id: 0, //integer
+        precio: 0.0, //double
+        imagenes: [],
+        caracteristicas: [{
+            id: "",
+            valor: ""
+        }]
+    }, 
+    listaCategorias, 
+    listaCaracteristicas
+}) => {
     // Éste comoponente irá dentro de un modal, contendrá un wizard para ayudar en la creación de un producto nuevo o editarlo
+
+    const [userData, setUserData] = useState({})
     
     // const { nombre, descripcion, categoria_id, precio, imagenes } = req.body;
     const [producto, setProducto] = useState({
@@ -22,17 +39,15 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
         valor: ""
     }]);
 
-    // const [listaCategorias, setListaCategorias] = useState([]);
-    
-    const [errors, setErrors] = useState({});
-    const [valid, setValid] = useState({});
-    const [touched, setTouched] = useState({});
-    const [submitMessage, setSubmitMessage] = useState(""); 
-    const [isFormValid, setIsFormValid] = useState(false);
+    const [verMensajeExito, setVerMensajeExito] = useState(true);
 
-    // pciones para el react-form
-    const [opcionesCategorias, setOpcionesCategorias] = useState([]);
-    const [opcionesCaracteristicas, setOpcionesCaracteristicas] = useState([]);
+    
+    // const [errors, setErrors] = useState({});
+    // const [valid, setValid] = useState({});
+    // const [touched, setTouched] = useState({});
+    // const [submitMessage, setSubmitMessage] = useState(""); 
+    // const [isFormValid, setIsFormValid] = useState(false);
+
 
 
     const handleChange = (event) => {
@@ -72,7 +87,7 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
         // console.log(imagenes);
     };
     
-    // manejo de las características, array de objetos con nombre, valor e ícono
+    // manejo de las características, array de objetos con id y valor
     const handleAgregarOtraCaracteristica = () => {
         setCaracteristicas([...caracteristicas, {
             id: "",
@@ -120,20 +135,25 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
     };
 
     useEffect(() => {
-        setOpcionesCategorias(listaCategorias.map((categoria) => ({
-            value: categoria.id,
-            label: categoria.nombre,
-        })));
-        // console.log(listaCaracteristicas);
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (userData) {
+            setUserData(userData);
+        }
+        console.log(nuevoProducto);
+        console.log(editProducto);
+
+        if (nuevoProducto === false) {
+            setProducto({
+                nombre: editProducto.nombre,
+                descripcion: editProducto.descripcion,
+                categoria_id: editProducto.categoria_id,
+                precio: editProducto.precio
+            })
+    
+            setImagenes(editProducto.imagenes)
+            setCaracteristicas(editProducto.caracteristica)
+        }
         
-
-        setOpcionesCaracteristicas(listaCaracteristicas.map((caracteristica) => ({
-            value: caracteristica.id,
-            label: caracteristica.nombre,
-            icon: caracteristica.icono
-        })));
-
-
     }, [])
 
     // Debugging -------------------------------
@@ -145,11 +165,58 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
         console.log(producto);
         console.log(imagenes);
         console.log(caracteristicas);
+        // setVerMensajeExito(false);
     }, [producto, imagenes, caracteristicas])
     // Debugging -------------------------------
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
+
+        try {
+            const nuevoProducto = {
+                nombre: producto.nombre,
+                descripcion: producto.descripcion,
+                categoria_id: producto.categoria_id,
+                precio: producto.precio,
+                imagenes: imagenes,
+                caracteristicas: caracteristicas,
+                keywords: ""
+            };
+
+            console.log(nuevoProducto);
+            
+
+            const response = await postProducto(userData.rolId, nuevoProducto);
+            if (response.status === 400) {
+                console.log("El nombre del producto ya está en uso");
+                return;
+            }
+
+            console.log("Producto registrado exitosamente");
+
+            setProducto({
+                nombre: "",
+                descripcion: "",
+                categoria_id: 0, //integer
+                precio: 0.0, //double
+            });
+
+            setImagenes([""]);
+            
+            setCaracteristicas([{
+                id: "",
+                valor: ""
+            }])
+
+            setVerMensajeExito(true);
+            console.log("Producto registrado exitosamente");
+            
+
+            // resetear estados auxiliares
+
+        } catch (error) {
+            console.log(error);
+        };
     };
 
     return (
@@ -185,7 +252,12 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
                                         </td>
                                         <td>
                                             <div className='create-edit-input cost'>
-                                                <button className='no-style'>UYU</button>
+                                                <button 
+                                                    className='no-style'
+                                                    type="button"
+                                                >
+                                                    UYU
+                                                </button>
                                                 <input 
                                                     type="number" 
                                                     name="precio" 
@@ -242,13 +314,20 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
                                                         <button 
                                                             className='no-style delete-img'
                                                             onClick={() => handleEliminarInput(index)}
+                                                            type="button"
                                                         >
                                                             <FontAwesomeIcon icon={faXmark} />
                                                         </button>
                                                     }
                                                 </div>
                                             ))}
-                                            <button onClick={handleAgregarOtraImagen}>Agregar otra imagen</button>
+                                            <button 
+                                                onClick={handleAgregarOtraImagen}
+                                                type="button"
+                                                className='create-edit-input add-btn'
+                                            >
+                                                Agregar otra imagen +
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -280,10 +359,6 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
                                                 ))}
                                             </select>
 
-                                            {/* <Select 
-                                                options={opcionesCategorias}
-                                            /> */}
-
                                         </td>
                                     </tr>
                                     <tr>
@@ -292,15 +367,10 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
                                         </td>
                                         <td>
                                             {caracteristicas.map((caracteristica, index) => (
-                                                <div key={index} className='create-edit-input'>
-                                                    {/* <Select
-                                                        className='select-caracteristicas'
-                                                        options={opcionesCaracteristicas}
-                                                        components={{Option: CustomOption}}
-                                                    /> */}
+                                                <div key={index} className='create-edit-input container'>
 
                                                     <select 
-                                                        className='input-caracteristica'
+                                                        className='input-caracteristica no-style'
                                                         name="" 
                                                         id=""
                                                         value={caracteristica.id}
@@ -322,24 +392,28 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
                                                     </select>
 
                                                     <input 
-                                                        className='input-caracteristica'
+                                                        className='input-caracteristica no-style'
                                                         type="text" 
                                                         placeholder='Detalle...'
                                                         value={caracteristica.valor}
                                                         onChange={(e) => handleChangeCaracteristicasValor(e, index)}
                                                     />
                                                     <button
+                                                        type="button"
                                                         onClick={(e) => handleEliminarCaracteristica(e, index)}
+                                                        className='no-style delete-img'
                                                     >
-                                                        X
+                                                        <FontAwesomeIcon icon={faXmark} />
                                                     </button>
                                                 </div>
                                             ))}
                                             
                                             <button
+                                                type="button"
+                                                className='create-edit-input add-btn'
                                                 onClick={handleAgregarOtraCaracteristica}
                                             >
-                                                Agregar característica
+                                                Agregar característica +
                                             </button>
                                         </td>
                                     </tr>
@@ -348,6 +422,31 @@ const CreateEdit = ({nuevoProducto = true, listaCategorias, listaCaracteristicas
                             </td>
                         </tr>
                     </table>
+
+                    {verMensajeExito === true ? 
+                        <p className='mensaje-exito'>
+                            Producto registrado correctamente!
+                        </p>: 
+                        <p className='mensaje-exito'>
+                            {/* editando... */}
+                        </p>}
+
+                    <div className='bottom-container'>
+                        <button 
+                            type='submit'
+                            className='button-primary create-edit'
+                        >
+                            Guardar
+                        </button>
+
+                        {/* <button
+                            type="button"
+                            className='button-primary create-edit'
+                        >
+                            Volver
+                        </button> */}
+
+                    </div>
                 
                 </form>
 

@@ -3,7 +3,7 @@
 
     --border-row-color: gray;
     --border-row-width: 1px;
-    --border-row-radius: 50px;
+    --border-row-radius: 20px;
 }
 
 .list-container {
@@ -95,6 +95,15 @@
     margin-left: 3px;
 }
 
+.list-table .edit-row {
+    background-color: lightgray;
+    border-color: lightgray;
+}
+
+.hidden-row {
+    display: none;
+}
+
 thead th:nth-child(1) {
     width: 40px;
     text-align: right;
@@ -112,7 +121,7 @@ thead th:nth-child(3) {
 }
 
 
-.list-table tbody tr:hover td {
+.list-table tbody tr:hover td.list-cell {
     /* border: 1px solid grey; */
     /* background-color: #F0F0F0; */
     border-color: var(--primary-color);
@@ -148,6 +157,10 @@ thead th:nth-child(3) {
     background-color: darkgray;
 } */
 
+.edit-container {
+    width: 100%;
+}
+
 .ReactModal__Overlay {
     z-index: 100;
     background-color: rgba(255, 255, 255, 0.3) !important;
@@ -169,6 +182,7 @@ thead th:nth-child(3) {
 
 .title {
     text-align: center;
+    width: 100%;
 }
 
 .row-table {
@@ -177,9 +191,11 @@ thead th:nth-child(3) {
     font-weight: bold;
 }
 
-.row-table tr td {
-    vertical-align: top;
 
+.row-table tr td {
+    border: unset;
+    vertical-align: top;
+    text-align: left;
 }
 
 .column-table {
@@ -228,6 +244,7 @@ textarea.create-edit-input::-webkit-scrollbar-track {
 
 .create-edit-input.container {
     margin-top: 2px;
+    width: auto;
 }
 
 .cost {
@@ -265,4 +282,29 @@ textarea.create-edit-input::-webkit-scrollbar-track {
 
 .input-caracteristica {
     width: 40%;
+}
+
+.add-btn {
+    background-color: grey;
+    color: white;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.bottom-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 0px 10px;
+}
+
+.create-edit {
+    font-size: large;
+    margin: 5px;
+}
+
+.mensaje-exito {
+    color: green;
+    font-weight: bold;
+    font-size: larger;
 }

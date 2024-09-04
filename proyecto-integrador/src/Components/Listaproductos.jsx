@@ -9,9 +9,23 @@ import { getAllCaracteristicas } from '../api/caracteristicas-Apis';
 
 
 const ListaProductos = () => {
-    const [productos, setProductos] = useState([])
+    const [productos, setProductos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
+    const [verEdit, setVerEdit] = useState([]);
+    const [panelEditar, setPanelEditar] = useState(false)
+
+    // Estados para cargar el modal de editar
+    const [crearNuevo, setCrearNuevo] = useState(true);
+    const [editProducto, setEditProducto] = useState({
+        nombre: "",
+        descripcion: "",
+        categoria_id: 0, //integer
+        precio: 0.0, //double
+        imagenes: [],
+        caracteristicas: [{}]
+    });
+    let productoAEditar = {}
 
     // estados para las características y categorías
     const [listaCategorias, setListaCategorias] = useState([]);
@@ -30,11 +44,12 @@ const ListaProductos = () => {
         } 
         getData()
     }, [])
-    console.log(productos);
-    console.log(productos.length);
+    // console.log(productos);
+    // console.log(productos.length);
 
     
     useEffect(() => {
+
 
         // Categorías
         const getListaCategorias = async () => {
@@ -60,6 +75,41 @@ const ListaProductos = () => {
 
     }, [])
 
+    useEffect(() => {
+        setVerEdit(productos.map(() => false))
+    }, [productos])
+
+    useEffect(() => {
+        console.log(verEdit);
+        
+    }, [verEdit])
+
+    const verPanelCrear = () => {
+        setCrearNuevo(true);
+        setEditProducto({});
+        openModal();
+    }
+
+    const verPanelEditar = (index) => {
+        // setCrearNuevo(false);
+        // setEditProducto(productos[index]);
+        // productoAEditar = productos[index];
+        // console.log(productoAEditar);
+
+
+        let arrayNuevo = verEdit;
+        console.log("array :", arrayNuevo);
+        
+        arrayNuevo[index] = !arrayNuevo[index];
+        // console.log(arrayNuevo);
+        
+        setVerEdit(arrayNuevo);
+        console.log("hola", verEdit);
+        
+        setPanelEditar(!panelEditar);
+        
+    }
+
     // Modal 
     function openModal() {
         setModalOpen(true);
@@ -75,7 +125,7 @@ const ListaProductos = () => {
         <>
             {cargando ? (<p>cargando...</p>) : (
                 <div className='list-container'>
-                    <button className='button-primary create-product' onClick={openModal}>
+                    <button className='button-primary create-product' onClick={verPanelCrear}>
                         Agregar producto +
                     </button>
 
@@ -88,22 +138,45 @@ const ListaProductos = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {productos.length > 0 ?
-                            (productos.map(producto => (
-                            <tr key={producto.id}>
-                                <td>{producto.id}</td>
-                                <td className='nombre-producto'>
-                                    {producto.nombre}
-                                </td>
-                                <td>
-                                    <button className='button-primary'>Editar
-                                        {/* <FontAwesomeIcon icon={faPen} fixedWidth /> */}
-                                    </button>
-                                    <button className='button-primary'>Eliminar
-                                        {/* <FontAwesomeIcon icon={faXmark} fixedWidth  /> */}
-                                    </button>
-                                </td>
-                            </tr>)
+                            {productos.length > 0 ?(
+                                
+                                productos.map((producto, index) => (
+                                    <>
+                                    <tr key={producto.id}>
+                                        <td className='list-cell'>{producto.id}</td>
+                                        <td className='nombre-producto list-cell'>
+                                            {producto.nombre}
+                                        </td>
+                                        <td className='list-cell'>
+                                            <button 
+                                                className='button-primary'
+                                                onClick={() => verPanelEditar(index)}
+                                            >
+                                                Editar
+                                            </button>
+                                            <button className='button-primary'>
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {/* <tr
+                                        className={verEdit[index] ? "edit-container":"hidden-row"}
+                                    >
+                                        <td colSpan={3}>
+                                            <div
+                                            >
+                                                <CreateEdit
+                                                    nuevoProducto={false}
+                                                    editProducto={producto[index]}
+                                                    listaCategorias={listaCategorias}
+                                                    listaCaracteristicas={listaCaracteristicas}
+                                                />
+                                            </div>
+                                            
+                                        </td>
+                                    </tr> */}
+                                    </>
+                                )
                             )): (<p>No se encontraron productos</p>)}
                         </tbody>
                     </table> 
@@ -115,6 +188,7 @@ const ListaProductos = () => {
                     >
                         <CreateEdit
                             nuevoProducto={true}
+                            editProducto={editProducto}
                             listaCategorias={listaCategorias}
                             listaCaracteristicas={listaCaracteristicas}
                         />
