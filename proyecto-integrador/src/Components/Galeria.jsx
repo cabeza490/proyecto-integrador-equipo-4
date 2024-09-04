@@ -4,8 +4,12 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import '../Styles/Galeria.css';
 import { Link } from 'react-router-dom';
+import { useCateringStates } from '../Components/utils/globalContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
-const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTotalResults }) => {
+const Galeria = ({ searchTerm = '', setNoResults }) => {
+  const { state, dispatch } = useCateringStates();
   const [shuffledImages, setShuffledImages] = useState([]);
   
   useEffect(() => {
@@ -21,20 +25,13 @@ const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTo
         try {
           const response = await axios.get('http://localhost:3000/api/productos');
           const productos = response.data.productos;
-
-          // Filtrar por categorías seleccionadas
-          const filteredByCategory = selectedCategories.length > 0
-            ? productos.filter(producto => selectedCategories.includes(producto.categoria_id))
-            : productos;
-
-          const images = filteredByCategory.flatMap(producto => producto.imagenes.map(imagen => ({
+          const images = productos.flatMap(producto => producto.imagenes.map(imagen => ({
             src: imagen.url,
             title: producto.nombre,
             description: producto.descripcion,
             id: producto.id,
             keyword: producto.keyword // Asume que cada producto tiene una propiedad 'keyword'
           })));
-
           const shuffled = shuffleArray(images);
 
           // Filtrar por término de búsqueda (título o palabra clave)
@@ -46,12 +43,10 @@ const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTo
             : shuffled;
 
           setShuffledImages(filteredImages.slice(0, numberOfImages));
-          console.log('Filtered Images:', filteredImages.length);  // Verifica la cantidad de resultados filtrados
-          setTotalResults(filteredImages.length); // Actualizar el total de resultados
-          setNoResults(filteredImages.length === 0); // Actualizar estado si no hay resultados
+          setNoResults(filteredImages.length === 0);
         } catch (error) {
           console.error('Error al obtener las imágenes:', error);
-          setNoResults(true); // Si ocurre un error, también se considera que no hay resultados
+          setNoResults(true);
         }
       };
 
@@ -62,7 +57,11 @@ const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTo
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, [searchTerm, selectedCategories, setNoResults, setTotalResults]); // Agregar selectedCategories y setTotalResults como dependencias
+  }, [searchTerm, setNoResults]);
+
+  useEffect(() => {
+    console.log("Favoritos actualizados:", state.favs);
+  }, [state.favs]);
 
   const shuffleArray = (array) => {
     let shuffledArray = array.slice();
@@ -71,6 +70,18 @@ const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTo
       [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
     }
     return shuffledArray;
+  };
+
+  const handleFavoriteClick = (product) => {
+    if (isFavorite(product)) {
+      dispatch({ type: "REMOVE_BY_ID", payload: product.id });
+    } else {
+      dispatch({ type: "ADD_FAVORITES", payload: product });
+    }
+  };
+
+  const isFavorite = (product) => {
+    return state.favs.some(fav => fav.id === product.id);
   };
 
   return (
@@ -84,6 +95,11 @@ const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTo
               <p>{image.description}</p>
             </div>
           </Link>
+          <button 
+            onClick={() => handleFavoriteClick(image)} 
+            className={`favButton ${isFavorite(image) ? 'favorite' : ''}`}>
+            <FontAwesomeIcon icon={faHeart} />
+          </button>
         </div>
       ))}
     </div>
@@ -92,9 +108,7 @@ const Galeria = ({ searchTerm = '', selectedCategories = [], setNoResults, setTo
 
 Galeria.propTypes = {
   searchTerm: PropTypes.string.isRequired,
-  selectedCategories: PropTypes.arrayOf(PropTypes.number),  // Aceptar un array de IDs de categorías
   setNoResults: PropTypes.func.isRequired,
-  setTotalResults: PropTypes.func.isRequired,  // Prop para actualizar el total de resultados
 };
 
 export default Galeria;

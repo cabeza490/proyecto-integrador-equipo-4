@@ -10,6 +10,7 @@ import Login from './Routes/Login';
 import Register from './Routes/Register';
 import AdminPanel from './Routes/AdminPanel';
 import UserPanel from './Routes/UserPanel';
+import Favorites from './Components/Favorites';
 import CateringContext from './Components/utils/globalContext';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/adminpanel" element={<AdminPanel />} />
               <Route path="/UserPanel" element={<UserPanel />} />
+              <Route path="favorites" element={<Favorites/>}/>
               <Route path="*" element={<h1>404 not found</h1>} />
             </Route>
           </Routes>

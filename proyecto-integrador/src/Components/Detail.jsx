@@ -125,8 +125,7 @@ const Detail = () => {
     const [disabledDates, setDisabledDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
-
-    const { state } = useCateringStates();
+    const { state, dispatch } = useCateringStates()
     const { userData } = state;
 
     const navigate = useNavigate();
@@ -134,7 +133,7 @@ const Detail = () => {
     const handleBackClick = () => {
         navigate('/');
     };
-
+    
     useEffect(() => {
         const getData = async () => {
             let getProductData = await getProductoById(id);
@@ -142,6 +141,7 @@ const Detail = () => {
         };
         getData();
     }, [id]);
+    
 
     const extractFontAwesomeIconName = (url) => {
         const match = url.match(/icons\/([^?]+)/);
