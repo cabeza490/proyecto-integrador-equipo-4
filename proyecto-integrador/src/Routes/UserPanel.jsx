@@ -1,5 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../Styles/UserPanel.css';
 import EditUserForm from '../Components/EditUserForm'; 
@@ -13,9 +14,10 @@ function UserPanel() {
     const [, setSelectedUserId] = useState(null);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true); // Estado para manejar la carga
+    const navigate = useNavigate()
     const { state } = useCateringStates();
     const { userData } = state;
-
+    const { favs } = state
     const fetchUserData = useCallback(async () => {
         try {
             const response = await axios.get('http://localhost:3000/api/usuarios');
@@ -87,7 +89,9 @@ function UserPanel() {
         const lastInitial = apellido ? apellido[0].toUpperCase() : ' ';
         return `${firstInitial}${lastInitial}`;
     };
-
+    const handleNavigateToFavorites = () => {
+        navigate('/favorites');
+    };
     return (
         <>
             <div className='user-panel'>
@@ -114,6 +118,7 @@ function UserPanel() {
                             <div className='info-dropdown'>
                                 <button>Historial de compras</button>
                                 <button>Mis reseñas</button>
+                                <button onClick={handleNavigateToFavorites}>Mis Favoritos</button>
                                 <button>Seguridad</button>
                                 <button>Tarjetas</button>
                                 <button>Privacidad</button>

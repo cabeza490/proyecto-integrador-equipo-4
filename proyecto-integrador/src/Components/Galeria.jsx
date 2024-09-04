@@ -1,11 +1,14 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import '../Styles/Galeria.css';
 import { Link } from 'react-router-dom';
+import { useCateringStates } from '../Components/utils/globalContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
-const Galeria = ({ searchTerm = '', setNoResults }) => {  // Agregar setNoResults
+const Galeria = ({ searchTerm = '', setNoResults }) => {
+  const { state, dispatch } = useCateringStates();
   const [shuffledImages, setShuffledImages] = useState([]);
 
   useEffect(() => {
@@ -28,16 +31,16 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {  // Agregar setNoResult
             id: producto.id
           })));
           const shuffled = shuffleArray(images);
-          
+
           const filteredImages = searchTerm
             ? shuffled.filter(image => image.title.toLowerCase().includes(searchTerm.toLowerCase()))
             : shuffled;
 
           setShuffledImages(filteredImages.slice(0, numberOfImages));
-          setNoResults(filteredImages.length === 0); // Actualizar estado si no hay resultados
+          setNoResults(filteredImages.length === 0);
         } catch (error) {
           console.error('Error al obtener las imágenes:', error);
-          setNoResults(true); // Si ocurre un error, también se considera que no hay resultados
+          setNoResults(true);
         }
       };
 
@@ -48,7 +51,11 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {  // Agregar setNoResult
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
-  }, [searchTerm, setNoResults]); // Agregar setNoResults como dependencia
+  }, [searchTerm, setNoResults]);
+
+  useEffect(() => {
+    console.log("Favoritos actualizados:", state.favs);
+  }, [state.favs]);
 
   const shuffleArray = (array) => {
     let shuffledArray = array.slice();
@@ -57,6 +64,18 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {  // Agregar setNoResult
       [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
     }
     return shuffledArray;
+  };
+
+  const handleFavoriteClick = (product) => {
+    if (isFavorite(product)) {
+      dispatch({ type: "REMOVE_BY_ID", payload: product.id });
+    } else {
+      dispatch({ type: "ADD_FAVORITES", payload: product });
+    }
+  };
+
+  const isFavorite = (product) => {
+    return state.favs.some(fav => fav.id === product.id);
   };
 
   return (
@@ -70,6 +89,11 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {  // Agregar setNoResult
               <p>{image.description}</p>
             </div>
           </Link>
+          <button 
+            onClick={() => handleFavoriteClick(image)} 
+            className={`favButton ${isFavorite(image) ? 'favorite' : ''}`}>
+            <FontAwesomeIcon icon={faHeart} />
+          </button>
         </div>
       ))}
     </div>
@@ -78,9 +102,7 @@ const Galeria = ({ searchTerm = '', setNoResults }) => {  // Agregar setNoResult
 
 Galeria.propTypes = {
   searchTerm: PropTypes.string.isRequired,
-  setNoResults: PropTypes.func.isRequired,  // Agregar PropTypes para setNoResults
+  setNoResults: PropTypes.func.isRequired,
 };
 
 export default Galeria;
-
-

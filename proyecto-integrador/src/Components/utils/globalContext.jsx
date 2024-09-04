@@ -68,8 +68,3 @@ export default CateringContext;
 
 export const useCateringStates = () => useContext(cateringStates);
 
-export const ThemeWrapper = ({ children, theme }) => {
-  const themeClass = theme === 'dark' ? 'dark' : 'light';
-  return <div className={themeClass}>{children}</div>;
-};
-

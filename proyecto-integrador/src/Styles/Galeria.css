@@ -41,7 +41,20 @@
   }
   .image-card a{
     text-decoration: none;
- 
+  }
+  .favButton{
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 15%;
+    margin-right: 5%;
+  }
+  .favButton .fa-heart {
+    color: gray; /* Color por defecto del icono */
+  }
+  
+  .favButton.favorite .fa-heart {
+    color: red; /* Color del icono cuando es favorito */
   }
 
   @media (min-width: 481px) {
