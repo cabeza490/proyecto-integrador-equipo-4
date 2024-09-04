@@ -2,10 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
-import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../Styles/Search.modules.css';
 import reservas from '../utils/reservas';
+import axios from 'axios';
+
+// Convertir fechas reservadas a objetos Date
+const formattedReservas = reservas.map(reserva => ({
+    ...reserva,
+    fecha_reserva: new Date(reserva.fecha_reserva)
+}));
 
 const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     const [localSearchTerm, setLocalSearchTerm] = useState('');
@@ -54,7 +60,18 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     };
 
     const handleDateChange = (date) => {
-        setSelectedDate(date); // Actualiza el estado local
+        if (isDateDisabled(date)) {
+            setSelectedDate(null); // Impide la selección de fechas reservadas
+        } else {
+            setSelectedDate(date);
+        }
+    };
+
+    const isDateDisabled = (date) => {
+        return formattedReservas.some(reserva => {
+            const reservaDate = new Date(reserva.fecha_reserva);
+            return reservaDate.toDateString() === date.toDateString();
+        });
     };
 
     const handleSearchClick = () => {
@@ -66,6 +83,12 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         console.log("Término de búsqueda:", localSearchTerm);
         console.log("Fecha seleccionada:", selectedDate);
 
+        // Asegurarse de que selectedDate es un objeto Date válido
+        if (!(selectedDate instanceof Date) || isNaN(selectedDate.getTime())) {
+            console.error("Fecha seleccionada no es válida");
+            return;
+        }
+
         // Filtrar los productos que coinciden con el término de búsqueda y no están reservados para la fecha seleccionada
         const filteredProducts = allProducts.filter(product => {
             const matchesKeyword = product.nombre.toLowerCase().includes(localSearchTerm.toLowerCase()) ||
@@ -76,14 +99,21 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
             console.log("Coincide con palabra clave:", matchesKeyword);
 
             // Verificar si el producto está reservado en la fecha seleccionada
-            const isAvailable = reservas.some(reserva => 
-                reserva.id === product.id &&
-                new Date(reserva.fecha_reserva).toDateString() === selectedDate.toDateString()
-            );
+            const isAvailable = !formattedReservas.some(reserva => {
+                const reservaDate = new Date(reserva.fecha_reserva);
+                const selectedDateFormatted = new Date(selectedDate);
 
-            console.log("Disponible en la fecha seleccionada:", !isAvailable);
+                console.log("Reserva:", reserva);
+                console.log("Fecha Reserva:", reservaDate.toDateString());
+                console.log("Fecha Seleccionada:", selectedDateFormatted.toDateString());
 
-            return matchesKeyword && !isAvailable; // Excluye productos reservados
+                return reserva.id === product.id &&
+                       reservaDate.toDateString() === selectedDateFormatted.toDateString();
+            });
+
+            console.log("Disponible en la fecha seleccionada:", isAvailable);
+
+            return matchesKeyword && isAvailable; // Excluye productos reservados
         });
 
         console.log("Productos filtrados:", filteredProducts);
@@ -141,6 +171,9 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
                         placeholderText="Fecha"
                         className="search-date"
                         id="date"
+                        dayClassName={date =>
+                            isDateDisabled(date) ? 'disabled-date' : undefined
+                        }
                     />
                     <button className="search-button" onClick={handleSearchClick}>
                         <img src='/search-icon.png' alt="search-icon" className='search-icon' />
@@ -158,7 +191,3 @@ Search.propTypes = {
 };
 
 export default Search;
-
-
-
-
