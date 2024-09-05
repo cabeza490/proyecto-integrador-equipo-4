@@ -189,7 +189,7 @@ const ListaProductos = () => {
                                                 className='button-primary'
                                                 onClick={() => eliminarProducto(producto.id)}
                                             >
-                                                Eliminar
+                                                Eliminar Producto
                                             </button>
 
                                         </td>
