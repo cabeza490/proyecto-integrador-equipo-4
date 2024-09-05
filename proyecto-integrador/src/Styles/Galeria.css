@@ -60,7 +60,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #002E5D; /* Fondo del contenedor de las flechas */
+  background-color: #F0F0F0; /* Fondo del contenedor de las flechas */
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 2%;
@@ -69,8 +69,8 @@
 .pagination-controls button {
   background: none;
   border: none;
-  color: white; /* Color de las flechas */
-  font-size: 24px; /* Tamaño de las flechas */
+  color: #002E5D; /* Color de las flechas */
+  font-size: 30px; /* Tamaño de las flechas */
   cursor: pointer;
 }
 
@@ -81,8 +81,8 @@
 
 .pagination-controls .page-number {
   color: #002E5D; /* Color del número de página */
-  background-color: white; /* Fondo blanco para contraste */
-  font-size: 18px;
+  background-color: #F0F0F0; /* Fondo blanco para contraste */
+  font-size: 1.5rem;
   font-weight: bold;
   padding: 5px 10px;
   border-radius: 5px;
