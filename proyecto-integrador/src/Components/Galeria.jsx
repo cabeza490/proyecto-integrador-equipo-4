@@ -30,7 +30,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
             title: producto.nombre,
             description: producto.descripcion,
             id: producto.id,
-            keyword: producto.keyword,
+            keywords: producto.keywords,  // Cambio aquí
             categoria_id: producto.categoria_id // Incluye la categoría del producto
           })));
           const shuffled = shuffleArray(images);
@@ -39,7 +39,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
           const filteredImages = shuffled.filter(image => {
             const matchesSearchTerm = searchTerm
               ? image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                image.keyword.toLowerCase().includes(searchTerm.toLowerCase())
+                image.keywords.toLowerCase().includes(searchTerm.toLowerCase()) // Cambio aquí
               : true;
 
             const matchesCategory = selectedCategories.length === 0 ||
@@ -121,4 +121,5 @@ Galeria.propTypes = {
 };
 
 export default Galeria;
+
 
