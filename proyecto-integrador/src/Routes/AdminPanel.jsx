@@ -125,7 +125,7 @@ function AdminPanel() {
                             <div className='info-dropdown'>
                                 <button>Historial de compras</button>
                                 <button>Mis reseñas</button>
-                                <button onClick={handleNavigateToFavorites}>Mis Favoritos</button>
+                                <button onClick={handleNavigateToFavorites()}>Mis Favoritos</button>
                                 <button>Seguridad</button>
                                 <button>Tarjetas</button>
                                 <button>Privacidad</button>
