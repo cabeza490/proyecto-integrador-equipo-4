@@ -18,19 +18,21 @@ const ListaProductos = () => {
 
     // Estados para el panel de editar
     const [verEdit, setVerEdit] = useState([]);
-    const [panelEditar, setPanelEditar] = useState(false)
+    // const [panelHabilitado, setPanelHabilitado] = useState(false)
+    let panelHabilitado = false
 
     // Estados para cargar el modal de editar
     const [crearNuevo, setCrearNuevo] = useState(true);
     const [editProducto, setEditProducto] = useState({
+        id: "",
         nombre: "",
         descripcion: "",
         categoria_id: 0, //integer
         precio: 0.0, //double
         imagenes: [],
-        caracteristicas: [{}]
+        caracteristicas: [{}],
+        keywords: ""
     });
-    let productoAEditar = {}
 
     // estados para las características y categorías
     const [listaCategorias, setListaCategorias] = useState([]);
@@ -87,35 +89,44 @@ const ListaProductos = () => {
     }, [productos])
 
     useEffect(() => {
-        console.log(verEdit);
+        // console.log(verEdit);
         
     }, [verEdit])
 
     const verPanelCrear = () => {
         setCrearNuevo(true);
-        setEditProducto({});
+        setEditProducto({
+            id: "",
+            nombre: "",
+            descripcion: "",
+            categoria_id: 0, //integer
+            precio: 0.0, //double
+            imagenes: [""],
+            caracteristicas: [{}],
+            keywords: ""
+        });
         openModal();
     }
 
     const verPanelEditar = (index) => {
-        // setCrearNuevo(false);
-        // setEditProducto(productos[index]);
-        // productoAEditar = productos[index];
-        // console.log(productoAEditar);
-
-
-        let arrayNuevo = verEdit;
-        console.log("array :", arrayNuevo);
         
-        arrayNuevo[index] = !arrayNuevo[index];
-        // console.log(arrayNuevo);
-        
-        setVerEdit(arrayNuevo);
-        console.log("hola", verEdit);
-        
-        setPanelEditar(!panelEditar);
+        // setPanelEditar(!panelEditar);
+        setCrearNuevo(false);
+        setEditProducto(productos[index]);
+        // console.log(editProducto);
+        openModal();
         
     };
+
+    useEffect(() => {
+        if (panelHabilitado) {
+            openModal();
+            console.log("hola");
+        }
+        panelHabilitado = true
+        console.log("editProduct actualizado");
+        console.log(panelHabilitado);
+    }, [editProducto]);
 
     // Eliminar producto
     const eliminarProducto = async(id) => {
@@ -150,7 +161,7 @@ const ListaProductos = () => {
         <>
             {cargando ? (<p>cargando...</p>) : (
                 <div className='list-container'>
-                    <button className='button-primary create-product' onClick={verPanelCrear}>
+                    <button className='button-primary create-product' onClick={() => verPanelCrear()}>
                         Agregar producto +
                     </button>
 
@@ -174,20 +185,20 @@ const ListaProductos = () => {
                                         </td>
                                         <td className='list-cell'>
 
-                                            {/* <button 
+                                            <button 
                                                 type='button'
                                                 className='button-primary'
                                                 onClick={() => verPanelEditar(index)}
                                             >
-                                                Editar
-                                            </button> */}
+                                                Editar Producto
+                                            </button>
 
                                             <button 
                                                 type='button'
                                                 className='button-primary'
                                                 onClick={() => eliminarProducto(producto.id)}
                                             >
-                                                Eliminar
+                                                Eliminar Producto
                                             </button>
 
                                         </td>
@@ -220,7 +231,7 @@ const ListaProductos = () => {
                         contentLabel='Modal create product'
                     >
                         <CreateEdit
-                            nuevoProducto={true}
+                            nuevoProducto={crearNuevo}
                             editProducto={editProducto}
                             listaCategorias={listaCategorias}
                             listaCaracteristicas={listaCaracteristicas}

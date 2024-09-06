@@ -1,38 +1,49 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { postProducto } from '../api/productos-Apis';
+import { postProducto, putProducto, getProductoById } from '../api/productos-Apis';
 
 
 const CreateEdit = ({
     nuevoProducto = true, 
     editProducto = {
+        id: "",
         nombre: "",
         descripcion: "",
         categoria_id: 0, //integer
         precio: 0.0, //double
-        imagenes: [],
+        imagenes: [""],
         caracteristicas: [{
             id: "",
             valor: ""
-        }]
+        }],
+        keywords: ""
     }, 
     listaCategorias, 
     listaCaracteristicas,
     closeModal
 }) => {
-    // Éste comoponente irá dentro de un modal, contendrá un wizard para ayudar en la creación de un producto nuevo o editarlo
+    // Éste comoponente irá dentro de un modal
 
     const [userData, setUserData] = useState({})
     
     // const { nombre, descripcion, categoria_id, precio, imagenes } = req.body;
+    // const [producto, setProducto] = useState({
+    //     nombre: "",
+    //     descripcion: "",
+    //     categoria_id: 0, //integer
+    //     precio: 0.0, //double
+    //     keywords: ""
+    // });
+
     const [producto, setProducto] = useState({
+        id: "",
         nombre: "",
         descripcion: "",
         categoria_id: 0, //integer
         precio: 0.0, //double
-        keywords: ""
-    });
+        keywords: ""}
+    );
 
     const [imagenes, setImagenes] = useState([""]);
 
@@ -42,6 +53,8 @@ const CreateEdit = ({
     }]);
 
     const [verMensajeExito, setVerMensajeExito] = useState(false);
+
+    const [cargando, setCargando] = useState(true)
 
     
     // const [errors, setErrors] = useState({});
@@ -153,16 +166,48 @@ const CreateEdit = ({
         console.log(editProducto);
 
         if (nuevoProducto === false) {
-            setProducto({
-                nombre: editProducto.nombre,
-                descripcion: editProducto.descripcion,
-                categoria_id: editProducto.categoria_id,
-                precio: editProducto.precio
-            })
-    
-            setImagenes(editProducto.imagenes)
-            setCaracteristicas(editProducto.caracteristica)
+            const getData = async() => {
+                try {
+                    let productoAEditar = await getProductoById(editProducto.id);
+                    
+                    
+                    setProducto(productoAEditar);
+                    setImagenes(productoAEditar.imagenes.map((e) => e.url));
+                    setCaracteristicas([...productoAEditar.caracteristicas.map((carac) => ({
+                        id: carac.id,
+                        valor: carac.productos_caracteristicas.valor
+                    }))]);
+                } catch (error) {
+                    console.error("Error al obtener el producto");
+                } finally {
+                    setCargando(false);
+                    // console.log(producto);
+                    
+                };
+            } ;
+            getData();
+        } else {
+            const setData = async() => {
+                try {
+                    setProducto({
+                        nombre: editProducto.nombre,
+                        descripcion: editProducto.descripcion,
+                        categoria_id: editProducto.categoria_id,
+                        precio: editProducto.precio,
+                        keywords: editProducto.keywords
+                    })
+                    setImagenes(editProducto.imagenes)
+                    setCaracteristicas(editProducto.caracteristicas)
+                } catch (error) {
+                    console.error("Error al setear el producto");
+                } finally {
+                    setCargando(false);
+                }
+            };
+            setData();
         }
+
+        // setCargando(false)
         
     }, [])
 
@@ -171,37 +216,51 @@ const CreateEdit = ({
     //     console.log(listaCategorias);
     // }, [listaCategorias])
 
-    useEffect(() => {
-        console.log(producto);
-        console.log(imagenes);
-        console.log(caracteristicas);
-        setVerMensajeExito(false);
-    }, [producto, imagenes, caracteristicas])
+    // useEffect(() => {
+    //     console.log(producto);
+    //     console.log(imagenes);
+    //     console.log(caracteristicas);
+    //     // setVerMensajeExito(false);
+    //     // setCargando(false)
+    // }, [producto, imagenes, caracteristicas])
     // Debugging -------------------------------
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
 
         try {
-            const nuevoProducto = {
+            const nuevoProductoCrearEdit = {
                 nombre: producto.nombre,
                 descripcion: producto.descripcion,
                 categoria_id: producto.categoria_id,
                 precio: producto.precio,
                 imagenes: imagenes,
                 caracteristicas: caracteristicas,
-                keyword: producto.keywords
+                keywords: producto.keywords
             };
 
-            console.log(nuevoProducto);
+            console.log(nuevoProductoCrearEdit);
             
+            if (nuevoProducto) {
+                
+                const response = await postProducto(userData.rolId, nuevoProductoCrearEdit);
+                if (response.status === 400) {
+                    console.log("El nombre del producto ya está en uso");
+                    window.alert("El nombre del producto ya está en uso");
+                    return;
+                }
+                
+            } else {
 
-            const response = await postProducto(userData.rolId, nuevoProducto);
-            if (response.status === 400) {
-                console.log("El nombre del producto ya está en uso");
-                window.alert("El nombre del producto ya está en uso");
-                return;
+                const response = await putProducto(editProducto.id, nuevoProductoCrearEdit);
+                if (response.status === 404) {
+                    console.log("Error: Producto no encontrado");
+                    window.alert("Error: Producto no encontrado");
+                    return;
+                }
+
             }
+            
 
             setProducto({
                 nombre: "",
@@ -219,10 +278,18 @@ const CreateEdit = ({
             }])
 
             setVerMensajeExito(true);
-            window.alert("Producto registrado exitosamente");
-            console.log("Producto registrado exitosamente");
-            
+            if (nuevoProducto) {
 
+                window.alert("Producto registrado exitosamente");
+                console.log("Producto registrado exitosamente");
+
+            } else {
+
+                window.alert("Producto actualizado exitosamente");
+                console.log("Producto actualizado exitosamente");
+
+            }
+            
 
             // resetear estados auxiliares
 
@@ -237,9 +304,10 @@ const CreateEdit = ({
     return (
         <>
             <div className='title'>
-                <h1>Agregar producto</h1>
+                {nuevoProducto === true ? <h1>Agregar producto</h1> : <h1>Editar producto</h1>}
+                {/* <h1>Agregar producto</h1> */}
             </div>
-            <div className='row'>
+            {cargando ? "" : <div className='row'>
                 <form onSubmit={handleSubmit}>
                     <table className='row-table'>
 
@@ -405,7 +473,7 @@ const CreateEdit = ({
                                             <label>Características</label>
                                         </td>
                                         <td>
-                                            {caracteristicas.map((caracteristica, index) => (
+                                            {caracteristicas?.map((caracteristica, index) => (
                                                 <div key={index} className='create-edit-input container'>
 
                                                     <select 
@@ -489,7 +557,7 @@ const CreateEdit = ({
                 
                 </form>
 
-            </div>
+            </div>}
         </>
     )
 }

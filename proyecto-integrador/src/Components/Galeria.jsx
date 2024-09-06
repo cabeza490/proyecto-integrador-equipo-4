@@ -180,8 +180,7 @@ Galeria.propTypes = {
   searchTerm: PropTypes.string.isRequired,
   setNoResults: PropTypes.func.isRequired,
   selectedCategories: PropTypes.array.isRequired,
-  setTotalResults: PropTypes.func.isRequired, // Asegúrate de definirlo en PropTypes
+  setTotalResults: PropTypes.func.isRequired,
 };
 
 export default Galeria;
-
