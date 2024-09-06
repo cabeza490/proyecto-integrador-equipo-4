@@ -12,7 +12,7 @@ const CreateEdit = ({
         descripcion: "",
         categoria_id: 0, //integer
         precio: 0.0, //double
-        imagenes: [],
+        imagenes: [""],
         caracteristicas: [{
             id: "",
             valor: ""
@@ -169,28 +169,42 @@ const CreateEdit = ({
             const getData = async() => {
                 try {
                     let productoAEditar = await getProductoById(editProducto.id);
+                    
+                    
                     setProducto(productoAEditar);
                     setImagenes(productoAEditar.imagenes.map((e) => e.url));
-                    // setCaracteristicas([productoAEditar.caracteristica]);
+                    setCaracteristicas([...productoAEditar.caracteristicas.map((carac) => ({
+                        id: carac.id,
+                        valor: carac.productos_caracteristicas.valor
+                    }))]);
                 } catch (error) {
                     console.error("Error al obtener el producto");
                 } finally {
                     setCargando(false);
-                    console.log(producto);
+                    // console.log(producto);
                     
                 };
             } ;
             getData();
         } else {
-            setProducto({
-                nombre: editProducto.nombre,
-                descripcion: editProducto.descripcion,
-                categoria_id: editProducto.categoria_id,
-                precio: editProducto.precio,
-                keywords: editProducto.keywords
-            })
-            setImagenes(editProducto.imagenes)
-            setCaracteristicas(editProducto.caracteristica)
+            const setData = async() => {
+                try {
+                    setProducto({
+                        nombre: editProducto.nombre,
+                        descripcion: editProducto.descripcion,
+                        categoria_id: editProducto.categoria_id,
+                        precio: editProducto.precio,
+                        keywords: editProducto.keywords
+                    })
+                    setImagenes(editProducto.imagenes)
+                    setCaracteristicas(editProducto.caracteristicas)
+                } catch (error) {
+                    console.error("Error al setear el producto");
+                } finally {
+                    setCargando(false);
+                }
+            };
+            setData();
         }
 
         // setCargando(false)
@@ -202,13 +216,13 @@ const CreateEdit = ({
     //     console.log(listaCategorias);
     // }, [listaCategorias])
 
-    useEffect(() => {
-        console.log(producto);
-        console.log(imagenes);
-        console.log(caracteristicas);
-        // setVerMensajeExito(false);
-        // setCargando(false)
-    }, [producto, imagenes, caracteristicas])
+    // useEffect(() => {
+    //     console.log(producto);
+    //     console.log(imagenes);
+    //     console.log(caracteristicas);
+    //     // setVerMensajeExito(false);
+    //     // setCargando(false)
+    // }, [producto, imagenes, caracteristicas])
     // Debugging -------------------------------
 
     const handleSubmit = async (event) =>{
@@ -459,7 +473,7 @@ const CreateEdit = ({
                                             <label>Características</label>
                                         </td>
                                         <td>
-                                            {caracteristicas.map((caracteristica, index) => (
+                                            {caracteristicas?.map((caracteristica, index) => (
                                                 <div key={index} className='create-edit-input container'>
 
                                                     <select 

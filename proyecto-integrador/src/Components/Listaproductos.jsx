@@ -101,7 +101,7 @@ const ListaProductos = () => {
             descripcion: "",
             categoria_id: 0, //integer
             precio: 0.0, //double
-            imagenes: [],
+            imagenes: [""],
             caracteristicas: [{}],
             keywords: ""
         });
@@ -109,20 +109,6 @@ const ListaProductos = () => {
     }
 
     const verPanelEditar = (index) => {
-        // setCrearNuevo(false);
-        // setEditProducto(productos[index]);
-        // productoAEditar = productos[index];
-        // console.log(productoAEditar);
-
-
-        // let arrayNuevo = verEdit;
-        // console.log("array :", arrayNuevo);
-        
-        // arrayNuevo[index] = !arrayNuevo[index];
-        // // console.log(arrayNuevo);
-        
-        // setVerEdit(arrayNuevo);
-        // console.log("hola", verEdit);
         
         // setPanelEditar(!panelEditar);
         setCrearNuevo(false);
@@ -177,7 +163,7 @@ const ListaProductos = () => {
         <>
             {cargando ? (<p>cargando...</p>) : (
                 <div className='list-container'>
-                    <button className='button-primary create-product' onClick={verPanelCrear}>
+                    <button className='button-primary create-product' onClick={() => verPanelCrear()}>
                         Agregar producto +
                     </button>
 
@@ -206,16 +192,16 @@ const ListaProductos = () => {
                                                 className='button-primary'
                                                 onClick={() => verPanelEditar(index)}
                                             >
-                                                Editar
+                                                Editar Producto
                                             </button>
 
-                                            <button 
+                                            {/* <button 
                                                 type='button'
                                                 className='button-primary'
                                                 onClick={() => eliminarProducto(producto.id)}
                                             >
-                                                Eliminar
-                                            </button>
+                                                Eliminar Producto
+                                            </button> */}
 
                                         </td>
                                     </tr>
