@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -19,6 +19,8 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+    const suggestionsListRef = useRef(null); // Referencia para el contenedor de sugerencias
 
     useEffect(() => {
         // Fetch all products on mount
@@ -34,6 +36,15 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         fetchProducts();
     }, []);
 
+    useEffect(() => {
+        if (suggestionsListRef.current && selectedSuggestionIndex >= 0) {
+            const selectedItem = suggestionsListRef.current.children[selectedSuggestionIndex];
+            if (selectedItem) {
+                selectedItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    }, [selectedSuggestionIndex]);
+
     const handleSearchChange = (event) => {
         const value = event.target.value;
         setLocalSearchTerm(value);
@@ -42,14 +53,16 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
             const filteredSuggestions = allProducts.filter(product =>
                 product.nombre.toLowerCase().includes(value.toLowerCase()) ||
                 product.descripcion.toLowerCase().includes(value.toLowerCase()) ||
-                (product.keyword && product.keyword.toLowerCase().includes(value.toLowerCase()))
+                (product.keywords && product.keywords.toLowerCase().includes(value.toLowerCase()))
             );
 
             setSuggestions(filteredSuggestions);
             setShowSuggestions(true);
+            setSelectedSuggestionIndex(-1); // Reset selected suggestion
         } else {
             setSuggestions([]);
             setShowSuggestions(false);
+            setSelectedSuggestionIndex(-1); // Reset selected suggestion
         }
     };
 
@@ -57,6 +70,7 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         setLocalSearchTerm(suggestion.nombre);
         setSuggestions([]);
         setShowSuggestions(false);
+        setSelectedSuggestionIndex(-1); // Reset selected suggestion
     };
 
     const handleDateChange = (date) => {
@@ -93,7 +107,7 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         const filteredProducts = allProducts.filter(product => {
             const matchesKeyword = product.nombre.toLowerCase().includes(localSearchTerm.toLowerCase()) ||
                                     product.descripcion.toLowerCase().includes(localSearchTerm.toLowerCase()) ||
-                                    (product.keyword && product.keyword.toLowerCase().includes(localSearchTerm.toLowerCase()));
+                                    (product.keywords && product.keywords.toLowerCase().includes(localSearchTerm.toLowerCase()));
 
             console.log("Producto:", product);
             console.log("Coincide con palabra clave:", matchesKeyword);
@@ -132,8 +146,33 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     };
 
     const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            handleSearchClick(); // Ejecutar búsqueda al presionar Enter
+        switch (event.key) {
+            case 'ArrowDown':
+                event.preventDefault();
+                if (showSuggestions) {
+                    setSelectedSuggestionIndex(prevIndex =>
+                        Math.min(prevIndex + 1, suggestions.length - 1)
+                    );
+                }
+                break;
+            case 'ArrowUp':
+                event.preventDefault();
+                if (showSuggestions) {
+                    setSelectedSuggestionIndex(prevIndex =>
+                        Math.max(prevIndex - 1, 0)
+                    );
+                }
+                break;
+            case 'Enter':
+                event.preventDefault();
+                if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < suggestions.length) {
+                    handleSuggestionClick(suggestions[selectedSuggestionIndex]);
+                } else {
+                    handleSearchClick(); // Ejecutar búsqueda si no hay sugerencia seleccionada
+                }
+                break;
+            default:
+                break;
         }
     };
 
@@ -151,12 +190,12 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
                     onKeyDown={handleKeyDown}
                 />
                 {showSuggestions && (
-                    <ul className="suggestions-list">
-                        {suggestions.map((suggestion) => (
+                    <ul className="suggestions-list" ref={suggestionsListRef}>
+                        {suggestions.map((suggestion, index) => (
                             <li
                                 key={suggestion.id}
                                 onClick={() => handleSuggestionClick(suggestion)}
-                                className="suggestion-item"
+                                className={`suggestion-item ${index === selectedSuggestionIndex ? 'selected-suggestion' : ''}`}
                             >
                                 {suggestion.nombre}
                             </li>
@@ -191,3 +230,6 @@ Search.propTypes = {
 };
 
 export default Search;
+
+
+
