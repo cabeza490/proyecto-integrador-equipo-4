@@ -179,7 +179,6 @@ const ListaProductos = () => {
                             {productos.length > 0 ?(
                                 
                                 productos.map((producto, index) => (
-                                    <>
                                     <tr key={producto.id}>
                                         <td className='list-cell'>{producto.id}</td>
                                         <td className='nombre-producto list-cell'>
@@ -205,23 +204,6 @@ const ListaProductos = () => {
 
                                         </td>
                                     </tr>
-                                    {/* <tr
-                                        className={verEdit[index] ? "edit-container":"hidden-row"}
-                                    >
-                                        <td colSpan={3}>
-                                            <div
-                                            >
-                                                <CreateEdit
-                                                    nuevoProducto={false}
-                                                    editProducto={producto[index]}
-                                                    listaCategorias={listaCategorias}
-                                                    listaCaracteristicas={listaCaracteristicas}
-                                                />
-                                            </div>
-                                            
-                                        </td>
-                                    </tr> */}
-                                    </>
                                 )
                             )): (<p>No se encontraron productos</p>)}
                         </tbody>
@@ -238,6 +220,7 @@ const ListaProductos = () => {
                             listaCategorias={listaCategorias}
                             listaCaracteristicas={listaCaracteristicas}
                             closeModal={closeModal}
+                            ariaHideApp={false}
                         />
                     </Modal>
                 </div>

@@ -227,7 +227,7 @@ const Detail = () => {
                                             className="caracteristicas-img"
                                         />
                                     )}
-                                    <p>{caracteristica.valor}</p>
+                                    <p>{caracteristica.productos_caracteristicas.valor}</p>
                                 </div>
                             );
                         })
