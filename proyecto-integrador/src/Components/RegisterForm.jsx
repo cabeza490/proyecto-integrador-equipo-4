@@ -160,6 +160,7 @@ const RegisterForm = () => {
 
                 setSubmitMessage("Usuario registrado exitosamente.");
 
+                // Resetear el formulario
                 setUsuario({
                     nombre: "",
                     apellido: "",
@@ -174,6 +175,11 @@ const RegisterForm = () => {
                 setIsFormValid(false);
                 setShowPassword(false);
                 setShowConfirmPassword(false);
+
+                // Esperar 5 segundos y redirigir al login
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
 
             } catch (error) {
                 setSubmitMessage("El email ya está registrado.");
@@ -270,3 +276,4 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+

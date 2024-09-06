@@ -139,7 +139,7 @@ a {
     display: flex !important;
     flex-direction:row;
     position: absolute;
-    top: 60px; /* Ajusta según la altura del navbar */
+    top: 80%; /* Ajusta según la altura del navbar */
     left: 0;
     background-color: #003366;
     width: 100%;
