@@ -16,7 +16,6 @@
     color: white;
     padding: 5%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
 }
 
@@ -72,6 +71,7 @@
     padding: 20px;
     margin-left: 10%;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     color: black;
@@ -131,4 +131,93 @@
 .detail-button:hover {
     background-color: #FFFFFF;
     color: #003366;
+}
+
+@media (max-width: 930px) {
+    .favorite-info p {
+        font-size: 14px;
+        color: black;
+        margin: 5%;
+        /* padding-left: 8%; */
+    }
+}
+
+@media (max-width: 480px) {
+    .detail-button{
+        display: none;
+    }
+    .favorites-list {
+        grid-template-columns: 1fr; /* Mostrar una tarjeta por fila en dispositivos móviles */
+        display: grid;
+        gap: 15px;
+        margin-bottom: 3%;
+        margin-left: 5%;
+        padding: 10px;
+    }
+    .favorite-card {
+        background-color: #FFFFFF; /* Fondo blanco */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 20px rgba(29, 28, 28, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .favorite-card img {
+        width: 100%;
+        background-color: #002855; /* Fondo azul oscuro */
+        object-fit: cover;
+        height: 130px; /* Ajuste de altura de imagen en móvil */
+        margin: 0;
+    }
+
+.favorite-info {
+    padding: 15px;
+}
+
+.favorite-info h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 8px;
+}
+
+.favorite-info p {
+    font-size: 14px;
+    color: black;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.delete-button {
+    background-color: #002855; /* Azul oscuro para el botón */
+    color: #FFFFFF;
+    padding: 10px 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+}
+
+.delete-button:hover {
+    background-color: #FFFFFF; /* Cambiar tono al pasar el mouse */
+    color: #002855;
+    border-color: #002855;
+}
+    .left-side{
+        max-height: 400px;
+        width: 80%;
+        margin-top: 20px;
+        margin-left: 25px;
+    }
+    .user-panel{
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+
+    }
+    .user-avatar{
+        font-size: 8rem;
+    }
 }

@@ -1,31 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useCateringStates } from '../Components/utils/globalContext';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Styles/UserPanel.css';
-import '../Styles/Favorites.css'
+import '../Styles/Favorites.css';
 
 const Favorites = () => {
     const { state, dispatch } = useCateringStates();
     const { favs, userData } = state;
     const [isEditing, setIsEditing] = useState(false);
-
+    const [favoritos, setFavoritos] = useState([])
+    const navigate = useNavigate()
+    // Función para obtener las iniciales del usuario
     const getInitials = (nombre, apellido) => {
         return `${nombre.charAt(0)}${apellido.charAt(0)}`.toUpperCase();
     };
+    useEffect(() => {
+        axios.get(`http://localhost:3000/api/favoritos/${userData.id}`)
+            .then(response => {
+                setFavoritos(response.data);
+                console.log(response.data);
+                dispatch({type: "ADD_FAVORITES", payload: favoritos})
+            })
+            .catch(error => console.error("Error al obtener favoritos:", error));
+        }, [userData.id]);
+    
 
     const handleEditClick = (userId) => {
         console.log(`Edit user with ID: ${userId}`);
     };
-    const removeFav = (product) => {
+
+    // Función para eliminar un favorito del estado global y del backend
+    const eliminarFavorito = async (productId) => {
         try {
-            dispatch({ type: "REMOVE_BY_ID", payload: product });
-            alert(`Se ha eliminado el producto con ID ${product} de la lista de favoritos`)
+            /* dispatch({ type: 'REMOVE_BY_ID', payload: productId }); */
+            const response = await axios.delete(`http://localhost:3000/api/favoritos/${userData.id}/${productId}`);
+            console.log(response.data.message);
         } catch (error) {
-            alert('Ha habido un error al intentar borrar el producto')
+            console.error("Error al eliminar favorito:", error);
         }
-        
-    }
+    };
+    const toggleFavorito = (productoId) => {
+        console.log("Datos enviados a la API:", { usuarioId: state.userData.id, productoId });
+        axios.post(`http://localhost:3000/api/favoritos`, { usuarioId: state.userData.id, productoId })
+            .then(response => {
+            console.log(response.data.message);
+            navigate('/favorites')
+            })
+            .catch(error => console.error("Error al eliminar favorito:", error));
+        };
 
     return (
         <div className='user-panel'>
@@ -46,22 +69,29 @@ const Favorites = () => {
             <section className="favorites">
                 <h2>Mis Favoritos</h2>
                 <div className="favorites-list">
-                    {favs.length === 0? <p>No hay ningun elemento favorito</p> :
-                        favs.map((product, index) => (
+                    {favoritos.length === 0 ? (
+                        <p>No hay ningún elemento favorito</p>
+                    ) : (
+                        favoritos.map((product, index) => (
                             <div key={index} className="favorite-card">
-                                <img src={product.src} alt={`favorite-${index}`} />
+                                {/* Acceder a la primera imagen del array */}
+                                <img 
+                                    src={product.imagenes.length > 0 ? product.imagenes[0].url : 'default-image.jpg'} 
+                                    alt={`favorite-${index}`} 
+                                />
                                 <div className="favorite-info">
-                                    <h3>{product.title}</h3>
-                                    <p>{product.description}</p>
+                                    <h3>{product.nombre}</h3>
+                                    <p>{product.descripcion}</p>
                                     <div className="favorite-buttons">
-                                        <button className="delete-button" onClick={() => removeFav(product.id)}>Eliminar</button>
+                                        <button className="delete-button" onClick={() => toggleFavorito(product.id)}>Eliminar</button>
                                         <Link to={`/detail/${product.id}`} className="detail-button">
                                             Ver detalle
                                         </Link>
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        ))
+                    )}
                 </div>
             </section>
         </div>

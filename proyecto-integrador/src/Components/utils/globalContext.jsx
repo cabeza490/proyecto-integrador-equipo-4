@@ -27,6 +27,8 @@ export const cateringReducer = (state, action) => {
   switch (action.type) {
     case "ADD_FAVORITES":
       return { ...state, favs: [...state.favs, action.payload] };
+      case 'SET_FAVORITES':
+        return {...state, favs: action.payload.map(productId => ({ id: productId })),};
     case "REMOVE_BY_ID":
       return { ...state, favs: state.favs.filter(product => product.id !== action.payload) };
     case "REMOVE_ALL":

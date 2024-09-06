@@ -1,6 +1,7 @@
 // src/Routes/AdminPanel.jsx
 // eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../Styles/AdminPanel.css';
 import ListaProductos from '../Components/Listaproductos';
@@ -18,6 +19,7 @@ function AdminPanel() {
     const [loading, setLoading] = useState(true); // Estado para manejar la carga
     const { state } = useCateringStates();
     const { userData } = state;
+    const navigate = useNavigate()
 
     const fetchUserData = useCallback(async () => {
         try {
@@ -92,6 +94,9 @@ function AdminPanel() {
         return `${firstInitial}${lastInitial}`;
     };
 
+    const handleNavigateToFavorites = () => {
+        navigate('/favorites');
+    };
     return (
         <>
             <div className='mobile-message'>
@@ -120,6 +125,7 @@ function AdminPanel() {
                             <div className='info-dropdown'>
                                 <button>Historial de compras</button>
                                 <button>Mis reseñas</button>
+                                <button onClick={handleNavigateToFavorites}>Mis Favoritos</button>
                                 <button>Seguridad</button>
                                 <button>Tarjetas</button>
                                 <button>Privacidad</button>

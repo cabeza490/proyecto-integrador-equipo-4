@@ -10,6 +10,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTotalResults }) => {
   const { state, dispatch } = useCateringStates();
+  const { userData } = state
   const [shuffledImages, setShuffledImages] = useState([]);
 
   useEffect(() => {
@@ -66,9 +67,12 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
     return () => window.removeEventListener('resize', handleResize);
   }, [searchTerm, selectedCategories, setNoResults, setTotalResults]);
 
+  // Remove all favorites if there's no logged-in user
   useEffect(() => {
-    console.log("Favoritos actualizados:", state.favs);
-  }, [state.favs]);
+    if (!state.userData) {
+      dispatch({ type: 'REMOVE_ALL' }); // Elimina todos los favoritos del localStorage si no hay usuario logueado
+    }
+  }, [state.userData, dispatch]);
 
   const shuffleArray = (array) => {
     let shuffledArray = array.slice();
@@ -78,18 +82,78 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
     }
     return shuffledArray;
   };
-
-  const handleFavoriteClick = (product) => {
-    if (isFavorite(product)) {
-      dispatch({ type: "REMOVE_BY_ID", payload: product.id });
-    } else {
-      dispatch({ type: "ADD_FAVORITES", payload: product });
+  
+  /* useEffect(() => {
+    if (userData && userData.id) {
+      axios.get(`http://localhost:3000/api/favoritos/${userData.id}`)
+        .then(response => {
+          setFavoritos(response.data);
+          console.log(response.data);
+        })
+        .catch(error => console.error("Error al obtener favoritos:", error));
     }
-  };
+  }, [userData]); */
+// useEffect para sincronizar favoritos cuando el usuario está logueado
+useEffect(() => {
+  if (state.userData && state.userData.id) {
+    // Solo realiza la petición si el usuario está logueado
+    axios.get(`http://localhost:3000/api/favoritos/${state.userData.id}`)
+      .then(response => {
+        const favoritosIds = response.data
+        console.log(favoritosIds);
+        // Actualiza el estado global con los favoritos obtenidos
+        if(favoritosIds){
+            dispatch({ type: 'ADD_FAVORITES', payload: favoritosIds });
+          console.log(`Estado global ${state.favs}`);
+        }
+      })
+      .catch(error => console.error("Error al obtener favoritos:", error));
+  }
+}, [state.userData, dispatch]);
 
-  const isFavorite = (product) => {
-    return state.favs.some(fav => fav.id === product.id);
-  };
+// Función para verificar si un producto está en favoritos
+const isFavorite = (product) => {
+  return state.favs.some(fav => fav.id === product.id);
+};
+
+// Función para agregar/eliminar de favoritos
+const toggleFavorito = (productoId) => {
+  if (state.userData && state.userData.id) {
+    if (isFavorite({ id: productoId })) {
+      // Eliminar de favoritos
+      dispatch({ type: 'REMOVE_BY_ID', payload: productoId });
+      axios.delete(`http://localhost:3000/api/favoritos/${productoId}`, { data: { usuarioId: state.userData.id } })
+        .then(response => {
+          console.log(response.data.message);
+        })
+        .catch(error => console.error("Error al eliminar favorito:", error));
+    } else {
+      // Agregar a favoritos
+      dispatch({ type: 'ADD_FAVORITES', payload: { id: productoId } });
+      axios.post(`http://localhost:3000/api/favoritos`, { usuarioId: state.userData.id, productoId })
+        .then(response => {
+          console.log(response.data.message);
+        })
+        .catch(error => console.error("Error al añadir favorito:", error));
+    }
+  } else {
+    alert('Necesita iniciar sesión para marcar favoritos');
+  }
+} 
+
+/*   const handleFavoriteClick = (product) => {
+    if (state.userData) {
+      if (isFavorite(product)) {
+        dispatch({ type: "REMOVE_BY_ID", payload: product.id });
+        toggleFavorito(product.id)
+      } else {
+        dispatch({ type: "ADD_FAVORITES", payload: product });
+        toggleFavorito(product.id); // Hacer la llamada a la API solo cuando se agrega o se elimina un favorito
+      }
+    } else {
+      alert("Necesita iniciar sesión para marcar favoritos");
+    }
+  }; */
 
   return (
     <div className="gallery">
@@ -102,8 +166,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
               <p>{image.description}</p>
             </div>
           </Link>
-          <button 
-            onClick={() => handleFavoriteClick(image)} 
+          <button onClick={() => toggleFavorito(image.id)}
             className={`favButton ${isFavorite(image) ? 'favorite' : ''}`}>
             <FontAwesomeIcon icon={faHeart} />
           </button>
@@ -117,8 +180,7 @@ Galeria.propTypes = {
   searchTerm: PropTypes.string.isRequired,
   setNoResults: PropTypes.func.isRequired,
   selectedCategories: PropTypes.array.isRequired,
-  setTotalResults: PropTypes.func.isRequired, // Asegúrate de definirlo en PropTypes
+  setTotalResults: PropTypes.func.isRequired,
 };
 
 export default Galeria;
-

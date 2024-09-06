@@ -133,9 +133,7 @@ const ListaProductos = () => {
             console.log("Producto eliminado correctamente");
             window.alert("Producto eliminado correctamente");
         }
-
     };
-
     // Modal 
     function openModal() {
         setModalOpen(true);
