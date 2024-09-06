@@ -17,7 +17,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/productos');
+        const response = await axios.get('http://localhost:3000/api/productos?pageSize=1000');
         const productos = response.data.productos;
         const allImages = productos.flatMap(producto => producto.imagenes.map(imagen => ({
           src: imagen.url,
