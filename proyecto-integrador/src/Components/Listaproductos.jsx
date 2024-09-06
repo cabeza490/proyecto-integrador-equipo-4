@@ -195,13 +195,13 @@ const ListaProductos = () => {
                                                 Editar Producto
                                             </button>
 
-                                            {/* <button 
+                                            <button 
                                                 type='button'
                                                 className='button-primary'
                                                 onClick={() => eliminarProducto(producto.id)}
                                             >
                                                 Eliminar Producto
-                                            </button> */}
+                                            </button>
 
                                         </td>
                                     </tr>
