@@ -24,25 +24,28 @@ const Favorites = () => {
             })
             .catch(error => console.error("Error al obtener favoritos:", error));
         }, [userData.id]);
-        
+    
 
     const handleEditClick = (userId) => {
         console.log(`Edit user with ID: ${userId}`);
     };
 
+    // Función para eliminar un favorito del estado global y del backend
+    const eliminarFavorito = async (productId) => {
+        try {
+            /* dispatch({ type: 'REMOVE_BY_ID', payload: productId }); */
+            const response = await axios.delete(`http://localhost:3000/api/favoritos/${userData.id}/${productId}`);
+            console.log(response.data.message);
+        } catch (error) {
+            console.error("Error al eliminar favorito:", error);
+        }
+    };
     const toggleFavorito = (productoId) => {
         console.log("Datos enviados a la API:", { usuarioId: state.userData.id, productoId });
         axios.post(`http://localhost:3000/api/favoritos`, { usuarioId: state.userData.id, productoId })
             .then(response => {
-            console.log(response);
-            if(response.status === 200){
-                axios.get(`http://localhost:3000/api/favoritos/${userData.id}`)
-                    .then(response => {
-                        setFavoritos(response.data);
-                        console.log(response.data);
-                        dispatch({type: "ADD_FAVORITES", payload: favoritos})
-                    })
-            }
+            console.log(response.data.message);
+            navigate('/favorites')
             })
             .catch(error => console.error("Error al eliminar favorito:", error));
         };
