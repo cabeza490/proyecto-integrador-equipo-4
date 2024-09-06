@@ -70,6 +70,7 @@ const Favorites = () => {
                 )}
             </section>
             <section className="favorites">
+                <h1>Información</h1>
                 <h2>Mis Favoritos</h2>
                 <div className="favorites-list">
                 {favoritos.length === 0 ? (<p>No hay ningún elemento favorito</p>) : (
