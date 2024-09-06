@@ -46,7 +46,7 @@ export const postProducto = async (rolId, producto) => {
 
 export const putProducto = async (id, producto) => {
     try {
-        let response = await axios.put(`http://localhost:3000/api/productos?id=${id}`, producto)
+        let response = await axios.put(`http://localhost:3000/api/productos/${id}`, producto)
         return response.data
     } catch (error) {
         console.log(error);
