@@ -6,73 +6,65 @@ import '../Styles/Galeria.css';
 import { Link } from 'react-router-dom';
 import { useCateringStates } from '../Components/utils/globalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTotalResults }) => {
   const { state, dispatch } = useCateringStates();
-  const { userData } = state
   const [shuffledImages, setShuffledImages] = useState([]);
 
   useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      let numberOfImages = 8; // Default for desktop and tablets
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/productos');
+        const productos = response.data.productos;
+        const allImages = productos.flatMap(producto => producto.imagenes.map(imagen => ({
+          src: imagen.url,
+          title: producto.nombre,
+          description: producto.descripcion,
+          id: producto.id,
+          keywords: producto.keywords,
+          categoria_id: producto.categoria_id
+        })));
 
-      if (width <= 480) {
-        numberOfImages = 4; // For mobile devices
+        const filteredImages = allImages.filter(image => {
+          const matchesSearchTerm = searchTerm
+            ? image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              image.keywords.toLowerCase().includes(searchTerm.toLowerCase())
+            : true;
+
+          const matchesCategory = selectedCategories.length === 0 ||
+            selectedCategories.some(cat => cat === image.categoria_id);
+
+          return matchesSearchTerm && matchesCategory;
+        });
+
+        const shuffledImages = shuffleArray(filteredImages);
+
+        setImages(shuffledImages);
+        setNoResults(shuffledImages.length === 0);
+        setTotalResults(shuffledImages.length);
+      } catch (error) {
+        console.error('Error al obtener las imágenes:', error);
+        setNoResults(true);
       }
-
-      const fetchImages = async () => {
-        try {
-          const response = await axios.get('http://localhost:3000/api/productos');
-          const productos = response.data.productos;
-          const images = productos.flatMap(producto => producto.imagenes.map(imagen => ({
-            src: imagen.url,
-            title: producto.nombre,
-            description: producto.descripcion,
-            id: producto.id,
-            keyword: producto.keyword,
-            categoria_id: producto.categoria_id // Incluye la categoría del producto
-          })));
-          const shuffled = shuffleArray(images);
-
-          // Filtrar por término de búsqueda (título o palabra clave) y categoría
-          const filteredImages = shuffled.filter(image => {
-            const matchesSearchTerm = searchTerm
-              ? image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                image.keyword.toLowerCase().includes(searchTerm.toLowerCase())
-              : true;
-
-            const matchesCategory = selectedCategories.length === 0 ||
-              selectedCategories.some(cat => cat === image.categoria_id);
-
-            return matchesSearchTerm && matchesCategory;
-          });
-
-          setShuffledImages(filteredImages.slice(0, numberOfImages));
-          setNoResults(filteredImages.length === 0);
-          setTotalResults(filteredImages.length); // Actualizar el total de resultados
-        } catch (error) {
-          console.error('Error al obtener las imágenes:', error);
-          setNoResults(true);
-        }
-      };
-
-      fetchImages();
     };
 
-    handleResize(); // Set images based on initial screen size
-    window.addEventListener('resize', handleResize);
+    fetchImages();
+  }, [searchTerm, selectedCategories, setNoResults, setTotalResults]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setImagesPerPage(window.innerWidth <= 1000 ? 4 : 8);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [searchTerm, selectedCategories, setNoResults, setTotalResults]);
 
-  // Remove all favorites if there's no logged-in user
   useEffect(() => {
-    if (!state.userData) {
-      dispatch({ type: 'REMOVE_ALL' }); // Elimina todos los favoritos del localStorage si no hay usuario logueado
-    }
-  }, [state.userData, dispatch]);
+    console.log("Favoritos actualizados:", state.favs);
+  }, [state.favs]);
 
   const shuffleArray = (array) => {
     let shuffledArray = array.slice();
@@ -83,16 +75,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
     return shuffledArray;
   };
   
-  /* useEffect(() => {
-    if (userData && userData.id) {
-      axios.get(`http://localhost:3000/api/favoritos/${userData.id}`)
-        .then(response => {
-          setFavoritos(response.data);
-          console.log(response.data);
-        })
-        .catch(error => console.error("Error al obtener favoritos:", error));
-    }
-  }, [userData]); */
+
 // useEffect para sincronizar favoritos cuando el usuario está logueado
 useEffect(() => {
   if (state.userData && state.userData.id) {
@@ -141,19 +124,19 @@ const toggleFavorito = (productoId) => {
   }
 } 
 
-/*   const handleFavoriteClick = (product) => {
-    if (state.userData) {
-      if (isFavorite(product)) {
-        dispatch({ type: "REMOVE_BY_ID", payload: product.id });
-        toggleFavorito(product.id)
-      } else {
-        dispatch({ type: "ADD_FAVORITES", payload: product });
-        toggleFavorito(product.id); // Hacer la llamada a la API solo cuando se agrega o se elimina un favorito
-      }
-    } else {
-      alert("Necesita iniciar sesión para marcar favoritos");
+  const nextPage = () => {
+    if ((currentPage + 1) * imagesPerPage < images.length) {
+      setCurrentPage(currentPage + 1);
     }
-  }; */
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const currentImages = images.slice(currentPage * imagesPerPage, (currentPage + 1) * imagesPerPage);
 
   return (
     <div className="gallery">
@@ -166,7 +149,8 @@ const toggleFavorito = (productoId) => {
               <p>{image.description}</p>
             </div>
           </Link>
-          <button onClick={() => toggleFavorito(image.id)}
+          <button 
+            onClick={() => handleFavoriteClick(image)} 
             className={`favButton ${isFavorite(image) ? 'favorite' : ''}`}>
             <FontAwesomeIcon icon={faHeart} />
           </button>
@@ -180,7 +164,8 @@ Galeria.propTypes = {
   searchTerm: PropTypes.string.isRequired,
   setNoResults: PropTypes.func.isRequired,
   selectedCategories: PropTypes.array.isRequired,
-  setTotalResults: PropTypes.func.isRequired,
+  setTotalResults: PropTypes.func.isRequired, // Asegúrate de definirlo en PropTypes
 };
 
 export default Galeria;
+
