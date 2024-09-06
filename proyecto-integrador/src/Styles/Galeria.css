@@ -4,10 +4,7 @@
   grid-template-columns: repeat(2, 1fr); 
   margin-bottom: 3%;
 }
-h1{
-  color:#002855;
-  font-weight:bold;
-}
+
 .image-card {
   display: flex;
   flex-direction: row;
@@ -51,100 +48,122 @@ h1{
   cursor: pointer;
   margin-bottom: 15%;
   margin-right: 5%;
-  font-size: 1.5rem;
 }
 .favButton .fa-heart {
-  color: #413838; /* Color por defecto del icono */
+  color: gray; /* Color por defecto del icono */
 }
 
 .favButton.favorite .fa-heart {
-  color: red; /* Color cuando es favorito */
+  color: red; /* Color del icono cuando es favorito */
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F0F0F0; /* Fondo del contenedor de las flechas */
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 2%;
 }
 
-@media (min-width: 480px) {
-  .favorites-list {
-    display: grid;
-    gap: 15px;
-    grid-template-columns: repeat(2, 1fr); /* Mostrar 2 tarjetas por fila */
-    margin-bottom: 3%;
-    padding: 10px;
+.pagination-controls button {
+  background: none;
+  border: none;
+  color: #002E5D; /* Color de las flechas */
+  font-size: 30px; /* Tamaño de las flechas */
+  cursor: pointer;
 }
 
-.favorite-card {
-    background-color: white; /* Fondo blanco */
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.favorite-card img {
-    width: 100%;
-    height: 150px; /* Área azul que representa la imagen */
-    background-color: #002855; /* Fondo azul oscuro */
-    object-fit: cover;
+.pagination-controls .page-number {
+  color: #002E5D; /* Color del número de página */
+  background-color: #F0F0F0; /* Fondo blanco para contraste */
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+  flex-grow: 1; /* Para que el número ocupe el espacio central */
 }
 
-.favorite-info {
-    padding: 15px;
+.pagination-controls button:first-of-type {
+  align-self: flex-start; /* Flecha izquierda totalmente alineada a la izquierda */
 }
 
-.favorite-info h3 {
-    font-size: 16px;
-    font-weight: bold;
-    color: black;
-    margin-bottom: 8px;
+.pagination-controls button:last-of-type {
+  align-self: flex-end; /* Flecha derecha totalmente alineada a la derecha */
 }
 
-.favorite-info p {
-    font-size: 14px;
-    color: black;
-    margin-bottom: 8px;
-}
 
-.delete-button {
-    background-color: #002855; /* Azul oscuro para el botón */
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 14px;
-}
-
-.delete-button:hover {
-    background-color: #001f3f; /* Cambiar tono al pasar el mouse */
+@media (min-width: 481px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr); 
+    grid-auto-rows: 150px;
+  }
 }
 
 @media (max-width: 480px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+    grid-template-rows: repeat(2, auto); /* Dos filas, ajuste automático */
+    grid-auto-flow: row; /* Asegura que los elementos se fluyan en filas */
+    overflow: hidden; /* Oculta el contenido que se desborda */
+}
 
-    .favorites-list {
-        grid-template-columns: 1fr; /* Mostrar una tarjeta por fila en dispositivos móviles */
-    }
-    .user-avatar{
-      max-width: 80%;
-      margin-left: 9.6%;
+.gallery > :nth-child(n+5) {
+    display: none; /* Oculta los elementos a partir del quinto */
+}
+  .image-card {
+    flex-direction: column;
+    height: auto;
+  }
 
-    }
-    .favorite-card img {
-        height: 130px; /* Ajuste de altura de imagen en móvil */
-    }
-    .left-side .name{
-      padding-left: 30px;
-    }
-    p.email{
-      padding-left: 30px;
-    }
-    .edit-button{
-      margin-left: 30px;
-    }
-    h1{
-      margin-left: 40%;
-    }
+  .image-card img {
+    width: 100%;
+    height: 150px; /* Altura fija para asegurar uniformidad en móvil */
+  }
 
+  .image-info {
+    text-align: center;
+  }
+}
+@media (min-width: 768px) and (max-width: 1000px) {
+.gallery {
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: repeat(2, auto); 
+    grid-auto-flow: row; 
+    overflow: hidden; 
+}
+
+.gallery > :nth-child(n+5) {
+    display: none;
+}
+
+.image-card {
+    flex-direction: column; 
+}
+
+.image-card img {
+    width: 100%; 
+    height: 150px; 
+}
+
+.image-info {
+    padding: 10px;
+    text-align: center; 
+}
+
+.image-info h2 {
+    font-size: 16px; 
+    margin: 0; 
+}
+
+.image-info p {
+    font-size: 14px; 
+    margin: 0; 
 }
 }
