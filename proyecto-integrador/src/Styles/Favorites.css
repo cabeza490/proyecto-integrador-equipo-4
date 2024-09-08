@@ -150,7 +150,7 @@ h1{
         text-align: justify;
     }
 }
-@media (max-width: 770px) {
+@media (max-width: 800px) {
     .user-panel{
         width: 90%;
         margin-left: auto 40px;
