@@ -7,7 +7,9 @@
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.250);
     transition: all 1s linear;
 }
-
+.left-side_container{
+    display: none
+}
 .left-side {
     background-color: #013365;
     width: 25%;
@@ -33,7 +35,7 @@
 
 .left-side p {
     margin: 0px;
-    text-align: left;
+    text-align: justify;
 }
 
 .left-side .name {
@@ -48,6 +50,10 @@
 }
 
 /* Estilos para la sección de favoritos */
+h1{
+    text-align: center;
+    color:#013365;
+}
 .favorites {
     padding: 20px;
     width: 75%;
@@ -116,8 +122,7 @@
     background: #003366;
     color: #FFFFFF;
     border: 2px solid #003366;
-    width: 122px;
-    height: 40px;
+    padding: 10px 25px;
     border-radius: 50px;
     font-size: 12px;
     display: flex;
@@ -139,6 +144,19 @@
         color: black;
         margin: 5%;
         /* padding-left: 8%; */
+    }
+}
+@media (max-width: 770px) {
+    .user-panel{
+        margin: 60px 0;
+        align-items: center;
+    }
+    .left-side{
+        padding: 5% 30%;
+        margin-left: 0;
+    }
+    .edit-button{
+        margin-left: 18%;
     }
 }
 
@@ -206,10 +224,22 @@
     border-color: #002855;
 }
     .left-side{
+        display: flex;
+        align-content: stretch;
+        align-items: center;
+        flex-direction: column;
         max-height: 400px;
-        width: 80%;
         margin-top: 20px;
-        margin-left: 25px;
+    }
+    .left-side .name{
+        margin-right: 80%;
+    }
+
+    .left-side .email{
+        margin-right: 60%;
+    }
+    .edit-button{
+        margin-left: -30%;
     }
     .user-panel{
         margin-top: 0;
@@ -219,5 +249,5 @@
     }
     .user-avatar{
         font-size: 8rem;
-    }
+        padding: 20%;    }
 }
