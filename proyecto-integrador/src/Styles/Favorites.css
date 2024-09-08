@@ -10,6 +10,9 @@
 .left-side_container{
     display: none
 }
+.content{
+    display: flex;
+}
 .left-side {
     background-color: #013365;
     width: 25%;
@@ -122,12 +125,13 @@ h1{
     background: #003366;
     color: #FFFFFF;
     border: 2px solid #003366;
-    padding: 10px 25px;
+    padding: 10px 0;
     border-radius: 50px;
     font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 109px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -143,13 +147,15 @@ h1{
         font-size: 14px;
         color: black;
         margin: 5%;
-        /* padding-left: 8%; */
+        text-align: justify;
     }
 }
 @media (max-width: 770px) {
     .user-panel{
-        margin: 60px 0;
+        width: 90%;
+        margin-left: auto 40px;
         align-items: center;
+        flex-wrap: wrap;
     }
     .left-side{
         padding: 5% 30%;
@@ -158,9 +164,27 @@ h1{
     .edit-button{
         margin-left: 18%;
     }
+    .favorite-info .p{
+        padding-left: 0;
+    }
+    .favorite-card{
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+    .favorite-card img{
+        width: 70%;
+        background-color: #002855;
+        object-fit: cover;
+        height: 130px;
+        margin: 0 10px 20px;
+    }
+    .favorite-buttons{
+        margin-left: 15px;
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 590px) {
     .detail-button{
         display: none;
     }
@@ -243,7 +267,7 @@ h1{
     }
     .user-panel{
         margin-top: 0;
-        margin-left: 0;
+        margin-left: 20px;
         margin-right: 0;
 
     }
