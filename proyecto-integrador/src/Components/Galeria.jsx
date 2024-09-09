@@ -18,7 +18,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/productos');
+        const response = await axios.get('http://localhost:3000/api/productos?pageSize=1000000');
         const productos = response.data.productos;
         const allImages = productos.flatMap(producto => producto.imagenes.map(imagen => ({
           src: imagen.url,
@@ -103,7 +103,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
             setFavoriteStatus(favoriteObj); // Actualizar el estado de favoritos
           }
           if(!state.userData){
-            axios.get('http://localhost:3000/api/productos')
+            axios.get('http://localhost:3000/api/productos?pageSize=1000000')
           }
         })
         .catch(error => console.error("Error al obtener favoritos:", error));
@@ -121,7 +121,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
           ...prevState,
           [productoId]: !prevState[productoId]
         }));
-        axios.get('http://localhost:3000/api/productos')
+        axios.get('http://localhost:3000/api/productos?pageSize=1000000')
       })
       
       .catch(error => console.error("Error al eliminar favorito:", error));
