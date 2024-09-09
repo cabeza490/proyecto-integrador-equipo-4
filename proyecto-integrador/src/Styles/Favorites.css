@@ -90,7 +90,7 @@ h1{
     color: #003366;
 }
 
-@media (max-width: 930px) {
+@media (max-width: 980px) {
     .favorites{
         margin-left: 3%;
     }
@@ -99,6 +99,7 @@ h1{
         color: black;
         margin: 5%;
         text-align: justify;
+        padding: 0;
     }
 }
 @media (max-width: 800px) {
@@ -114,6 +115,7 @@ h1{
         flex-wrap: wrap;
         flex-direction: column;
         align-items: center;
+        margin-left: 15%;
     }
     .favorite-card img{
         width: 70%;
@@ -124,6 +126,9 @@ h1{
     }
     .favorite-buttons{
         margin-left: 15px;
+    }
+    .left-side{
+        margin: 20px 90px auto;
     }
 }
 
