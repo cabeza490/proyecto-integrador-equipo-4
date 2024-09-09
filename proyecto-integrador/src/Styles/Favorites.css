@@ -1,58 +1,6 @@
-/* Estilos generales */
-.user-panel {
-    background-color: white;
-    margin: 60px;
-    border-radius: 20px;
-    display: flex;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.250);
-    transition: all 1s linear;
+.favorites{
+    margin-left: 10%;
 }
-.left-side_container{
-    display: none
-}
-.content{
-    display: flex;
-}
-.left-side {
-    background-color: #013365;
-    width: 25%;
-    border-radius: 20px;
-    text-align: center;
-    color: white;
-    padding: 5%;
-    display: flex;
-    justify-content: center;
-}
-
-.user-avatar {
-    background-color: white;
-    color: #013365;
-    aspect-ratio: 1/1;
-    border-radius: 100%;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 7vw;
-}
-
-.left-side p {
-    margin: 0px;
-    text-align: justify;
-}
-
-.left-side .name {
-    color: white;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.left-side .email {
-    color: gray;
-    font-size: 10px;
-}
-
-/* Estilos para la sección de favoritos */
 h1{
     text-align: center;
     color:#013365;
@@ -143,6 +91,9 @@ h1{
 }
 
 @media (max-width: 930px) {
+    .favorites{
+        margin-left: 3%;
+    }
     .favorite-info p {
         font-size: 14px;
         color: black;
@@ -151,18 +102,10 @@ h1{
     }
 }
 @media (max-width: 800px) {
-    .user-panel{
-        width: 90%;
-        margin-left: auto 40px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    .left-side{
-        padding: 5% 30%;
-        margin-left: 0;
-    }
-    .edit-button{
-        margin-left: 18%;
+    .favorites{
+        margin-left: -10%;
+        margin-right: -10%;
+        width: 100%;
     }
     .favorite-info .p{
         padding-left: 0;
@@ -185,9 +128,26 @@ h1{
 }
 
 @media (max-width: 590px) {
-    .detail-button{
-        display: none;
+    .favorite-buttons{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
+    .detail-button{
+        background-color: #002855; /* Azul oscuro para el botón */
+        color: #FFFFFF;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        width: 50%;
+        font-size: 14px;
+    }
+    .detail-button:hover {
+        background-color: #FFFFFF; /* Cambiar tono al pasar el mouse */
+        color: #002855;
+        border: 1px solid #002855; /* Borde del botón */
+    }
+
     .favorites-list {
         grid-template-columns: 1fr; /* Mostrar una tarjeta por fila en dispositivos móviles */
         display: grid;
@@ -196,6 +156,7 @@ h1{
         margin-left: 5%;
         padding: 10px;
     }
+
     .favorite-card {
         background-color: #FFFFFF; /* Fondo blanco */
         border: 1px solid #ddd;
@@ -206,6 +167,7 @@ h1{
         flex-direction: column;
         justify-content: space-between;
     }
+
     .favorite-card img {
         width: 100%;
         background-color: #002855; /* Fondo azul oscuro */
@@ -214,64 +176,37 @@ h1{
         margin: 0;
     }
 
-.favorite-info {
-    padding: 15px;
-}
-
-.favorite-info h3 {
-    font-size: 16px;
-    font-weight: bold;
-    color: black;
-    margin-bottom: 8px;
-}
-
-.favorite-info p {
-    font-size: 14px;
-    color: black;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.delete-button {
-    background-color: #002855; /* Azul oscuro para el botón */
-    color: #FFFFFF;
-    padding: 10px 40px;
-    border-radius: 20px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 14px;
-}
-
-.delete-button:hover {
-    background-color: #FFFFFF; /* Cambiar tono al pasar el mouse */
-    color: #002855;
-    border-color: #002855;
-}
-    .left-side{
-        display: flex;
-        align-content: stretch;
-        align-items: center;
-        flex-direction: column;
-        max-height: 400px;
-        margin-top: 20px;
-    }
-    .left-side .name{
-        margin-right: 80%;
+    .favorite-info {
+        padding: 15px;
     }
 
-    .left-side .email{
-        margin-right: 60%;
+    .favorite-info h3 {
+        font-size: 16px;
+        font-weight: bold;
+        color: black;
+        margin-bottom: 8px;
     }
-    .edit-button{
-        margin-left: -30%;
-    }
-    .user-panel{
-        margin-top: 0;
-        margin-left: 20px;
-        margin-right: 0;
 
+    .favorite-info p {
+        font-size: 14px;
+        color: black;
+        margin-bottom: 20px;
+        text-align: center;
     }
-    .user-avatar{
-        font-size: 8rem;
-        padding: 20%;    }
+
+    .delete-button {
+        background-color: #002855; /* Azul oscuro para el botón */
+        color: #FFFFFF;
+        padding: 10px 40px;
+        border-radius: 20px;
+        cursor: pointer;
+        width: 80%;
+        font-size: 14px;
+    }
+
+    .delete-button:hover {
+        background-color: #FFFFFF; /* Cambiar tono al pasar el mouse */
+        color: #002855;
+        border-color: #002855;
+    }
 }
