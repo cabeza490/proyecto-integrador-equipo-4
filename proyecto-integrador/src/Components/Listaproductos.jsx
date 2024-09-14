@@ -13,8 +13,12 @@ const ListaProductos = () => {
     const [cargando, setCargando] = useState(true);
     const [update, setUpdate] = useState(Date.now())
 
-    // Estados para el modal
+    // Estados para el modal de producto
     const [modalOpen, setModalOpen] = useState(false);
+    
+    // Estados para el modal de categoría
+    const [modalCategoriaOpen, setModalCategoriaOpen] =useState(false);
+
 
     // Estados para el panel de editar
     const [verEdit, setVerEdit] = useState([]);
@@ -93,6 +97,8 @@ const ListaProductos = () => {
         
     }, [verEdit])
 
+
+    // Handlers del panel de Producto
     const verPanelCrear = () => {
         setCrearNuevo(true);
         setEditProducto({
@@ -116,6 +122,11 @@ const ListaProductos = () => {
         // console.log(editProducto);
         openModal();
         
+    };
+
+    // Handler de panel de categorías
+    const verPanelCategoria = () => {
+        setModalCategoriaOpen(true);
     };
 
     useEffect(() => {
@@ -156,6 +167,7 @@ const ListaProductos = () => {
     };
     function closeModal() {
         setModalOpen(false);
+        setModalCategoriaOpen(false);
         setUpdate(Date.now())
     };
 
@@ -165,6 +177,9 @@ const ListaProductos = () => {
                 <div className='list-container'>
                     <button className='button-primary create-product' onClick={() => verPanelCrear()}>
                         Agregar producto +
+                    </button>
+                    <button className='button-primary create-product' onClick={() => verPanelCategoria()}>
+                        Nueva categoría +
                     </button>
 
                     <table className='list-table'>
@@ -208,11 +223,14 @@ const ListaProductos = () => {
                             )): (<p>No se encontraron productos</p>)}
                         </tbody>
                     </table> 
-                    <Modal portalClassName='modal-product'
+
+                    <Modal 
+                        portalClassName='modal-product'
                         isOpen={modalOpen}
                         onAfterOpen={afterModalOpen}
                         onRequestClose={closeModal}
                         contentLabel='Modal create product'
+                        ariaHideApp={false}
                     >
                         <CreateEdit
                             nuevoProducto={crearNuevo}
@@ -220,8 +238,18 @@ const ListaProductos = () => {
                             listaCategorias={listaCategorias}
                             listaCaracteristicas={listaCaracteristicas}
                             closeModal={closeModal}
-                            ariaHideApp={false}
                         />
+                    </Modal>
+
+                    <Modal 
+                        portalClassName='modal-product'
+                        isOpen={modalCategoriaOpen}
+                        onAfterOpen={afterModalOpen}
+                        onRequestClose={closeModal}
+                        contentLabel='Modal create product'
+                        ariaHideApp={false}
+                    >
+
                     </Modal>
                 </div>
             )}
