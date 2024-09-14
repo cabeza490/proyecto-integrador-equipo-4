@@ -90,19 +90,34 @@ h1{
     color: #003366;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 960px) {
     .favorites{
         margin-left: 3%;
+    }
+    .favorite-card{
+        flex-direction: column;
+        padding: 30px 30px 30px 10px;
+    }
+    .favorite-card img{
+        width: 50%;
+        margin: auto auto 20px 30%;
+
+    }
+    .favorite-info h3{
+        margin-left:10% ;
     }
     .favorite-info p {
         font-size: 14px;
         color: black;
-        margin: 5%;
+        margin: 5% 10%;
         text-align: justify;
-        padding: 0;
+        padding-left: 5%;
+    }
+    .favorite-buttons{
+        margin-left: 5%;
     }
 }
-@media (max-width: 800px) {
+/* @media (max-width: 800px) {
     .favorites{
         margin-left: -10%;
         margin-right: -10%;
@@ -130,8 +145,12 @@ h1{
     .left-side{
         margin: 20px 90px auto;
     }
+} */
+@media (max-width: 768px){
+    section.left-side{
+        margin-left: 0;
+    }
 }
-
 @media (max-width: 590px) {
     .favorite-buttons{
         display: flex;
