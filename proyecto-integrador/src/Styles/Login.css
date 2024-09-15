@@ -66,43 +66,47 @@
     color: #000; 
 }
 
+/* Estilo general para los botones */
 .form__buttons {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
-    margin-top: 20px;
+    gap: 10px; /* Espaciado entre botones */
 }
 
+/* Botones de mismo tamaño y visibilidad del texto */
 .buttons__1, .buttons__2 {
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    text-align: center; 
-    cursor: pointer;
-    min-width: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
+    flex: 1; /* Ambos botones toman el mismo espacio disponible */
+    padding: 12px 0; /* Ajusta el padding para altura uniforme */
+    text-align: center; /* Centrar el texto */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño del botón */
+    color: #FFFFFF; /* Color del texto para que sea visible */
+    font-size: 16px; /* Tamaño del texto */
+    font-weight: bold; /* Negrita para que el texto sea más claro */
+    background-color: #003366;
+    border: none; /* Eliminar bordes por defecto */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    border-radius: 20px; /* Añadir bordes redondeados */
 }
 
-.buttons__1 {
-    background-color: #00275b;
-    flex-grow: 1.387;
-    margin-right: 10px; 
-}
-
-.buttons__2 {
-    background-color: #00275b;
-    flex-grow: 1;
-}
-
+/* Estilo de hover para que el botón reaccione cuando el usuario lo pasa por encima */
 .buttons__1:hover, .buttons__2:hover {
-    opacity: 0.8;
+    filter: brightness(0.9); /* Oscurece el color al pasar por encima */
 }
+
+
+@media (max-width: 690px) {
+    .formulario{
+        width: 80%;
+    }
+}
+
 
 @media (max-width: 480px) {
+    .formulario-container {
+        display: flex;
+        justify-content: center;
+    }
+
     .formulario {
         padding: 15px;
         margin: 20px 10px;
@@ -118,18 +122,25 @@
     .form__content input {
         padding: 12px 20px 12px 15px; /* Ajustar el padding para mejor comodidad */
     }
-    form{
+
+    form {
         padding: 50px 10px;
     }
+
+    /* Ajustes para los botones */
     .form__buttons {
-       
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* Espaciado entre botones */
     }
 
     .buttons__1, .buttons__2 {
         width: 100%;
+        padding: 10px 0; /* Mismo padding para ambos botones */
+        margin: 0; /* Eliminar margen lateral */
     }
-    form__content .icon {
-        /* right: 10px; */
-        margin: -4px 5px;
+
+    .buttons__1 {
+        margin-right: 0; /* Asegurar que no haya margen */
     }
 }
