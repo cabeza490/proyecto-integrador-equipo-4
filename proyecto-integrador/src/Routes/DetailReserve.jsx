@@ -192,7 +192,7 @@ const DetailReserve = () => {
                 contentLabel='Modal create product'
                 ariaHideApp={false}
             >
-                
+                <p>Mensaje de confirmación</p>
             </Modal>
 
         
