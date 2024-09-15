@@ -181,6 +181,10 @@ const Detail = () => {
         }
     };
 
+    const iniciarReserva = () => {
+        navigate(`/reserve/${id}/2024-09-13`);
+    };
+
     return (
         <div className="content">
             <div className="card_container" key={productSelected.id}>
@@ -270,6 +274,14 @@ const Detail = () => {
                     )
                     }
                 </div>
+
+                
+                <button 
+                    className='button-primary create-product'
+                    onClick={() => iniciarReserva()}
+                >
+                    Confirmar reserva
+                </button>
 
             </div>
 

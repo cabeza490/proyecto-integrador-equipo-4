@@ -141,7 +141,7 @@ const ListaProductos = () => {
 
     // Eliminar producto
     const eliminarProducto = async(id) => {
-        const confirmar = window.confirm("¿Estas seguro de que quieres eliminar el producto?")
+        const confirmar = window.confirm("¿Estas seguro de que quieres eliminar el producto?");
 
         if (confirmar) {
             try {
@@ -154,7 +154,7 @@ const ListaProductos = () => {
             }
             console.log("Producto eliminado correctamente");
             window.alert("Producto eliminado correctamente");
-        }
+        };
 
     };
 
