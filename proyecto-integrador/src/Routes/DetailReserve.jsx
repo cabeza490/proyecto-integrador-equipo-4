@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { confirmarReserva } from '../api/reservas-Apis';
 import "../Styles/DetailReserve.css"
+import Modal from 'react-modal';
 
 const DetailReserve = () => {
 
@@ -34,6 +35,9 @@ const DetailReserve = () => {
         productoId: "",
         fecha: ""
     });
+
+    // Estado para modal de reserva
+    const [modalReservaOpen, setModalReservaOpen] = useState(false);
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'));
@@ -83,13 +87,28 @@ const DetailReserve = () => {
         navigate(`/detail/${id}`);
     };
 
+    
+    // Modal 
+    function openModalReserva() {
+        setModalReservaOpen(true);
+    };
+    function afterModalOpen() {
+
+    };
+    function closeModal() {
+        setModalReservaOpen(false);
+        // setModalCategoriaOpen(false);
+        // setUpdate(Date.now())
+    };
+
     const handleConfirmarReserva = async () => {
 
-        const confirmar = window.confirm("¿Estas seguro de confirmar la reserva?");
+        // const confirmar = window.confirm("¿Estas seguro de confirmar la reserva?");
+        const confirmar = false;
 
         if (confirmar) {
             try {
-                
+
 
                 const response = await confirmarReserva(reserva);
                 if (response.status === 500) {
@@ -105,6 +124,8 @@ const DetailReserve = () => {
             };
     
         };
+
+        openModalReserva();
 
     };
 
@@ -163,6 +184,16 @@ const DetailReserve = () => {
 
             </div>
 
+            <Modal 
+                portalClassName='modal-product'
+                isOpen={modalReservaOpen}
+                onAfterOpen={afterModalOpen}
+                onRequestClose={closeModal}
+                contentLabel='Modal create product'
+                ariaHideApp={false}
+            >
+                
+            </Modal>
 
         
         </>
