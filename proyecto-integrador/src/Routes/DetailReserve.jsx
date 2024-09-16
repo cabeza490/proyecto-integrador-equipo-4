@@ -196,6 +196,9 @@ const DetailReserve = () => {
                     </div>
 
                     {/* Bloque de imágen y descripción --------------- */}
+                    <div className='bloque-nombre'>
+                        <h4>Detalle del servicio</h4>
+                    </div>
                     <div className='bloque-img'>
                         <img 
                             src={producto?.imagenes[0].url} 
