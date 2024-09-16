@@ -280,7 +280,7 @@ const Detail = () => {
                     className='button-primary create-product'
                     onClick={() => iniciarReserva()}
                 >
-                    Confirmar reserva
+                    ir a página de reserva
                 </button>
 
             </div>

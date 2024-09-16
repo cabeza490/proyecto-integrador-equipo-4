@@ -177,7 +177,7 @@ const DetailReserve = () => {
                     <p>cargando producto de ID {id}...</p>
                 </> : 
                 <>
-                    {/* Título y flecha de regreso --------------- */}
+                    {/* Título, flecha de regreso  --------------- */}
                     <div className="reserva-title">
                         <h2>Reserva</h2>
 
@@ -188,10 +188,11 @@ const DetailReserve = () => {
                         />
                     </div>
 
-                    {/* Nombre de producto y fecha de la reserva --------------- */}
+                    {/* Nombre de producto, fecha de la reserva y precio --------------- */}
                     <div className='bloque-nombre'>
                         <h2>{producto.nombre}</h2>
                         <h4>Día de la reserva: {fechaReserva}</h4>
+                        <h4>Precio: $ {producto.precio}</h4>
                     </div>
 
                     {/* Bloque de imágen y descripción --------------- */}
