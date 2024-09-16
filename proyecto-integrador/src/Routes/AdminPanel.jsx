@@ -5,7 +5,8 @@ import axios from 'axios';
 import '../Styles/AdminPanel.css';
 import ListaProductos from '../Components/Listaproductos';
 import UserManagement from '../Components/UserManagement';
-import EditUserForm from '../Components/EditUserForm'; 
+import EditUserForm from '../Components/EditUserForm';
+import Favorites from '../Components/Favorites'; // Importar el componente de Favoritos
 import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
 
 function AdminPanel() {
@@ -18,6 +19,7 @@ function AdminPanel() {
     const [loading, setLoading] = useState(true); // Estado para manejar la carga
     const { state } = useCateringStates();
     const { userData } = state;
+
 
     const fetchUserData = useCallback(async () => {
         try {
@@ -120,6 +122,10 @@ function AdminPanel() {
                             <div className='info-dropdown'>
                                 <button>Historial de compras</button>
                                 <button>Mis reseñas</button>
+                                <button className={'info-dropdown ' + (activeTab === 3 && "tab-selected")}
+                                onClick={() => cambiarTab(3)}>
+                                    Favoritos
+                                </button>
                                 <button>Seguridad</button>
                                 <button>Tarjetas</button>
                                 <button>Privacidad</button>
@@ -141,7 +147,8 @@ function AdminPanel() {
                         <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
                     ) : (
                         activeTab === 1 ? <UserManagement handleEditClick={handleEditClick} /> : 
-                        activeTab === 2 ? <ListaProductos /> : 
+                        activeTab === 2 ? <ListaProductos /> :
+                        activeTab === 3 ? <Favorites /> :
                         null
                     )}
                 </section>
@@ -151,4 +158,3 @@ function AdminPanel() {
 }
 
 export default AdminPanel;
-

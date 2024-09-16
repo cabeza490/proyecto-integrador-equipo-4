@@ -157,7 +157,6 @@ const ListaProductos = () => {
         };
 
     };
-
     // Modal 
     function openModal() {
         setModalOpen(true);

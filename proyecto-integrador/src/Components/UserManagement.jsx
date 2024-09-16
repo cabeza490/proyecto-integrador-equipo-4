@@ -8,13 +8,15 @@ import '../Styles/UserManagement.css';
 // eslint-disable-next-line no-unused-vars
 function UserManagement({ handleEditClick }) {
     const [users, setUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchText, setSearchText] = useState('');
 
     // Fetch users from API
-    const fetchUsers = async (query = '') => {
+    const fetchUsers = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/usuarios${query}`);
+            const response = await axios.get('http://localhost:3000/api/usuarios');
             setUsers(response.data);
+            setFilteredUsers(response.data);
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -24,12 +26,24 @@ function UserManagement({ handleEditClick }) {
         fetchUsers();
     }, []);
 
-    const handleSearch = async () => {
-        const formattedQuery = searchText.trim()
-            ? `?search=${encodeURIComponent(searchText)}`
-            : '';
-        await fetchUsers(formattedQuery);
-        setSearchText(''); // Clear the search text after search
+    const filterUsers = (text) => {
+        const lowerCaseText = text.toLowerCase();
+        const filtered = users.filter(user =>
+            user.nombre.toLowerCase().includes(lowerCaseText) ||
+            user.apellido.toLowerCase().includes(lowerCaseText) ||
+            user.email.toLowerCase().includes(lowerCaseText)
+        );
+        setFilteredUsers(filtered);
+    };
+
+    const handleSearchChange = (event) => {
+        const value = event.target.value;
+        setSearchText(value);
+        filterUsers(value);
+    };
+
+    const handleSearch = () => {
+        filterUsers(searchText);
     };
 
     const handleKeyPress = (event) => {
@@ -40,8 +54,7 @@ function UserManagement({ handleEditClick }) {
 
     const handlePermissionToggle = async (userId) => {
         const userIndex = users.findIndex(user => user.id === userId);
-        const updatedUsers = [...users];
-        const user = updatedUsers[userIndex];
+        const user = users[userIndex];
 
         // Determine the new rolId
         const newRolId = user.rolId === 1 ? 2 : 1; // Toggle between 1 and 2
@@ -52,13 +65,16 @@ function UserManagement({ handleEditClick }) {
             try {
                 // Call the backend to update the role
                 await axios.put('http://localhost:3000/api/usuarios/cambiar-rol', {
-                    id: userId, // Asegúrate de enviar el id
-                    rolId: newRolId // Asegúrate de enviar rolId en lugar de nuevoRolId
+                    id: userId,
+                    rolId: newRolId
                 });
 
                 // Update the local state
-                updatedUsers[userIndex] = { ...user, rolId: newRolId };
+                const updatedUsers = users.map(u => 
+                    u.id === userId ? { ...u, rolId: newRolId } : u
+                );
                 setUsers(updatedUsers);
+                setFilteredUsers(updatedUsers); // Ensure filteredUsers reflects the changes
 
                 // Show success message based on new rolId
                 const message = newRolId === 1 
@@ -80,7 +96,7 @@ function UserManagement({ handleEditClick }) {
                     className='search-input'
                     placeholder='Buscar por nombre, apellido o email...'
                     value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
+                    onChange={handleSearchChange}
                     onKeyPress={handleKeyPress}
                 />
                 <button className='search-button' onClick={handleSearch}>
@@ -94,8 +110,8 @@ function UserManagement({ handleEditClick }) {
             </div>
 
             <div className='user-list'>
-                {users.length > 0 ? (
-                    users.map((user) => (
+                {filteredUsers.length > 0 ? (
+                    filteredUsers.map((user) => (
                         <div key={user.id} className='user-item'>
                             {user.nombre} {user.apellido}
                             <button
@@ -120,4 +136,3 @@ UserManagement.propTypes = {
 };
 
 export default UserManagement;
-

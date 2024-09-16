@@ -18,7 +18,7 @@ export const getProductoById = async (id) => {
     }
 }
 
-export const getAllProductos = async (page = 1, pageSize = 10) => {
+export const getAllProductos = async (page = 1, pageSize = 10000) => {
     try {
         let response = await axios.get(`http://localhost:3000/api/productos?page=${page}&pageSize=${pageSize}`)
         return response.data

@@ -1,54 +1,10 @@
-/* Estilos generales */
-.user-panel {
-    background-color: white;
-    margin: 60px;
-    border-radius: 20px;
-    display: flex;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.250);
-    transition: all 1s linear;
+.favorites{
+    margin-left: 10%;
 }
-
-.left-side {
-    background-color: #013365;
-    width: 25%;
-    border-radius: 20px;
+h1{
     text-align: center;
-    color: white;
-    padding: 5%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    color:#013365;
 }
-
-.user-avatar {
-    background-color: white;
-    color: #013365;
-    aspect-ratio: 1/1;
-    border-radius: 100%;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 7vw;
-}
-
-.left-side p {
-    margin: 0px;
-    text-align: left;
-}
-
-.left-side .name {
-    color: white;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.left-side .email {
-    color: gray;
-    font-size: 10px;
-}
-
-/* Estilos para la sección de favoritos */
 .favorites {
     padding: 20px;
     width: 75%;
@@ -72,6 +28,7 @@
     padding: 20px;
     margin-left: 10%;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     color: black;
@@ -116,13 +73,13 @@
     background: #003366;
     color: #FFFFFF;
     border: 2px solid #003366;
-    width: 122px;
-    height: 40px;
+    padding: 10px 0;
     border-radius: 50px;
     font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 109px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -131,4 +88,152 @@
 .detail-button:hover {
     background-color: #FFFFFF;
     color: #003366;
+}
+
+@media (max-width: 960px) {
+    .favorites{
+        margin-left: 3%;
+    }
+    .favorite-card{
+        flex-direction: column;
+        padding: 30px 30px 30px 10px;
+    }
+    .favorite-card img{
+        width: 50%;
+        margin: auto auto 20px 30%;
+
+    }
+    .favorite-info h3{
+        margin-left:10% ;
+    }
+    .favorite-info p {
+        font-size: 14px;
+        color: black;
+        margin: 5% 10%;
+        text-align: justify;
+        padding-left: 5%;
+    }
+    .favorite-buttons{
+        margin-left: 5%;
+    }
+}
+/* @media (max-width: 800px) {
+    .favorites{
+        margin-left: -10%;
+        margin-right: -10%;
+        width: 100%;
+    }
+    .favorite-info .p{
+        padding-left: 0;
+    }
+    .favorite-card{
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 15%;
+    }
+    .favorite-card img{
+        width: 70%;
+        background-color: #002855;
+        object-fit: cover;
+        height: 130px;
+        margin: 0 10px 20px;
+    }
+    .favorite-buttons{
+        margin-left: 15px;
+    }
+    .left-side{
+        margin: 20px 90px auto;
+    }
+} */
+@media (max-width: 768px){
+    section.left-side{
+        margin-left: 0;
+    }
+    ._footer_1m5cj_11{
+        padding: auto 30px;
+    }
+}
+@media (max-width: 590px) {
+    .favorite-buttons{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .detail-button{
+        background-color: #002855; /* Azul oscuro para el botón */
+        color: #FFFFFF;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        width: 50%;
+        font-size: 14px;
+    }
+    .detail-button:hover {
+        background-color: #FFFFFF; /* Cambiar tono al pasar el mouse */
+        color: #002855;
+        border: 1px solid #002855; /* Borde del botón */
+    }
+
+    .favorites-list {
+        grid-template-columns: 1fr; /* Mostrar una tarjeta por fila en dispositivos móviles */
+        display: grid;
+        gap: 15px;
+        margin-bottom: 3%;
+        margin-left: 5%;
+        padding: 10px;
+    }
+
+    .favorite-card {
+        background-color: #FFFFFF; /* Fondo blanco */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 20px rgba(29, 28, 28, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .favorite-card img {
+        width: 100%;
+        background-color: #002855; /* Fondo azul oscuro */
+        object-fit: cover;
+        height: 130px; /* Ajuste de altura de imagen en móvil */
+        margin: 0;
+    }
+
+    .favorite-info {
+        padding: 15px;
+    }
+
+    .favorite-info h3 {
+        font-size: 16px;
+        font-weight: bold;
+        color: black;
+        margin-bottom: 8px;
+    }
+
+    .favorite-info p {
+        font-size: 14px;
+        color: black;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .delete-button {
+        background-color: #002855; /* Azul oscuro para el botón */
+        color: #FFFFFF;
+        padding: 10px 40px;
+        border-radius: 20px;
+        cursor: pointer;
+        width: 80%;
+        font-size: 14px;
+    }
+
+    .delete-button:hover {
+        background-color: #FFFFFF; /* Cambiar tono al pasar el mouse */
+        color: #002855;
+        border-color: #002855;
+    }
 }

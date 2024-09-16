@@ -26,7 +26,7 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         // Fetch all products on mount
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/productos');
+                const response = await axios.get('http://localhost:3000/api/productos?pageSize=1000000');
                 setAllProducts(response.data.productos);
             } catch (error) {
                 console.error('Error fetching products:', error);

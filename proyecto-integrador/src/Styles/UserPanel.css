@@ -115,19 +115,19 @@
         width: 100%;
         margin: 0;
         box-sizing: border-box;
+        align-items: center;
     }
 
     .left-side {
         width: 70%;
-        padding: 20px;
         margin-top: 20px;
-        margin-left: 35px;
+        margin-left: 80px;
     }
     .user-avatar {
         font-size: 120px; /* Tamaño del texto reducido */
     }
     .tabs {
-        width: 100%;
+        width: 88%;
         padding: 20px;
     }
 
