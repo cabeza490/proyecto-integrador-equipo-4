@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import CreateEdit from './CreateEdit';
 import { getAllCategorias } from '../api/categorias-Apis';
 import { getAllCaracteristicas } from '../api/caracteristicas-Apis';
+import CategoryCreate from './CategoryCreate';
 
 
 const ListaProductos = () => {
@@ -57,35 +58,35 @@ const ListaProductos = () => {
         getData();
     }, [])
     
+    // Categorías
+    const getListaCategorias = async () => {
+        try {
+            let getListaCategorias = await getAllCategorias();
+            setListaCategorias(getListaCategorias);
+        } catch (error) {
+            console.log("Error al obtener las categorías");
+        };
+    };
+
+    // Características
+    const getListaCaracteristicas = async () => {
+        try {
+            let getListaCaracteristicas = await getAllCaracteristicas();
+            setListaCaracteristicas(getListaCaracteristicas);
+        } catch (error) {
+            console.log("Error al obtener las características");
+        };
+    };
+
     useEffect(() => {
-
-
-        // Categorías
-        const getListaCategorias = async () => {
-            try {
-                let getListaCategorias = await getAllCategorias();
-                setListaCategorias(getListaCategorias);
-            } catch (error) {
-                console.log("Error al obtener las categorías");
-            };
-        };
         getListaCategorias();
-
-        // Características
-        const getListaCaracteristicas = async () => {
-            try {
-                let getListaCaracteristicas = await getAllCaracteristicas();
-                setListaCaracteristicas(getListaCaracteristicas);
-            } catch (error) {
-                console.log("Error al obtener las características");
-            };
-        };
         getListaCaracteristicas();
-
     }, [])
 
     useEffect(() => {
         getData();
+        getListaCategorias();
+        getListaCaracteristicas();
     }, [update]);
 
     useEffect(() => {
@@ -224,7 +225,7 @@ const ListaProductos = () => {
                     </table> 
 
                     <Modal 
-                        portalClassName='modal-product'
+                        portalClassName='modal-admin-panel'
                         isOpen={modalOpen}
                         onAfterOpen={afterModalOpen}
                         onRequestClose={closeModal}
@@ -241,14 +242,17 @@ const ListaProductos = () => {
                     </Modal>
 
                     <Modal 
-                        portalClassName='modal-product'
+                        portalClassName='modal-admin-panel modal-category'
                         isOpen={modalCategoriaOpen}
                         onAfterOpen={afterModalOpen}
                         onRequestClose={closeModal}
                         contentLabel='Modal create product'
                         ariaHideApp={false}
                     >
-
+                        <CategoryCreate
+                            listaCategorias={listaCategorias}
+                            closeModal={closeModal}
+                        />
                     </Modal>
                 </div>
             )}

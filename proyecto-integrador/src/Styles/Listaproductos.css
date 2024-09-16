@@ -161,14 +161,20 @@ thead th:nth-child(3) {
     width: 100%;
 }
 
-.ReactModal__Overlay {
+.modal-admin-panel .ReactModal__Overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     z-index: 100;
     background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
-.ReactModal__Content {
-    inset: 5% !important;
-    /* height: fit-content; */
+.modal-admin-panel .ReactModal__Content {
+    inset: unset !important;
+    width: 90%;
+    height: 90%;
+
     margin: 0px;
     background-color: whitesmoke !important;
     border-radius: 20px !important;
@@ -178,6 +184,16 @@ thead th:nth-child(3) {
 
 .modal-product {
     text-align: center;
+}
+
+.modal-category .Overlay {
+
+}
+
+.modal-category .ReactModal__Content {
+    width: 80%;
+    height: unset;
+    /* padding: 30px !important; */
 }
 
 .title {
@@ -307,4 +323,18 @@ textarea.create-edit-input::-webkit-scrollbar-track {
     color: green;
     font-weight: bold;
     font-size: larger;
+}
+
+.create-categry-content {
+    margin: 30px;
+    /* text-align: right; */
+}
+
+.modal-category table {
+    width: 100%;
+}
+
+.invalid {
+    border-color: red;
+    border-width: 2px;
 }
