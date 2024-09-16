@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getProductoById } from '../api/productos-Apis';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { confirmarReserva } from '../api/reservas-Apis';
+import { confirmarReserva, obtenerDetalleReserva } from '../api/reservas-Apis';
 import "../Styles/DetailReserve.css"
 import Modal from 'react-modal';
 
@@ -45,11 +45,11 @@ const DetailReserve = () => {
             setUsuario(userData);
         };
 
-        let nuevaFecha = "2024-09-16T01:14:00Z";
-        let timeStamp = new Date(nuevaFecha);
-        console.log(nuevaFecha);
-        console.log(timeStamp.toISOString());
-        setFechaReserva(timeStamp.toISOString());
+        // let nuevaFecha = "2024-09-15T01:14:00Z";
+        let timeStamp = new Date();
+        // console.log(nuevaFecha);
+        // console.log(timeStamp.toISOString());
+        setFechaReserva(timeStamp.toISOString().slice(0, 10));
 
         setReserva({
             usuarioId: usuario.id,
@@ -73,8 +73,7 @@ const DetailReserve = () => {
     }, [id]);
 
     useEffect(() => {
-        // setFechaReserva(new Date(fecha));
-        setFechaReserva(fecha);
+        // setFechaReserva(fecha);
     }, [fecha]);
 
     useEffect(() => {
@@ -82,6 +81,34 @@ const DetailReserve = () => {
         // console.log("Producto cargado");
         // console.log(producto);
     }, [producto])
+
+    // Actualizar la reserva con los datos
+    
+    useEffect(() => {
+        // console.log(reserva);
+        
+        setReserva(prev => {
+            return {
+                ...prev,
+                fecha: fechaReserva}
+        });
+    }, [fechaReserva])
+    
+    useEffect(() => {
+        // console.log(reserva);
+        
+        setReserva(prev => {
+            return {
+                ...prev,
+                usuarioId: usuario.id}
+        });
+    }, [usuario])
+
+    useEffect(() => {
+        console.log(reserva);
+        
+    }, [reserva])
+
 
     const handleBackClick = () => {
         navigate(`/detail/${id}`);
@@ -103,12 +130,18 @@ const DetailReserve = () => {
 
     const handleConfirmarReserva = async () => {
 
-        // const confirmar = window.confirm("¿Estas seguro de confirmar la reserva?");
-        const confirmar = false;
+        const confirmar = window.confirm("¿Estas seguro de confirmar la reserva?");
+        // const confirmar = false;
 
         if (confirmar) {
             try {
-
+                
+                const responseDetalle = await obtenerDetalleReserva(reserva);
+                if (responseDetalle.status === 404) {
+                    console.log("Producto o usuario no encontrados");
+                    window.alert("Producto o usuario no encontrados");
+                    return
+                };
 
                 const response = await confirmarReserva(reserva);
                 if (response.status === 500) {
@@ -116,6 +149,7 @@ const DetailReserve = () => {
                     window.alert("Error al confirmar la reserva");
                     return
                 };
+
             } catch (error) {
                 console.log(error);
             } finally {
@@ -125,12 +159,12 @@ const DetailReserve = () => {
     
         };
 
-        openModalReserva();
+        // openModalReserva();
 
     };
 
     return (
-        <>
+        <div className='master-container'>
             <div className='reserva-container'>
                 {cargando ? 
                 <>
@@ -196,7 +230,7 @@ const DetailReserve = () => {
             </Modal>
 
         
-        </>
+        </div>
     )
 };
 

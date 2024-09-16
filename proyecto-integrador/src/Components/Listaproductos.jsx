@@ -163,7 +163,7 @@ const ListaProductos = () => {
         setModalOpen(true);
     };
     function afterModalOpen() {
-
+""
     };
     function closeModal() {
         setModalOpen(false);
