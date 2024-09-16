@@ -45,11 +45,12 @@ const DetailReserve = () => {
             setUsuario(userData);
         };
 
+        // pruebas para el manejod de la fecha
         // let nuevaFecha = "2024-09-15T01:14:00Z";
-        let timeStamp = new Date();
+        // let timeStamp = new Date();
         // console.log(nuevaFecha);
         // console.log(timeStamp.toISOString());
-        setFechaReserva(timeStamp.toISOString().slice(0, 10));
+        // setFechaReserva(timeStamp.toISOString().slice(0, 10));
 
         setReserva({
             usuarioId: usuario.id,
@@ -73,7 +74,7 @@ const DetailReserve = () => {
     }, [id]);
 
     useEffect(() => {
-        // setFechaReserva(fecha);
+        setFechaReserva(fecha);
     }, [fecha]);
 
     useEffect(() => {
