@@ -39,7 +39,7 @@ const Category = ({ onCategorySelect, selectedCategories = [] }) => {
                         className={`category-item ${selectedCategories.some(cat => cat.id === category.id) ? 'selected' : ''}`} 
                         onClick={() => handleCategoryClick(category)}
                     >
-                        {category.nombre}
+                        {category.titulo}
                     </div>
                 ))}
             </div>
