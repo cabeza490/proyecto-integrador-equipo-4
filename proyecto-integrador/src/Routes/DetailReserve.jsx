@@ -131,12 +131,13 @@ const DetailReserve = () => {
     const handleConfirmarReserva = async () => {
 
         const confirmar = window.confirm("¿Estas seguro de confirmar la reserva?");
-        // const confirmar = false;
 
         if (confirmar) {
             try {
                 
                 const responseDetalle = await obtenerDetalleReserva(reserva);
+                
+                
                 if (responseDetalle.status === 404) {
                     console.log("Producto o usuario no encontrados");
                     window.alert("Producto o usuario no encontrados");
@@ -150,6 +151,10 @@ const DetailReserve = () => {
                     return
                 };
 
+                // console.log(response);
+                // console.log(response.reserva.id);
+                // console.log(response.reserva.fecha_reserva);
+                
             } catch (error) {
                 console.log(error);
             } finally {
@@ -159,7 +164,7 @@ const DetailReserve = () => {
     
         };
 
-        // openModalReserva();
+        openModalReserva();
 
     };
 
@@ -219,7 +224,7 @@ const DetailReserve = () => {
             </div>
 
             <Modal 
-                portalClassName='modal-product'
+                portalClassName='modal-reserva'
                 isOpen={modalReservaOpen}
                 onAfterOpen={afterModalOpen}
                 onRequestClose={closeModal}

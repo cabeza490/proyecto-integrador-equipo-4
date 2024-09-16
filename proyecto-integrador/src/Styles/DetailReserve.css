@@ -100,3 +100,13 @@
         width: 100%;
     }
 }
+
+.modal-reserva .ReactModal__Content {
+    inset: 30% 15% !important;
+    /* height: fit-content; */
+    margin: 0px;
+    background-color: whitesmoke !important;
+    border-radius: 20px !important;
+    border-width: 0px !important;
+    box-shadow: 0px 7px 25px rgba(0, 0, 0, 0.7);
+}
