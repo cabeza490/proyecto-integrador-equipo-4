@@ -310,224 +310,230 @@ const CreateEdit = ({
             {cargando ? "" : <div className='row'>
                 <form onSubmit={handleSubmit}>
                     <table className='row-table'>
-
-                        <tr>
-                            <td>
-                                <table className='column-table'>
-                                    <tr>
-                                        <td>
-                                            <label>Nombre</label>
-                                        </td>
-                                        <td>
-                                            <input 
-                                                type="text" 
-                                                name='nombre'
-                                                placeholder='Servicio...'
-                                                className='create-edit-input'
-                                                value={producto.nombre}
-                                                onChange={handleChange}
-                                            />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Precio</label>
-                                        </td>
-                                        <td>
-                                            <div className='create-edit-input cost'>
-                                                <button 
-                                                    className='no-style'
-                                                    type="button"
-                                                >
-                                                    UYU
-                                                </button>
-                                                <input 
-                                                    type="number" 
-                                                    name="precio" 
-                                                    placeholder='$'
-                                                    className='no-style'
-                                                    value={producto.precio}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <label>Descripción</label>
-                                        </td>
-                                        <td>
-                                            <textarea 
-                                                name="descripcion" 
-                                                placeholder='descripción del producto'
-                                                className='create-edit-input'
-                                                value={producto.descripcion}
-                                                onChange={handleChange}
-                                                >
-                                            </textarea>
-                                        </td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td>
-                                            <label>Keywords</label>
-                                        </td>
-                                        <td>
-                                            <input 
-                                                type="text" 
-                                                name='nombre'
-                                                placeholder='keyword1, keyword2...'
-                                                className='create-edit-input'
-                                                value={producto.keywords}
-                                                onChange={handleChangeKeywords}
-                                            />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                        </td>
-
-                                        <td>
-                                            <p>introduce las keywords, separadas por una coma</p>
-                                        </td>
-                                    </tr>
-                                </table>
-
-                            </td>
-
-                            <td>
-                                <table className='column-table'>
-                                    <tr>
-                                        <td>
-                                            <label>imágenes</label>
-                                        </td>
-                                        <td>
-                                            {imagenes.map((url, index) => (
-                                                <div 
-                                                    key={index}
-                                                    className='create-edit-input container'
-                                                >
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <table className='column-table'>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label>Nombre</label>
+                                                </td>
+                                                <td>
                                                     <input 
-                                                        type="text"
-                                                        name='URLImagen'
-                                                        placeholder='URL de la imagen'
-                                                        className={`no-style img`}
-                                                        value={url}
-                                                        onChange={(e) => handleChangeImagen(e, index)}
+                                                        type="text" 
+                                                        name='nombre'
+                                                        placeholder='Servicio...'
+                                                        className='create-edit-input'
+                                                        value={producto.nombre}
+                                                        onChange={handleChange}
                                                     />
-                                                    {index === 0 ? 
-                                                        null :
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Precio</label>
+                                                </td>
+                                                <td>
+                                                    <div className='create-edit-input cost'>
                                                         <button 
-                                                            className='no-style delete-img'
-                                                            onClick={() => handleEliminarInput(index)}
+                                                            className='no-style'
                                                             type="button"
                                                         >
-                                                            <FontAwesomeIcon icon={faXmark} />
+                                                            UYU
                                                         </button>
-                                                    }
-                                                </div>
-                                            ))}
-                                            <button 
-                                                onClick={handleAgregarOtraImagen}
-                                                type="button"
-                                                className='create-edit-input add-btn'
-                                            >
-                                                Agregar otra imagen +
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Categoría</label>
-                                        </td>
-                                        <td>
+                                                        <input 
+                                                            type="number" 
+                                                            name="precio" 
+                                                            placeholder='$'
+                                                            className='no-style'
+                                                            value={producto.precio}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                            <select 
-                                                name="categorias" 
-                                                id="categorias-select"
-                                                className='create-edit-input'
-                                                value={producto.categoria_id}
-                                                onChange={handleChangeCategoria}
-                                            >
-                                                <option 
-                                                    value=""
-                                                    hidden
-                                                >
-                                                    seleccione la categoría
-                                                </option>
-                                                {listaCategorias.map((categoria, index) => (
-                                                    <option 
-                                                        key={index} 
-                                                        value={categoria.id}
+                                            <tr>
+                                                <td>
+                                                    <label>Descripción</label>
+                                                </td>
+                                                <td>
+                                                    <textarea 
+                                                        name="descripcion" 
+                                                        placeholder='descripción del producto'
+                                                        className='create-edit-input'
+                                                        value={producto.descripcion}
+                                                        onChange={handleChange}
+                                                        >
+                                                    </textarea>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td>
+                                                    <label>Keywords</label>
+                                                </td>
+                                                <td>
+                                                    <input 
+                                                        type="text" 
+                                                        name='nombre'
+                                                        placeholder='keyword1, keyword2...'
+                                                        className='create-edit-input'
+                                                        value={producto.keywords}
+                                                        onChange={handleChangeKeywords}
+                                                    />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                </td>
+
+                                                <td>
+                                                    <p>introduce las keywords, separadas por una coma</p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </td>
+
+                                <td>
+                                    <table className='column-table'>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label>imágenes</label>
+                                                </td>
+                                                <td>
+                                                    {imagenes.map((url, index) => (
+                                                        <div 
+                                                            key={index}
+                                                            className='create-edit-input container'
+                                                        >
+                                                            <input 
+                                                                type="text"
+                                                                name='URLImagen'
+                                                                placeholder='URL de la imagen'
+                                                                className={`no-style img`}
+                                                                value={url}
+                                                                onChange={(e) => handleChangeImagen(e, index)}
+                                                            />
+                                                            {index === 0 ? 
+                                                                null :
+                                                                <button 
+                                                                    className='no-style delete-img'
+                                                                    onClick={() => handleEliminarInput(index)}
+                                                                    type="button"
+                                                                >
+                                                                    <FontAwesomeIcon icon={faXmark} />
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                    ))}
+                                                    <button 
+                                                        onClick={handleAgregarOtraImagen}
+                                                        type="button"
+                                                        className='create-edit-input add-btn'
                                                     >
-                                                        {categoria.nombre}
-                                                    </option>
-                                                ))}
-                                            </select>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Características</label>
-                                        </td>
-                                        <td>
-                                            {caracteristicas?.map((caracteristica, index) => (
-                                                <div key={index} className='create-edit-input container'>
+                                                        Agregar otra imagen +
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Categoría</label>
+                                                </td>
+                                                <td>
 
                                                     <select 
-                                                        className='input-caracteristica no-style'
-                                                        name="" 
-                                                        id=""
-                                                        value={caracteristica.id}
-                                                        onChange={(e) => handleChangeCaracteristicasId(e, index)}
+                                                        name="categorias" 
+                                                        id="categorias-select"
+                                                        className='create-edit-input'
+                                                        value={producto.categoria_id}
+                                                        onChange={handleChangeCategoria}
                                                     >
                                                         <option 
                                                             value=""
+                                                            hidden
                                                         >
-                                                            tipo
+                                                            seleccione la categoría
                                                         </option>
-                                                        {listaCaracteristicas.map((caracteristica, index) => (
+                                                        {listaCategorias.map((categoria, index) => (
                                                             <option 
-                                                                key={index}
-                                                                value={caracteristica.id}
+                                                                key={index} 
+                                                                value={categoria.id}
                                                             >
-                                                                {caracteristica.nombre}
+                                                                {categoria.titulo}
                                                             </option>
                                                         ))}
                                                     </select>
 
-                                                    <input 
-                                                        className='input-caracteristica no-style'
-                                                        type="text" 
-                                                        placeholder='Detalle...'
-                                                        value={caracteristica.valor}
-                                                        onChange={(e) => handleChangeCaracteristicasValor(e, index)}
-                                                    />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label>Características</label>
+                                                </td>
+                                                <td>
+                                                    {caracteristicas?.map((caracteristica, index) => (
+                                                        <div key={index} className='create-edit-input container'>
+
+                                                            <select 
+                                                                className='input-caracteristica no-style'
+                                                                name="" 
+                                                                id=""
+                                                                value={caracteristica.id}
+                                                                onChange={(e) => handleChangeCaracteristicasId(e, index)}
+                                                            >
+                                                                <option 
+                                                                    value=""
+                                                                >
+                                                                    tipo
+                                                                </option>
+                                                                {listaCaracteristicas.map((caracteristica, index) => (
+                                                                    <option 
+                                                                        key={index}
+                                                                        value={caracteristica.id}
+                                                                    >
+                                                                        {caracteristica.nombre}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+
+                                                            <input 
+                                                                className='input-caracteristica no-style'
+                                                                type="text" 
+                                                                placeholder='Detalle...'
+                                                                value={caracteristica.valor}
+                                                                onChange={(e) => handleChangeCaracteristicasValor(e, index)}
+                                                            />
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => handleEliminarCaracteristica(e, index)}
+                                                                className='no-style delete-img'
+                                                            >
+                                                                <FontAwesomeIcon icon={faXmark} />
+                                                            </button>
+                                                        </div>
+                                                    ))}
+                                                    
                                                     <button
                                                         type="button"
-                                                        onClick={(e) => handleEliminarCaracteristica(e, index)}
-                                                        className='no-style delete-img'
+                                                        className='create-edit-input add-btn'
+                                                        onClick={handleAgregarOtraCaracteristica}
                                                     >
-                                                        <FontAwesomeIcon icon={faXmark} />
+                                                        Agregar característica +
                                                     </button>
-                                                </div>
-                                            ))}
-                                            
-                                            <button
-                                                type="button"
-                                                className='create-edit-input add-btn'
-                                                onClick={handleAgregarOtraCaracteristica}
-                                            >
-                                                Agregar característica +
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+
+                        </tbody>
                     </table>
 
                     {verMensajeExito === true ? 
