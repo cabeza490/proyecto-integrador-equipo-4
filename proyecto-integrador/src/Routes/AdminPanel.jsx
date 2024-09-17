@@ -8,6 +8,8 @@ import UserManagement from '../Components/UserManagement';
 import EditUserForm from '../Components/EditUserForm';
 import Favorites from '../Components/Favorites'; // Importar el componente de Favoritos
 import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
+// Obtener la URL base del backend desde las variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function AdminPanel() {
     const [activeTab, setActiveTab] = useState(null);
@@ -23,7 +25,7 @@ function AdminPanel() {
 
     const fetchUserData = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/usuarios');
+            const response = await axios.get(`${API_BASE_URL}/api/usuarios`);
             const usuarios = response.data;
             // Buscar el usuario logueado por su ID
             const loggedInUser = usuarios.find(usuario => usuario.id === userData.id);

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'; // Importa prop-types
 import axios from 'axios';
 import searchIcon from '../../public/search-icon.png';
 import '../Styles/UserManagement.css'; 
+// Obtener la URL base del backend desde las variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // eslint-disable-next-line no-unused-vars
 function UserManagement({ handleEditClick }) {
@@ -14,7 +16,7 @@ function UserManagement({ handleEditClick }) {
     // Fetch users from API
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/usuarios');
+            const response = await axios.get(`${API_BASE_URL}/api/usuarios`);
             setUsers(response.data);
             setFilteredUsers(response.data);
         } catch (error) {
@@ -64,7 +66,7 @@ function UserManagement({ handleEditClick }) {
         if (confirmation) {
             try {
                 // Call the backend to update the role
-                await axios.put('http://localhost:3000/api/usuarios/cambiar-rol', {
+                await axios.put(`${API_BASE_URL}/api/usuarios/cambiar-rol`, {
                     id: userId,
                     rolId: newRolId
                 });

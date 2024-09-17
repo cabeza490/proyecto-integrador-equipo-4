@@ -1,8 +1,10 @@
 import axios from 'axios'
+// Obtener la URL base del backend desde las variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const getProductos = async () => {
     try {
-        let response = await axios.get('http://localhost:3000/api/productos')
+        let response = await axios.get(`${API_BASE_URL}/api/productos`)
         return response.data
     } catch (error) {
         console.log(error);
@@ -11,7 +13,7 @@ export const getProductos = async () => {
 
 export const getProductoById = async (id) => {
     try {
-        let response = await axios.get(`http://localhost:3000/api/productos/${id}`)
+        let response = await axios.get(`${API_BASE_URL}/api/productos/${id}`)
         return response.data
     } catch (error) {
         console.log(error);
@@ -20,7 +22,7 @@ export const getProductoById = async (id) => {
 
 export const getAllProductos = async (page = 1, pageSize = 10000) => {
     try {
-        let response = await axios.get(`http://localhost:3000/api/productos?page=${page}&pageSize=${pageSize}`)
+        let response = await axios.get(`${API_BASE_URL}/api/productos?page=${page}&pageSize=${pageSize}`)
         return response.data
     } catch (error) {
         console.log(error);
@@ -30,7 +32,7 @@ export const getAllProductos = async (page = 1, pageSize = 10000) => {
 export const postProducto = async (rolId, producto) => {
     try {
         let response = await axios.post(
-            'http://localhost:3000/api/productos', 
+            `${API_BASE_URL}/api/productos`, 
             producto, 
             {
                 headers: {
@@ -46,7 +48,7 @@ export const postProducto = async (rolId, producto) => {
 
 export const putProducto = async (id, producto) => {
     try {
-        let response = await axios.put(`http://localhost:3000/api/productos/${id}`, producto)
+        let response = await axios.put(`${API_BASE_URL}/api/productos/${id}`, producto)
         return response.data
     } catch (error) {
         console.log(error);
@@ -56,7 +58,7 @@ export const putProducto = async (id, producto) => {
 // Eliminación de un producto por id
 export const deleteProducto = async (id) => {
     try {
-        let response = await axios.delete(`http://localhost:3000/api/productos/${id}`)
+        let response = await axios.delete(`${API_BASE_URL}/api/productos/${id}`)
         return response.data
     } catch (error) {
         console.log(error);

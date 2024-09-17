@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { useCateringStates } from '../Components/utils/globalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+// Obtener la URL base del backend desde las variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTotalResults }) => {
   const { state, dispatch } = useCateringStates();
@@ -15,10 +17,15 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
   const [imagesPerPage, setImagesPerPage] = useState(8);
   const [favoriteStatus, setFavoriteStatus] = useState({}); // Nuevo estado para guardar favoritos
 
+  // ------------------------------------------------------------------------
+  // Esto es para testear de que levante la variable de entorno
+  // console.log(`URL de la API: ${API_BASE_URL}/api/productos`);
+  // ------------------------------------------------------------------------
+  
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/productos?pageSize=1000000');
+        const response = await axios.get(`${API_BASE_URL}/api/productos?pageSize=1000000`);
         const productos = response.data.productos;
         const allImages = productos.flatMap(producto => producto.imagenes.map(imagen => ({
           src: imagen.url,
@@ -85,7 +92,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
   useEffect(() => {
     if (state.userData && state.userData.id) {
       // Solo realiza la petición si el usuario está logueado
-      axios.get(`http://localhost:3000/api/favoritos/${state.userData.id}`)
+      axios.get(`${API_BASE_URL}/api/favoritos/${state.userData.id}`)
         .then(response => {
           const favoritosIds = response.data;
 
@@ -103,7 +110,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
             setFavoriteStatus(favoriteObj); // Actualizar el estado de favoritos
           }
           if(!state.userData){
-            axios.get('http://localhost:3000/api/productos?pageSize=1000000')
+            axios.get(`${API_BASE_URL}/api/productos?pageSize=1000000`)
           }
         })
         .catch(error => console.error("Error al obtener favoritos:", error));
@@ -113,7 +120,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
   // Función para agregar/eliminar de favoritos
   const toggleFavorito = (productoId) => {
     console.log("Datos enviados a la API:", { usuarioId: state.userData.id, productoId });
-    axios.post(`http://localhost:3000/api/favoritos`, { usuarioId: state.userData.id, productoId })
+    axios.post(`${API_BASE_URL}/api/favoritos`, { usuarioId: state.userData.id, productoId })
       .then(response => {
         console.log(response.data.message);
         // Actualizar el estado local para reflejar el cambio en favoritos
@@ -121,7 +128,7 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
           ...prevState,
           [productoId]: !prevState[productoId]
         }));
-        axios.get('http://localhost:3000/api/productos?pageSize=1000000')
+        axios.get(`${API_BASE_URL}/api/productos?pageSize=1000000`)
       })
       
       .catch(error => console.error("Error al eliminar favorito:", error));
