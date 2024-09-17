@@ -12,8 +12,12 @@ const CreateEdit = ({
         descripcion: "",
         categoria_id: 0, //integer
         precio: 0.0, //double
-        imagenes: [""],
+        imagenes: ["", ""],
         caracteristicas: [{
+            id: "",
+            valor: ""
+        },
+        {
             id: "",
             valor: ""
         }],
@@ -243,7 +247,8 @@ const CreateEdit = ({
         //     isValid = false;
         // } 
 
-        if (caracteristicas.some(item => item.id === "")) {
+        // Características con id vacío
+        if (caracteristicas[0].id === "") {
             setValid((prev) => ({
                 ...prev,
                 caracteristicas: false
@@ -252,6 +257,25 @@ const CreateEdit = ({
             console.log("característica con id vacío");
         };
 
+        if (caracteristicas.some(item => item.id === "")) {
+            setValid((prev) => ({
+                ...prev,
+                caracteristicas: false
+            }));
+            isValid = false;
+            console.log("característica con id vacío");
+        };
+        
+        // Características con valor vacío
+        if (caracteristicas[0].valor === "") {
+            setValid((prev) => ({
+                ...prev,
+                caracteristicas: false
+            }));
+            isValid = false;
+            console.log("característica con valor vacío");
+        }
+        
         if (caracteristicas.some(item => item.valor === "")) {
             setValid((prev) => ({
                 ...prev,
@@ -344,6 +368,7 @@ const CreateEdit = ({
                 }
             };
             setData();
+            handleAgregarOtraCaracteristica();
         }
 
         console.log(valid.name === true);
@@ -662,13 +687,25 @@ const CreateEdit = ({
                                                                 value={caracteristica.valor}
                                                                 onChange={(e) => handleChangeCaracteristicasValor(e, index)}
                                                             />
-                                                            <button
+                                                            
+                                                            {index > 1 ? 
+                                                                <button
                                                                 type="button"
                                                                 onClick={(e) => handleEliminarCaracteristica(e, index)}
                                                                 className='no-style delete-img'
                                                             >
                                                                 <FontAwesomeIcon icon={faXmark} />
-                                                            </button>
+                                                            </button> : 
+                                                                null
+                                                            }
+                                                            {/* <button
+                                                                type="button"
+                                                                onClick={(e) => handleEliminarCaracteristica(e, index)}
+                                                                className='no-style delete-img'
+                                                            >
+                                                                <FontAwesomeIcon icon={faXmark} />
+                                                            </button> */}
+
                                                         </div>
                                                     ))}
                                                     
