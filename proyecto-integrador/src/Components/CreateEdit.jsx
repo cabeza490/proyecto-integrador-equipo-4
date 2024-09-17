@@ -56,9 +56,20 @@ const CreateEdit = ({
 
     const [cargando, setCargando] = useState(true)
 
+    const [valid, setValid] = useState({
+        nombre: true,
+        precio: true,
+        descripcion: true,
+        keywords: true,
+        imagenes: true,
+        categoria: true,
+        caracteristicas: true,
+        caracteristicasUnicas: true
+    });
+
+
     
     // const [errors, setErrors] = useState({});
-    // const [valid, setValid] = useState({});
     // const [touched, setTouched] = useState({});
     // const [submitMessage, setSubmitMessage] = useState(""); 
     // const [isFormValid, setIsFormValid] = useState(false);
@@ -154,8 +165,136 @@ const CreateEdit = ({
         const newErrors = {};
         const newValid = {};
 
+        setValid({
+            nombre: true,
+            precio: true,
+            descripcion: true,
+            keywords: true,
+            imagenes: true,
+            categoria: true,
+            caracteristicas: true,
+            caracteristicasUnicas: true
+        });
+
+        let isValid = true;
+
+        if (producto.nombre === "") {
+            setValid((prev) => ({
+                ...prev,
+                nombre: false
+            }));
+            isValid = false;
+        }; 
+
+        if (producto.precio === 0) {
+            setValid((prev) => ({
+                ...prev,
+                precio: false
+            }));
+            isValid = false;
+        }; 
+        
+        if (producto.descripcion === "") {
+            setValid((prev) => ({
+                ...prev,
+                descripcion: false
+            }));
+            isValid = false;
+        }; 
+        
+        if (producto.keywords === "") {
+            setValid((prev) => ({
+                ...prev,
+                keywords: false
+            }));
+            isValid = false;
+        };
+        
+        // if (imagenes[0] === "") {
+        //     setValid((prev) => ({
+        //         ...prev,
+        //         imagenes: false
+        //     }));
+        //     isValid = false;
+        // };
+
+        if (imagenes.some(imagen => imagen === "")) {
+            setValid((prev) => ({
+                ...prev,
+                imagenes: false
+            }));
+            isValid = false;
+        };
+        
+        if (producto.categoria_id === 0 || 
+            producto.categoria_id === "") {
+            setValid((prev) => ({
+                ...prev,
+                categoria: false
+            }));
+            isValid = false;
+        } ;
+        
+        // if (caracteristicas[0].id === "") {
+        //     setValid((prev) => ({
+        //         ...prev,
+        //         caracteristicas: false
+        //     }));
+        //     isValid = false;
+        // } 
+
+        if (caracteristicas.some(item => item.id === "")) {
+            setValid((prev) => ({
+                ...prev,
+                caracteristicas: false
+            }));
+            isValid = false;
+            console.log("característica con id vacío");
+        };
+
+        if (caracteristicas.some(item => item.valor === "")) {
+            setValid((prev) => ({
+                ...prev,
+                caracteristicas: false
+            }));
+            isValid = false;
+            console.log("característica con valor vacío");
+        }
+
+        // ver características duplicadas
+        const idsSet = new Set();
+        let hasDuplicates = false;
+
+        for (const item of caracteristicas) {
+        if (idsSet.has(item.id)) {
+            hasDuplicates = true;
+            break;
+        }
+        idsSet.add(item.id);
+        }
+
+        if (hasDuplicates) {
+            console.log("Hay IDs duplicados.");
+            setValid((prev) => ({
+                ...prev,
+                caracteristicasUnicas: false
+            }));
+            isValid = false;
+        } else {
+            console.log("Todos los IDs son únicos.");
+        }
+
+        return isValid;
 
     };
+
+    useEffect(() => {
+        console.log(valid);
+    }, [valid])
+
+    useEffect(() => {
+        // console.log(producto);
+    }, [producto]);
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'));
@@ -207,6 +346,8 @@ const CreateEdit = ({
             setData();
         }
 
+        console.log(valid.name === true);
+        
         // setCargando(false)
         
     }, [])
@@ -228,77 +369,82 @@ const CreateEdit = ({
     const handleSubmit = async (event) =>{
         event.preventDefault();
 
-        try {
-            const nuevoProductoCrearEdit = {
-                nombre: producto.nombre,
-                descripcion: producto.descripcion,
-                categoria_id: producto.categoria_id,
-                precio: producto.precio,
-                imagenes: imagenes,
-                caracteristicas: caracteristicas,
-                keywords: producto.keywords
+        if (validate()) {
+            try {
+                const nuevoProductoCrearEdit = {
+                    nombre: producto.nombre,
+                    descripcion: producto.descripcion,
+                    categoria_id: producto.categoria_id,
+                    precio: producto.precio,
+                    imagenes: imagenes,
+                    caracteristicas: caracteristicas,
+                    keywords: producto.keywords
+                };
+    
+                console.log(nuevoProductoCrearEdit);
+                
+                if (nuevoProducto) {
+                    
+                    const response = await postProducto(userData.rolId, nuevoProductoCrearEdit);
+                    if (response.status === 400) {
+                        console.log("El nombre del producto ya está en uso");
+                        window.alert("El nombre del producto ya está en uso");
+                        return;
+                    }
+                    
+                } else {
+    
+                    const response = await putProducto(editProducto.id, nuevoProductoCrearEdit);
+                    if (response.status === 404) {
+                        console.log("Error: Producto no encontrado");
+                        window.alert("Error: Producto no encontrado");
+                        return;
+                    }
+    
+                }
+                
+    
+                setProducto({
+                    nombre: "",
+                    descripcion: "",
+                    categoria_id: 0, //integer
+                    precio: 0.0, //double
+                    keywords: ""
+                });
+    
+                setImagenes([""]);
+                
+                setCaracteristicas([{
+                    id: "",
+                    valor: ""
+                }])
+    
+                setVerMensajeExito(true);
+                if (nuevoProducto) {
+    
+                    window.alert("Producto registrado exitosamente");
+                    console.log("Producto registrado exitosamente");
+    
+                } else {
+    
+                    window.alert("Producto actualizado exitosamente");
+                    console.log("Producto actualizado exitosamente");
+    
+                }
+                
+    
+                // resetear estados auxiliares
+    
+                // Cerrar el modal
+                closeModal();
+    
+            } catch (error) {
+                console.log(error);
             };
-
-            console.log(nuevoProductoCrearEdit);
-            
-            if (nuevoProducto) {
-                
-                const response = await postProducto(userData.rolId, nuevoProductoCrearEdit);
-                if (response.status === 400) {
-                    console.log("El nombre del producto ya está en uso");
-                    window.alert("El nombre del producto ya está en uso");
-                    return;
-                }
-                
-            } else {
-
-                const response = await putProducto(editProducto.id, nuevoProductoCrearEdit);
-                if (response.status === 404) {
-                    console.log("Error: Producto no encontrado");
-                    window.alert("Error: Producto no encontrado");
-                    return;
-                }
-
-            }
-            
-
-            setProducto({
-                nombre: "",
-                descripcion: "",
-                categoria_id: 0, //integer
-                precio: 0.0, //double
-                keywords: ""
-            });
-
-            setImagenes([""]);
-            
-            setCaracteristicas([{
-                id: "",
-                valor: ""
-            }])
-
-            setVerMensajeExito(true);
-            if (nuevoProducto) {
-
-                window.alert("Producto registrado exitosamente");
-                console.log("Producto registrado exitosamente");
-
-            } else {
-
-                window.alert("Producto actualizado exitosamente");
-                console.log("Producto actualizado exitosamente");
-
-            }
-            
-
-            // resetear estados auxiliares
-
-            // Cerrar el modal
-            closeModal();
-
-        } catch (error) {
-            console.log(error);
+        } else {
+            window.alert("Algunos campos son incorrectos.")
         };
+
     };
 
     return (
@@ -324,7 +470,7 @@ const CreateEdit = ({
                                                         type="text" 
                                                         name='nombre'
                                                         placeholder='Servicio...'
-                                                        className='create-edit-input'
+                                                        className={valid.nombre ? "create-edit-input" : "create-edit-input invalid"}
                                                         value={producto.nombre}
                                                         onChange={handleChange}
                                                     />
@@ -335,7 +481,9 @@ const CreateEdit = ({
                                                     <label>Precio</label>
                                                 </td>
                                                 <td>
-                                                    <div className='create-edit-input cost'>
+                                                    <div 
+                                                        className={valid.precio ? "create-edit-input cost" : "create-edit-input cost invalid"}
+                                                    >
                                                         <button 
                                                             className='no-style'
                                                             type="button"
@@ -362,7 +510,7 @@ const CreateEdit = ({
                                                     <textarea 
                                                         name="descripcion" 
                                                         placeholder='descripción del producto'
-                                                        className='create-edit-input'
+                                                        className={valid.descripcion ? "create-edit-input" : "create-edit-input invalid"}
                                                         value={producto.descripcion}
                                                         onChange={handleChange}
                                                         >
@@ -379,7 +527,7 @@ const CreateEdit = ({
                                                         type="text" 
                                                         name='nombre'
                                                         placeholder='keyword1, keyword2...'
-                                                        className='create-edit-input'
+                                                        className={valid.keywords ? "create-edit-input" : "create-edit-input invalid"}
                                                         value={producto.keywords}
                                                         onChange={handleChangeKeywords}
                                                     />
@@ -409,7 +557,7 @@ const CreateEdit = ({
                                                     {imagenes.map((url, index) => (
                                                         <div 
                                                             key={index}
-                                                            className='create-edit-input container'
+                                                            className={valid.imagenes ? "create-edit-input container" : "create-edit-input container invalid"}
                                                         >
                                                             <input 
                                                                 type="text"
@@ -431,6 +579,9 @@ const CreateEdit = ({
                                                             }
                                                         </div>
                                                     ))}
+                                                    <p className='error-msg'>
+                                                        {valid.imagenes ? "" : "algunos campos están vacíos"}
+                                                    </p>
                                                     <button 
                                                         onClick={handleAgregarOtraImagen}
                                                         type="button"
@@ -449,12 +600,12 @@ const CreateEdit = ({
                                                     <select 
                                                         name="categorias" 
                                                         id="categorias-select"
-                                                        className='create-edit-input'
+                                                        className={valid.categoria ? "create-edit-input" : "create-edit-input invalid"}
                                                         value={producto.categoria_id}
                                                         onChange={handleChangeCategoria}
                                                     >
                                                         <option 
-                                                            value=""
+                                                            value="seleccione la categoría"
                                                             hidden
                                                         >
                                                             seleccione la categoría
@@ -477,7 +628,10 @@ const CreateEdit = ({
                                                 </td>
                                                 <td>
                                                     {caracteristicas?.map((caracteristica, index) => (
-                                                        <div key={index} className='create-edit-input container'>
+                                                        <div 
+                                                            key={index} 
+                                                            className={(valid.caracteristicas && valid.caracteristicasUnicas) ? "create-edit-input container" : "create-edit-input container invalid"}
+                                                        >
 
                                                             <select 
                                                                 className='input-caracteristica no-style'
@@ -518,6 +672,12 @@ const CreateEdit = ({
                                                         </div>
                                                     ))}
                                                     
+                                                    <p className='error-msg'>
+                                                        {valid.caracteristicas ? "" : "algunos campos están vacíos"}
+                                                    </p>
+                                                    <p className='error-msg'>
+                                                        {valid.caracteristicasUnicas ? "" : "hay dos o más características que tienen el mismo tipo"}
+                                                    </p>
                                                     <button
                                                         type="button"
                                                         className='create-edit-input add-btn'
