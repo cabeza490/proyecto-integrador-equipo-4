@@ -26,8 +26,9 @@ const DetailReserve = () => {
         caracteristicas: [{}],
         keywords: ""
     });
-    const [fechaReserva, setFechaReserva] = useState()
-    const [usuario, setUsuario] = useState({});
+    const [ fechaReserva, setFechaReserva ] = useState()
+    const [ errorReserva, setErrorReserva ] = useState()
+    const [ usuario, setUsuario ] = useState({});
 
     // Objeto de reserva
     const [reserva, setReserva] = useState({
@@ -107,7 +108,7 @@ const DetailReserve = () => {
 
     useEffect(() => {
         console.log(reserva);
-        
+        console.log(errorReserva);
     }, [reserva])
 
 
@@ -158,6 +159,7 @@ const DetailReserve = () => {
                 
             } catch (error) {
                 console.log(error);
+                setErrorReserva(error)
             } finally {
                 console.log("Reserva realizada con éxito");
                 window.alert("Reserva realizada con éxito");
@@ -236,10 +238,16 @@ const DetailReserve = () => {
                 contentLabel='Modal create product'
                 ariaHideApp={false}
             >
-                <h2>Su reserva se realizó exitosamente</h2>
-                {/* <p>{`El codigo de su reserva es ${reserva.productoId}`}</p> */}
-                <p>{`La fecha de su reserva es ${reserva.fecha}`}</p>
-                <button className='modalButton' onClick={closeModal}>Volver</button>
+                {errorReserva !== undefined? <><p>Hubo un problema, intente de nuevo mas tarde</p>
+                                            <button className='modalButton' onClick={closeModal}>Volver</button>
+                                        </>
+                                        : 
+                                        <>
+                                            <h2>Su reserva se realizó exitosamente</h2>
+                                            <p>{`La fecha de su reserva es ${reserva.fecha}`}</p>
+                                            <button className='modalButton' onClick={closeModal}>Volver</button>
+                                        </>
+                                    }
             </Modal>
 
         
