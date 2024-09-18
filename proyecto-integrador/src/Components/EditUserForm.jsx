@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useCateringStates } from '../Components/utils/globalContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+// Obtener la URL base del backend desde las variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const EditUserForm = () => {
     const navigate = useNavigate();
@@ -25,7 +29,8 @@ const EditUserForm = () => {
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
     const [submitMessage, setSubmitMessage] = useState(""); 
-    const [isFormValid, setIsFormValid] = useState(false);
+    const [, setIsFormValid] = useState(false);
+    const [isFormDirty, setIsFormDirty] = useState(false);
 
     const toggleNewPasswordVisibility = () => {
         setShowNewPassword(!showNewPassword);
@@ -76,9 +81,7 @@ const EditUserForm = () => {
         // Validación de nueva contraseña
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
         if (touched.newPassword) {
-            if (!usuario.newPassword) {
-                newErrors.newPassword = "La nueva contraseña es requerida.";
-            } else if (!passwordRegex.test(usuario.newPassword)) {
+            if (usuario.newPassword && !passwordRegex.test(usuario.newPassword)) {
                 newErrors.newPassword = "La nueva contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.";
             } else {
                 newValid.newPassword = true;
@@ -87,9 +90,7 @@ const EditUserForm = () => {
 
         // Validación de confirmación de contraseña
         if (touched.confirmNewPassword) {
-            if (!usuario.confirmNewPassword) {
-                newErrors.confirmNewPassword = "La confirmación de la nueva contraseña es requerida.";
-            } else if (usuario.newPassword !== usuario.confirmNewPassword) {
+            if (usuario.confirmNewPassword && usuario.newPassword !== usuario.confirmNewPassword) {
                 newErrors.confirmNewPassword = "Las nuevas contraseñas no coinciden.";
             } else {
                 newValid.confirmNewPassword = true;
@@ -112,7 +113,7 @@ const EditUserForm = () => {
         if (submitMessage) {
             const timer = setTimeout(() => {
                 setSubmitMessage("");
-                navigate("/admin"); // Navega al AdminPanel después de 5 segundos
+                navigate("/userpanel"); // Navega al UserPanel después de 5 segundos
             }, 5000);
             return () => clearTimeout(timer);
         }
@@ -142,14 +143,31 @@ const EditUserForm = () => {
             ...prevState,
             [name]: true,
         }));
+
+        setIsFormDirty(true);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        if (isFormValid) {
-            setSubmitMessage("Sus cambios fueron guardados exitosamente.");
+        if (isFormDirty) { // Permitir enviar si el formulario ha sido modificado
+            try {
+                const response = await axios.put(`${API_BASE_URL}/api/usuarios/${user.id}`, {
+                    nombre: usuario.nombre,
+                    apellido: usuario.apellido,
+                    email: usuario.email,
+                    ...(usuario.newPassword && { password: usuario.newPassword }) // Solo incluir la nueva contraseña si se proporciona
+                });
+                if (response.status === 200) {
+                    setSubmitMessage("Sus cambios fueron guardados exitosamente.");
+                } else {
+                    setSubmitMessage("Hubo un problema al guardar los cambios.");
+                }
+            } catch (error) {
+                console.error("Error al guardar los cambios:", error);
+                setSubmitMessage("No se pudo guardar los cambios. Inténtalo de nuevo más tarde.");
+            }
         } else {
-            setSubmitMessage("Por favor, corrija los errores en el formulario.");
+            setSubmitMessage("No se han realizado cambios.");
         }
     };
 
@@ -232,14 +250,13 @@ const EditUserForm = () => {
                 {errors.confirmNewPassword && <div className={FormStyle.errorMessage}>{errors.confirmNewPassword}</div>}
             </div>
 
-            <button type="submit" className={FormStyle.submitButton} disabled={!isFormValid}>
+            <button type="submit" className={FormStyle.submitButton} disabled={!isFormDirty}>
                 Guardar cambios
             </button>
+
             {submitMessage && <div className={FormStyle.submitMessage}>{submitMessage}</div>}
         </form>
     );
 };
 
 export default EditUserForm;
-
-

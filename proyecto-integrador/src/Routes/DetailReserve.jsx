@@ -1,258 +1,192 @@
-import React, { useEffect, useState } from 'react'
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getProductoById } from '../api/productos-Apis';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { confirmarReserva, obtenerDetalleReserva } from '../api/reservas-Apis';
-import "../Styles/DetailReserve.css"
+import "../Styles/DetailReserve.css";
 import Modal from 'react-modal';
+import { useCateringStates } from '../Components/utils/globalContext';
 
 const DetailReserve = () => {
-
-    const { id } = useParams();
-    const { fecha } = useParams();
+    const { id, fecha } = useParams();
     const navigate = useNavigate();
+    
+    const { state } = useCateringStates();  // Obtenemos el estado global
+    const { userData } = state;  // Datos del usuario desde el estado global
 
     const [cargando, setCargando] = useState(true);
     const [producto, setProducto] = useState({
         id: "",
         nombre: "",
         descripcion: "",
-        categoria_id: 0, //integer
-        precio: 0.0, //double
-        imagenes: [{
-            url: ""
-        }],
+        categoria_id: 0,
+        precio: 0.0,
+        imagenes: [{ url: "" }],
         caracteristicas: [{}],
         keywords: ""
     });
-    const [ fechaReserva, setFechaReserva ] = useState()
-    const [ errorReserva, setErrorReserva ] = useState()
-    const [ usuario, setUsuario ] = useState({});
-
-    // Objeto de reserva
+    const [fechaReserva, setFechaReserva] = useState();
+    const [errorReserva, setErrorReserva] = useState();
     const [reserva, setReserva] = useState({
         usuarioId: "",
         productoId: "",
         fecha: ""
     });
 
-    // Estado para modal de reserva
     const [modalReservaOpen, setModalReservaOpen] = useState(false);
 
-    useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem('userData'));
-        if (userData) {
-            setUsuario(userData);
+    const getFechas = async (id, fechaInicio, fechaFin) => {
+        try {
+            let getFechasDisponibles = await fechaReserva(id, fechaInicio, fechaFin);
+            // setProducto(getFechasDisponibles);
+            return getFechasDisponibles;
+        } catch (error) {
+            console.error("Error al cargar fechas");
         };
+    };
 
-        // pruebas para el manejod de la fecha
-        // let nuevaFecha = "2024-09-15T01:14:00Z";
-        // let timeStamp = new Date();
-        // console.log(nuevaFecha);
-        // console.log(timeStamp.toISOString());
-        // setFechaReserva(timeStamp.toISOString().slice(0, 10));
-
-        setReserva({
-            usuarioId: usuario.id,
-            productoId: id,
-            fecha: fechaReserva
-        })
-        
-    }, [])
+    useEffect(() => {
+        if (userData) {
+            setReserva(prev => ({
+                ...prev,
+                usuarioId: userData.id
+            }));
+        }
+    }, [userData]);
 
     useEffect(() => {
         const getData = async () => {
             try {
-                let getProductData = await getProductoById(id);
+                const getProductData = await getProductoById(id);
                 setProducto(getProductData);
+                setFechaReserva(fecha);
             } catch (error) {
-                console.error("Error al cargar producto");
-            };
-            // console.log("Producto llamado a la API");
+                console.error("Error al cargar el producto");
+            } finally {
+                setCargando(false);
+            }
         };
         getData();
-    }, [id]);
+    }, [id, fecha]);
 
     useEffect(() => {
-        setFechaReserva(fecha);
-    }, [fecha]);
-
-    useEffect(() => {
-        setCargando(false);
-        // console.log("Producto cargado");
-        // console.log(producto);
-    }, [producto])
-
-    // Actualizar la reserva con los datos
-    
-    useEffect(() => {
-        // console.log(reserva);
-        
-        setReserva(prev => {
-            return {
-                ...prev,
-                fecha: fechaReserva}
-        });
-    }, [fechaReserva])
-    
-    useEffect(() => {
-        // console.log(reserva);
-        
-        setReserva(prev => {
-            return {
-                ...prev,
-                usuarioId: usuario.id}
-        });
-    }, [usuario])
-
-    useEffect(() => {
-        console.log(reserva);
-        console.log(errorReserva);
-    }, [reserva])
-
+        setReserva(prev => ({
+            ...prev,
+            fecha: fechaReserva,
+            productoId: id
+        }));
+    }, [fechaReserva, id]);
 
     const handleBackClick = () => {
         navigate(`/detail/${id}`);
     };
 
-    
-    // Modal 
-    function openModalReserva() {
-        setModalReservaOpen(true);
-    };
-    function afterModalOpen() {
-
-    };
-    function closeModal() {
-        setModalReservaOpen(false);
-        // setModalCategoriaOpen(false);
-        // setUpdate(Date.now())
-    };
-
     const handleConfirmarReserva = async () => {
-
         const confirmar = window.confirm("¿Estas seguro de confirmar la reserva?");
-
         if (confirmar) {
             try {
-                
                 const responseDetalle = await obtenerDetalleReserva(reserva);
-                
-                
                 if (responseDetalle.status === 404) {
-                    console.log("Producto o usuario no encontrados");
                     window.alert("Producto o usuario no encontrados");
-                    return
-                };
+                    return;
+                }
 
                 const response = await confirmarReserva(reserva);
                 if (response.status === 500) {
-                    console.log("Error al confirmar la reserva");
                     window.alert("Error al confirmar la reserva");
-                    return
-                };
-
-                // console.log(response);
-                // console.log(response.reserva.id);
-                // console.log(response.reserva.fecha_reserva);
-                
-            } catch (error) {
-                console.log(error);
-                setErrorReserva(error)
-            } finally {
-                console.log("Reserva realizada con éxito");
+                    return;
+                }
                 window.alert("Reserva realizada con éxito");
-            };
-    
-        };
-
-        openModalReserva();
-
+            } catch (error) {
+                console.error("Error en la reserva:", error);
+                setErrorReserva(error);
+            } finally {
+                openModalReserva();
+            }
+        }
     };
+
+    // Modal 
+    const openModalReserva = () => setModalReservaOpen(true);
+    const closeModal = () => setModalReservaOpen(false);
 
     return (
         <div className='master-container'>
             <div className='reserva-container'>
-                {cargando ? 
-                <>
-                    <p>cargando producto de ID {id}...</p>
-                </> : 
-                <>
-                    {/* Título, flecha de regreso  --------------- */}
-                    <div className="reserva-title">
-                        <h2>Reserva</h2>
+                {cargando ? (
+                    <p>Cargando producto de ID {id}...</p>
+                ) : (
+                    <>
+                        <div className="reserva-title">
+                            <h2>Reserva</h2>
+                            <FontAwesomeIcon
+                                icon={faArrowLeft}
+                                className="goBack"
+                                onClick={handleBackClick}
+                            />
+                        </div>
 
-                        <FontAwesomeIcon
-                            icon={faArrowLeft}
-                            className="goBack"
-                            onClick={handleBackClick}
-                        />
-                    </div>
+                        <div className='bloque-nombre'>
+                            <h2>{producto.nombre}</h2>
+                            <h4>Día de la reserva: {fechaReserva}</h4>
+                            <h4>Precio: $ {producto.precio}</h4>
+                        </div>
 
-                    {/* Nombre de producto, fecha de la reserva y precio --------------- */}
-                    <div className='bloque-nombre'>
-                        <h2>{producto.nombre}</h2>
-                        <h4>Día de la reserva: {fechaReserva}</h4>
-                        <h4>Precio: $ {producto.precio}</h4>
-                    </div>
+                        <div className='bloque-nombre'>
+                            <h4>Detalle del servicio</h4>
+                        </div>
+                        <div className='bloque-img'>
+                            <img 
+                                src={producto?.imagenes[0]?.url} 
+                                alt={producto.nombre} 
+                                width={200}
+                            />
+                            <p>{producto.descripcion}</p>
+                        </div>
+                    </>
+                )}
 
-                    {/* Bloque de imágen y descripción --------------- */}
-                    <div className='bloque-nombre'>
-                        <h4>Detalle del servicio</h4>
-                    </div>
-                    <div className='bloque-img'>
-                        <img 
-                            src={producto?.imagenes[0].url} 
-                            alt="" 
-                            width={200}
-                        />
-                        <p>{producto.descripcion}</p>
-
-                    </div>
-                </>}
-
-                {/* Datos del usuario --------------- */}
                 <div className='bloque-usuario'>
                     <h2>Tus datos</h2>
-                    <p>{usuario.nombre} {usuario.apellido}</p>
-                    <p>{usuario.email}</p>
+                    <p>{userData?.nombre} {userData?.apellido}</p>
+                    <p>{userData?.email}</p>
                 </div>
 
                 <div className='bloque-btn'>
                     <button 
                         className='reserva-btn'
-                        onClick={() => handleConfirmarReserva()}
+                        onClick={handleConfirmarReserva}
                     >
                         Confirmar reserva
                     </button>
                 </div>
-
             </div>
 
             <Modal 
                 portalClassName='modal-reserva'
                 isOpen={modalReservaOpen}
-                onAfterOpen={afterModalOpen}
-                /* onRequestClose={closeModal} */
-                contentLabel='Modal create product'
+                onRequestClose={closeModal}
+                contentLabel='Confirmación de reserva'
                 ariaHideApp={false}
             >
-                {errorReserva !== undefined? <><p>Hubo un problema, intente de nuevo mas tarde</p>
-                                            <button className='modalButton' onClick={closeModal}>Volver</button>
-                                        </>
-                                        : 
-                                        <>
-                                            <h2>Su reserva se realizó exitosamente</h2>
-                                            <p>{`La fecha de su reserva es ${reserva.fecha}`}</p>
-                                            <button className='modalButton' onClick={closeModal}>Volver</button>
-                                        </>
-                                    }
+                {errorReserva ? (
+                    <>
+                        <p>Hubo un problema, intente de nuevo más tarde</p>
+                        <button className='modalButton' onClick={closeModal}>Volver</button>
+                    </>
+                ) : (
+                    <>
+                        <h2>Su reserva se realizó exitosamente</h2>
+                        <p>{`La fecha de su reserva es ${reserva.fecha}`}</p>
+                        <button className='modalButton' onClick={closeModal}>Volver</button>
+                    </>
+                )}
             </Modal>
-
-        
         </div>
-    )
+    );
 };
 
 export default DetailReserve;
+
