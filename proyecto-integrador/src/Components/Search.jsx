@@ -6,6 +6,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../Styles/Search.modules.css';
 import reservas from '../utils/reservas';
 import axios from 'axios';
+// Obtener la URL base del backend desde las variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // Convertir fechas reservadas a objetos Date
 const formattedReservas = reservas.map(reserva => ({
@@ -26,7 +28,7 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         // Fetch all products on mount
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/productos?pageSize=1000000');
+                const response = await axios.get(`${API_BASE_URL}/api/productos?pageSize=1000000`);
                 setAllProducts(response.data.productos);
             } catch (error) {
                 console.error('Error fetching products:', error);

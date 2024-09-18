@@ -18,7 +18,15 @@
     align-items: center;
     font-size: 12px;
 }
-
+@media (max-width: 768px){
+    .footer{
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        gap: 10px;
+        justify-content: space-around;
+    }
+}
 @media (max-width: 480px) {
     .footer {
         flex-direction: column;

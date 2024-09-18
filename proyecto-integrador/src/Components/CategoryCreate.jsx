@@ -31,10 +31,12 @@ const CategoryCreate = ({listaCategorias, closeModal}) => {
 
     const validate = () => {
 
+        let isValid = true;
+
         if (categoriaNueva.titulo === "") {
             setTituloCorrecto(false);
             window.alert("Error: Por favor ingrese un título");
-            return false;
+            isValid = false;
         } else {
             setTituloCorrecto(true);
         };
@@ -42,18 +44,19 @@ const CategoryCreate = ({listaCategorias, closeModal}) => {
         if (categoriaNueva.descripcion === "") {
             setDescripcionCorrecta(false);
             window.alert("Error: Por favor ingrese una descripción");
-            return false;
+            isValid = false;
         } else {
             setDescripcionCorrecta(true);
         };
         if (categoriaNueva.imagen === "") {
             setImagenCorrecta(false);
             window.alert("Error: Por favor ingrese una URL de imágen");
-            return false;
+            isValid = false;
         } else {
             setImagenCorrecta(true);
         };
 
+        return isValid;
     };
 
     const handleSubmit = async (event) => {
@@ -104,6 +107,9 @@ const CategoryCreate = ({listaCategorias, closeModal}) => {
                                 value={categoriaNueva.titulo}
                                 onChange={handleChange} 
                             />
+                            <p className='error-msg'>
+                            {tituloCorrecto ? "" : "Ingrese un título válido"}
+                            </p>
                         </td>
                     </tr>
 
@@ -119,6 +125,9 @@ const CategoryCreate = ({listaCategorias, closeModal}) => {
                                 value={categoriaNueva.descripcion}
                                 onChange={handleChange}
                             ></textarea>
+                            <p className='error-msg'>
+                            {descripcionCorrecta ? "" : "Ingrese una descripción válida"}
+                            </p>
                         </td>
                     </tr>
 
@@ -136,6 +145,9 @@ const CategoryCreate = ({listaCategorias, closeModal}) => {
                                 value={categoriaNueva.imagen}
                                 onChange={handleChange} 
                             />
+                            <p className='error-msg'>
+                            {imagenCorrecta ? "" : "Ingrese una URL de imágen válida"}
+                            </p>
                         </td>
                     </tr>
                 </tbody>

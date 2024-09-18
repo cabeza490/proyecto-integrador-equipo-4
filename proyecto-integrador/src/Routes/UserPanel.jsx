@@ -5,6 +5,8 @@ import '../Styles/UserPanel.css';
 import EditUserForm from '../Components/EditUserForm'; 
 import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
 import Favorites from '../Components/Favorites'; 
+// Obtener la URL base del backend desde las variables de entorno
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function UserPanel() {
     const [activeTab, setActiveTab] = useState(null);
@@ -18,7 +20,7 @@ function UserPanel() {
     const { userData } = state;
     const fetchUserData = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/usuarios');
+            const response = await axios.get(`${API_BASE_URL}/api/usuarios`);
             const usuarios = response.data;
             // Buscar el usuario logueado por su ID
             const loggedInUser = usuarios.find(usuario => usuario.id === userData.id);
