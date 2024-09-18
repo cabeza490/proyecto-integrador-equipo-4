@@ -37,6 +37,16 @@ const DetailReserve = () => {
 
     const [modalReservaOpen, setModalReservaOpen] = useState(false);
 
+    const getFechas = async (id, fechaInicio, fechaFin) => {
+        try {
+            let getFechasDisponibles = await fechaReserva(id, fechaInicio, fechaFin);
+            // setProducto(getFechasDisponibles);
+            return getFechasDisponibles;
+        } catch (error) {
+            console.error("Error al cargar fechas");
+        };
+    };
+
     useEffect(() => {
         if (userData) {
             setReserva(prev => ({
