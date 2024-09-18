@@ -10,54 +10,56 @@ import { faHeart, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-
 const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTotalResults }) => {
   const { state, dispatch } = useCateringStates();
   const { favs } = state;
-  const [images, setImages] = useState([]);
+  const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [imagesPerPage, setImagesPerPage] = useState(8);
-  const [favoriteStatus, setFavoriteStatus] = useState({}); // Nuevo estado para guardar favoritos
+  const [productsPerPage, setProductsPerPage] = useState(8);
+  const [favoriteStatus, setFavoriteStatus] = useState({});
 
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchProducts = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/productos?pageSize=1000000');
         const productos = response.data.productos;
-        const allImages = productos.flatMap(producto => producto.imagenes.map(imagen => ({
-          src: imagen.url,
-          title: producto.nombre,
-          description: producto.descripcion,
-          id: producto.id,
-          keywords: producto.keywords,
-          categoria_id: producto.categoria_id
-        })));
 
-        const filteredImages = allImages.filter(image => {
+        // Agrupar las imágenes por product_id
+        const productosConImagenes = productos.map(producto => ({
+          id: producto.id,
+          nombre: producto.nombre,
+          descripcion: producto.descripcion,
+          keywords: producto.keywords,
+          categoria_id: producto.categoria_id,
+          imagenes: producto.imagenes.map(imagen => imagen.url), // Array de URLs de imágenes
+        }));
+
+        const filteredProducts = productosConImagenes.filter(producto => {
           const matchesSearchTerm = searchTerm
-            ? image.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              image.keywords.toLowerCase().includes(searchTerm.toLowerCase())
+            ? producto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              producto.keywords.toLowerCase().includes(searchTerm.toLowerCase())
             : true;
 
           const matchesCategory = selectedCategories.length === 0 ||
-            selectedCategories.some(cat => cat === image.categoria_id);
+            selectedCategories.some(cat => cat === producto.categoria_id);
 
           return matchesSearchTerm && matchesCategory;
         });
 
-        const shuffledImages = shuffleArray(filteredImages);
+        const shuffledProducts = shuffleArray(filteredProducts);
 
-        setImages(shuffledImages);
-        setNoResults(shuffledImages.length === 0);
-        setTotalResults(shuffledImages.length);
+        setProducts(shuffledProducts);
+        setNoResults(shuffledProducts.length === 0);
+        setTotalResults(shuffledProducts.length);
       } catch (error) {
-        console.error('Error al obtener las imágenes:', error);
+        console.error('Error al obtener los productos:', error);
         setNoResults(true);
       }
     };
 
-    fetchImages();
+    fetchProducts();
   }, [searchTerm, selectedCategories, setNoResults, setTotalResults]);
 
   useEffect(() => {
     const handleResize = () => {
-      setImagesPerPage(window.innerWidth <= 1000 ? 4 : 8);
+      setProductsPerPage(window.innerWidth <= 1000 ? 4 : 8);
     };
 
     handleResize();
@@ -73,62 +75,49 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
     }
     return shuffledArray;
   };
-  const handleLogout = () => {
-    const confirmLogout = window.confirm("¿Está seguro de cerrar sesión?");
-    if (confirmLogout) {
-        dispatch({ type: 'CLEAR_USER_DATA' }); // Usar 'CLEAR_USER_DATA' para limpiar el estado y localStorage
-        dispatch
-        navigate('/');
-    }
-};
-  // useEffect para sincronizar favoritos cuando el usuario está logueado y validar los favoritos
+
   useEffect(() => {
     if (state.userData && state.userData.id) {
-      // Solo realiza la petición si el usuario está logueado
       axios.get(`http://localhost:3000/api/favoritos/${state.userData.id}`)
         .then(response => {
           const favoritosIds = response.data;
 
-          // Actualiza el estado global con los favoritos obtenidos
           if (favoritosIds) {
-            dispatch({type: 'REMOVE_ALL'})
+            dispatch({ type: 'REMOVE_ALL' });
             dispatch({ type: 'ADD_FAVORITES', payload: favoritosIds });
 
-            // Crear un objeto para almacenar el estado de favorito de cada imagen
             const favoriteObj = {};
-            images.forEach(image => {
-              favoriteObj[image.id] = favoritosIds.some(fav => fav.id === image.id);
+            products.forEach(product => {
+              favoriteObj[product.id] = favoritosIds.some(fav => fav.id === product.id);
             });
 
-            setFavoriteStatus(favoriteObj); // Actualizar el estado de favoritos
+            setFavoriteStatus(favoriteObj);
           }
-          if(!state.userData){
-            axios.get('http://localhost:3000/api/productos?pageSize=1000000')
+          // Verificación de usuario no logueado
+          if (!state.userData) {
+            axios.get('http://localhost:3000/api/productos?pageSize=1000000');
           }
         })
         .catch(error => console.error("Error al obtener favoritos:", error));
     }
-  }, [state.userData, dispatch, images]); // Dependencias incluyen `images`
+  }, [state.userData, dispatch, products]);
 
-  // Función para agregar/eliminar de favoritos
   const toggleFavorito = (productoId) => {
     console.log("Datos enviados a la API:", { usuarioId: state.userData.id, productoId });
     axios.post(`http://localhost:3000/api/favoritos`, { usuarioId: state.userData.id, productoId })
       .then(response => {
         console.log(response.data.message);
-        // Actualizar el estado local para reflejar el cambio en favoritos
         setFavoriteStatus(prevState => ({
           ...prevState,
           [productoId]: !prevState[productoId]
         }));
-        axios.get('http://localhost:3000/api/productos?pageSize=1000000')
+        axios.get('http://localhost:3000/api/productos?pageSize=1000000'); // Solicitud adicional
       })
-      
       .catch(error => console.error("Error al eliminar favorito:", error));
   };
 
   const nextPage = () => {
-    if ((currentPage + 1) * imagesPerPage < images.length) {
+    if ((currentPage + 1) * productsPerPage < products.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -139,23 +128,23 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
     }
   };
 
-  const currentImages = images.slice(currentPage * imagesPerPage, (currentPage + 1) * imagesPerPage);
+  const currentProducts = products.slice(currentPage * productsPerPage, (currentPage + 1) * productsPerPage);
 
   return (
     <div>
       <div className="gallery">
-        {currentImages.map((image, index) => (
+        {currentProducts.map((producto, index) => (
           <div key={index} className="image-card">
-            <img src={image.src} alt={`img-${index}`} />
-            <Link to={`/detail/${image.id}`}>
+            <img src={producto.imagenes[0]} alt={`img-${index}`} />
+            <Link to={`/detail/${producto.id}`}>
               <div className="image-info">
-                <h2>{image.title}</h2>
-                <p>{image.description}</p>
+                <h2>{producto.nombre}</h2>
+                <p>{producto.descripcion}</p>
               </div>
             </Link>
             <button
-              onClick={() => toggleFavorito(image.id)}
-              className={`favButton ${favoriteStatus[image.id] && state.userData? 'favorite' : ''}`}>
+              onClick={() => toggleFavorito(producto.id)}
+              className={`favButton ${favoriteStatus[producto.id] && state.userData ? 'favorite' : ''}`}>
               <FontAwesomeIcon icon={faHeart} />
             </button>
           </div>
@@ -165,10 +154,10 @@ const Galeria = ({ searchTerm = '', setNoResults, selectedCategories = [], setTo
         <button onClick={prevPage} disabled={currentPage === 0}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
-        
-        <span className="page-number">{currentPage + 1}</span> {/* Muestra el número de página */}
 
-        <button onClick={nextPage} disabled={(currentPage + 1) * imagesPerPage >= images.length}>
+        <span className="page-number">{currentPage + 1}</span>
+
+        <button onClick={nextPage} disabled={(currentPage + 1) * productsPerPage >= products.length}>
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>

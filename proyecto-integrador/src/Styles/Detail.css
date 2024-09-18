@@ -83,6 +83,7 @@ h3 {
 .init_sesion {
     text-align: center;
 }
+
 .caracteristicas {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -103,7 +104,7 @@ h3 {
     text-align: left;
 }
 
-.none_padding{
+.none_padding {
     padding-left: 0px !important;
 }
 
@@ -118,8 +119,8 @@ h3 {
 .react-datepicker {
     width: 100%;
     max-width: 400px;
-    margin: 0 auto; 
-    margin-bottom:10px ;
+    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 .react-datepicker__month-container {
@@ -156,7 +157,7 @@ h3 {
     margin: 0;
     font-size: 1.2rem;
     color: #333333;
-    padding:10px
+    padding: 10px
 }
 
 .goBack {
@@ -165,6 +166,66 @@ h3 {
     color: #000000;
     cursor: pointer;
     font-size: 36px;
+}
+
+.image-block {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+}
+
+.main-image {
+    flex: 1;
+    max-width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.secondary-images {
+    flex: 1;
+    max-width: 50%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+}
+
+.secondary-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.secondary-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.view-more-button {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+}
+
+.view-more-button button {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
 }
 
 @media (max-width: 480px) {
@@ -212,7 +273,7 @@ h3 {
     .card_container p {
         font-size: 1rem;
         padding: 10px;
-       
+
     }
 
     .caracteristicas {
@@ -229,27 +290,34 @@ h3 {
     .caracteristica-item {
         flex: 1;
         margin-bottom: 10px;
-        text-align: left; /* Asegura que cada característica esté alineada a la izquierda */
+        text-align: left;
+        /* Asegura que cada característica esté alineada a la izquierda */
     }
 
     .caracteristica-item span {
         display: inline-block;
         font-size: 1.5rem;
         margin-right: 8px;
-        vertical-align: middle; /* Asegura que el icono esté alineado verticalmente con el texto */
+        vertical-align: middle;
+        /* Asegura que el icono esté alineado verticalmente con el texto */
     }
 
     .goBack {
         font-size: 24px;
     }
+
     .datepicker-container {
-        width: 100%; /* Ocupa el 100% del ancho disponible en pantallas pequeñas */
-        margin-bottom: 20px; /* Espacio adicional debajo del calendario */
+        width: 100%;
+        /* Ocupa el 100% del ancho disponible en pantallas pequeñas */
+        margin-bottom: 20px;
+        /* Espacio adicional debajo del calendario */
         margin-top: 20px;
     }
 
     .react-datepicker {
-        width: 100%; /* Asegura que el calendario ocupe el 100% del contenedor */
-        max-width: none; /* Elimina el máximo ancho para pantallas pequeñas */
+        width: 100%;
+        /* Asegura que el calendario ocupe el 100% del contenedor */
+        max-width: none;
+        /* Elimina el máximo ancho para pantallas pequeñas */
     }
 }
