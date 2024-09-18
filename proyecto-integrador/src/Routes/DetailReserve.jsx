@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getProductoById } from '../api/productos-Apis';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { confirmarReserva, obtenerDetalleReserva } from '../api/reservas-Apis';
+import { confirmarReserva, obtenerDetalleReserva, fechasDisponibles } from '../api/reservas-Apis';
 import "../Styles/DetailReserve.css"
 import Modal from 'react-modal';
 
@@ -39,6 +39,16 @@ const DetailReserve = () => {
     // Estado para modal de reserva
     const [modalReservaOpen, setModalReservaOpen] = useState(false);
 
+    const getFechas = async (id, fechaInicio, fechaFin) => {
+        try {
+            let getFechasDisponibles = await fechaReserva(id, fechaInicio, fechaFin);
+            // setProducto(getFechasDisponibles);
+            return getFechasDisponibles;
+        } catch (error) {
+            console.error("Error al cargar fechas");
+        };
+    };
+
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'));
         if (userData) {
@@ -57,6 +67,9 @@ const DetailReserve = () => {
             productoId: id,
             fecha: fechaReserva
         })
+
+        console.log(getFechas(id, "2024-09-01", "2024-09-30"));
+        
         
     }, [])
 
