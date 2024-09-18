@@ -21,7 +21,6 @@ const Footer = () => {
 
             </div>
 
-
             <div className={FooterStyle.information}>
                 Mas información | Términos y condiciones
             </div>

@@ -232,11 +232,14 @@ const DetailReserve = () => {
                 portalClassName='modal-reserva'
                 isOpen={modalReservaOpen}
                 onAfterOpen={afterModalOpen}
-                onRequestClose={closeModal}
+                /* onRequestClose={closeModal} */
                 contentLabel='Modal create product'
                 ariaHideApp={false}
             >
-                <p>Mensaje de confirmación</p>
+                <h2>Su reserva se realizó exitosamente</h2>
+                {/* <p>{`El codigo de su reserva es ${reserva.productoId}`}</p> */}
+                <p>{`La fecha de su reserva es ${reserva.fecha}`}</p>
+                <button className='modalButton' onClick={closeModal}>Volver</button>
             </Modal>
 
         

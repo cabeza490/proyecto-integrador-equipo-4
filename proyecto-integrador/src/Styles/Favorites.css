@@ -151,7 +151,9 @@ h1{
         margin-left: 0;
     }
     ._footer_1m5cj_11{
-        padding: auto 30px;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
     }
 }
 @media (max-width: 590px) {
