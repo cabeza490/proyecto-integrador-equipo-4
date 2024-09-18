@@ -7,7 +7,9 @@ import ListaProductos from '../Components/Listaproductos';
 import UserManagement from '../Components/UserManagement';
 import EditUserForm from '../Components/EditUserForm';
 import Favorites from '../Components/Favorites'; // Importar el componente de Favoritos
+import HistorialReservas from '../Components/HistorialReservas'; // Importar el componente de Historial de Reservas
 import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
+
 // Obtener la URL base del backend desde las variables de entorno
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -21,7 +23,6 @@ function AdminPanel() {
     const [loading, setLoading] = useState(true); // Estado para manejar la carga
     const { state } = useCateringStates();
     const { userData } = state;
-
 
     const fetchUserData = useCallback(async () => {
         try {
@@ -116,16 +117,25 @@ function AdminPanel() {
                 </section>
                 <section className='tabs'>
                     <div className='tab-list'>
-                        <button className={'tab-button ' + (activeTab === 0 && "tab-selected")}
-                            onClick={() => cambiarTab(0)}>
+                        <button
+                            className={'tab-button ' + (activeTab === 0 && "tab-selected")}
+                            onClick={() => cambiarTab(0)}
+                        >
                             Información
                         </button>
                         {infoDropdownVisible && (
                             <div className='info-dropdown'>
-                                <button>Historial de compras</button>
+                                <button
+                                    className={'dropdown-button ' + (activeTab === 4 && "tab-selected")}
+                                    onClick={() => cambiarTab(4)}
+                                >
+                                    Historial de reservas
+                                </button>
                                 <button>Mis reseñas</button>
-                                <button className={'info-dropdown ' + (activeTab === 3 && "tab-selected")}
-                                onClick={() => cambiarTab(3)}>
+                                <button
+                                    className={'dropdown-button ' + (activeTab === 3 && "tab-selected")}
+                                    onClick={() => cambiarTab(3)}
+                                >
                                     Favoritos
                                 </button>
                                 <button>Seguridad</button>
@@ -134,12 +144,16 @@ function AdminPanel() {
                                 <button>Contacto</button>
                             </div>
                         )}
-                        <button className={'tab-button ' + (activeTab === 1 && "tab-selected")}
-                            onClick={() => cambiarTab(1)}>
+                        <button
+                            className={'tab-button ' + (activeTab === 1 && "tab-selected")}
+                            onClick={() => cambiarTab(1)}
+                        >
                             Gestión de usuarios
                         </button>
-                        <button className={'tab-button ' + (activeTab === 2 && "tab-selected")}
-                            onClick={() => cambiarTab(2)}>
+                        <button
+                            className={'tab-button ' + (activeTab === 2 && "tab-selected")}
+                            onClick={() => cambiarTab(2)}
+                        >
                             Lista de productos
                         </button>
                     </div>
@@ -148,9 +162,10 @@ function AdminPanel() {
                     {isEditing ? (
                         <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
                     ) : (
-                        activeTab === 1 ? <UserManagement handleEditClick={handleEditClick} /> : 
+                        activeTab === 1 ? <UserManagement handleEditClick={handleEditClick} /> :
                         activeTab === 2 ? <ListaProductos /> :
                         activeTab === 3 ? <Favorites /> :
+                        activeTab === 4 ? <HistorialReservas /> :
                         null
                     )}
                 </section>

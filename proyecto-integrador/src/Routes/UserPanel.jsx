@@ -3,8 +3,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../Styles/UserPanel.css';
 import EditUserForm from '../Components/EditUserForm'; 
-import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
 import Favorites from '../Components/Favorites'; 
+import HistorialReservas from '../Components/HistorialReservas'; // Importa el componente HistorialReservas
+import { useCateringStates } from '../Components/utils/globalContext'; // Asegúrate de la ruta correcta
+
 // Obtener la URL base del backend desde las variables de entorno
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -18,6 +20,7 @@ function UserPanel() {
     const [loading, setLoading] = useState(true); // Estado para manejar la carga
     const { state } = useCateringStates();
     const { userData } = state;
+
     const fetchUserData = useCallback(async () => {
         try {
             const response = await axios.get(`${API_BASE_URL}/api/usuarios`);
@@ -40,7 +43,7 @@ function UserPanel() {
         }
     }, [userData, fetchUserData]); // Añade fetchUserData a las dependencias
 
-    // Verifica si el usuario está logueado y tiene rolId: 1
+    // Verifica si el usuario está logueado y tiene rolId: 2
     if (loading) {
         return <div className="loading-message">Cargando datos...</div>; // Mensaje mientras se cargan los datos
     }
@@ -89,6 +92,7 @@ function UserPanel() {
         const lastInitial = apellido ? apellido[0].toUpperCase() : ' ';
         return `${firstInitial}${lastInitial}`;
     };
+
     return (
         <>
             <div className='user-panel'>
@@ -113,10 +117,13 @@ function UserPanel() {
                         </button>
                         {infoDropdownVisible && (
                             <div className='info-dropdown'>
-                                <button>Historial de compras</button>
+                                <button className={'dropdown-button ' + (activeTab === 4 && "tab-selected")}
+                                    onClick={() => cambiarTab(4)}>
+                                    Historial de reservas
+                                </button>
                                 <button>Mis reseñas</button>
-                                <button className={'info-dropdown ' + (activeTab === 3 && "tab-selected")}
-                                onClick={() => cambiarTab(3)}>
+                                <button className={'dropdown-button ' + (activeTab === 3 && "tab-selected")}
+                                    onClick={() => cambiarTab(3)}>
                                     Favoritos
                                 </button>
                                 <button>Seguridad</button>
@@ -130,6 +137,7 @@ function UserPanel() {
                     {isEditing ? (
                         <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
                     ) : ( activeTab === 3 ? <Favorites /> :
+                        activeTab === 4 ? <HistorialReservas /> : // Renderiza HistorialReservas si la pestaña está activa
                         null
                     )}
                 </section>
