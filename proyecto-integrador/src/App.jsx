@@ -14,6 +14,7 @@ import UserPanel from './Routes/UserPanel';
 import Favorites from './Components/Favorites';
 import CateringContext from './Components/utils/globalContext';
 import DetailReserve from './Routes/DetailReserve';
+import DetailGalery from './Components/DetailGalery';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/" element={<Layout userData={userData} />}>
               <Route index element={<Home />} />
               <Route path="/detail/:id" element={<Detail />} />
+              <Route path="/detail/:id/gallery" element={<DetailGalery />}/>
               <Route path="/login" element={<Login setUserData={setUserData} />} />
               <Route path="/register" element={<Register />} />
               <Route path="/adminpanel" element={<AdminPanel />} />

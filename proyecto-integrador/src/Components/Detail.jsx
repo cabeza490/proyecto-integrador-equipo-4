@@ -67,6 +67,7 @@ const Detail = () => {
     useEffect(() => {
         const getData = async () => {
             let getProductData = await getProductoById(id);
+            console.log("Lo que recibo: ", getProductData);
             setProductSelected(getProductData);
         };
         getData();
@@ -105,6 +106,10 @@ const Detail = () => {
         }
     };
 
+    const handleViewMoreClick = () => {
+        navigate(`/detail/${id}/gallery`, { state: { productSelected } });
+    };
+
     return (
         <div className="content">
             <div className="card_container" key={productSelected.id}>
@@ -116,14 +121,33 @@ const Detail = () => {
                         onClick={handleBackClick}
                     />
                 </div>
+
                 <div className="card_content">
-                    <div className="card_image">
-                        {productSelected.imagenes && productSelected.imagenes.length > 0 ? (
-                            <img src={productSelected.imagenes[0].url} alt={productSelected.nombre} />
-                        ) : (
-                            <div className="placeholder_image"></div>
-                        )}
+                    <div className="image-block">
+                        <div className="main-image">
+                            {productSelected.imagenes && productSelected.imagenes[0] ? (
+                                <img src={productSelected.imagenes[0].url} alt="Imagen principal" />
+                            ) : (
+                                <div className="placeholder_image"></div>
+                            )}
+                        </div>
+                        <div className="secondary-images">
+                {productSelected.imagenes && productSelected.imagenes.slice(1, 5).map((imagen, index) => (
+                    <div key={index} className="secondary-image">
+                        <img src={imagen.url} alt={`Imagen secundaria ${index + 1}`} />
                     </div>
+                ))}
+            </div>
+                    </div>
+
+                </div>
+
+                <div className="view-more-button">
+                    <button onClick={handleViewMoreClick}>
+                        Ver más
+                    </button>
+                </div>
+                <div className="service-description">
                     <p>{productSelected.descripcion || 'Descripción del servicio.'}</p>
                 </div>
             </div>

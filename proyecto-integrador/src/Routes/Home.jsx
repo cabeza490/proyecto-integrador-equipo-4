@@ -64,7 +64,7 @@ function Home() {
                                     <span className="search-category-text">
                                         {selectedCategories.map((category, index) => (
                                             <span key={category.id} className="selected-category">
-                                                {category.nombre}
+                                                {category.titulo}
                                                 <button onClick={() => handleRemoveCategory(category.id)} className="remove-filter-button">✕</button>
                                                 {index < selectedCategories.length - 1 && ', '}
                                             </span>
