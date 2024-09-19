@@ -64,7 +64,7 @@ const HistorialReservas = () => {
                                 <div className="reserva-info">
                                     <h3>{reserva.producto ? reserva.producto.nombre : 'Nombre no disponible'}</h3>
                                     <p>{reserva.producto ? reserva.producto.descripcion : 'Descripción no disponible'}</p>
-                                    <p><strong>Fecha de reserva:</strong> {reserva.fecha || 'Fecha no disponible'}</p>
+                                    <p><strong>Fecha de reserva:</strong> {reserva.fecha_uso || 'Fecha no disponible'}</p>
                                     <p><strong>Precio:</strong> ${reserva.producto ? reserva.producto.precio : 'Precio no disponible'}</p>
                                     <div className="reserva-buttons">
                                         <Link to={`/detail/${reserva.producto ? reserva.producto.id : ''}`} className="detail-button">

@@ -3,22 +3,25 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import { userLogin } from '../api/login-Apis';
-import { useCateringStates } from '../Components/utils/globalContext';  // Importa el hook para usar el contexto
+import { useCateringStates } from '../Components/utils/globalContext';
 import '../Styles/Login.css';
 
 const Login = () => {
   const { register, formState: { errors }, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState('');
-  const { state, dispatch } = useCateringStates(); // Obtén la función dispatch del contexto
+  const { state, dispatch } = useCateringStates();
+
+  // Estado para mostrar/ocultar la contraseña
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
     try {
       const response = await userLogin(data);
       if (response.status === 200) {
-        dispatch({ type: "SET_USER_DATA", payload: response.data }); // Despacha la acción para actualizar los datos del usuario
+        dispatch({ type: "SET_USER_DATA", payload: response.data });
         console.log(state);
-        navigate('/'); 
+        navigate('/');
       } else {
         setLoginError('Datos incorrectos. Por favor, inténtalo de nuevo.');
       }
@@ -47,14 +50,21 @@ const Login = () => {
           </div>
           <div className="form__content">
             <input 
-              type="password" 
+              type={showPassword ? "text" : "password"}  // Cambia el tipo según el estado
               placeholder="Contraseña" 
               {...register('password', {
                 required: true,
                 minLength: 8
               })} 
             />
-            <span className="icon">&#128065;</span>
+            <span 
+              className="icon" 
+              onClick={() => setShowPassword(!showPassword)}  // Alterna el estado al hacer clic
+              role="button" 
+              aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            >
+              {showPassword ? '🙈' : '👁️'}  {/* Puedes usar iconos más estilizados si prefieres */}
+            </span>
             {errors.password?.type === "required" && <p>El campo contraseña es requerido</p>}
             {errors.password?.type === "minLength" && <p>La contraseña debe tener al menos 8 caracteres</p>}
           </div>
@@ -70,4 +80,3 @@ const Login = () => {
 };
 
 export default Login;
-
