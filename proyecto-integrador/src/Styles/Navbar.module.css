@@ -137,16 +137,15 @@ a {
 
 .menuOpen {
     display: flex !important;
-    flex-direction:row;
+    flex-direction: row;
     position: absolute;
     top: 80%; /* Ajusta según la altura del navbar */
     left: 0;
+    right: 0; /* Asegura que el menú no se corte en el lado derecho */
     background-color: #003366;
-    width: 94.78%;
     padding: 10px;
     z-index: 1000;
 }
-
 @media (max-width: 768px) {
     .navLogo {
         height: 34px;

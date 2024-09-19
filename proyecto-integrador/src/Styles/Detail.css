@@ -377,6 +377,10 @@ h3 {
         max-width: none;
         /* Elimina el máximo ancho para pantallas pequeñas */
     }
+    .button-reserva{
+        margin-left: 30%;
+        margin-bottom: 5%;
+    }
 }
 
 

@@ -38,6 +38,7 @@
         order: 1;
         font-size: 16px;
         gap: 10px;
+        margin-top: 5%;
     }
     .footerLogo{
         order: 2;

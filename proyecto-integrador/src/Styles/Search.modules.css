@@ -129,9 +129,14 @@
     font-weight: bold; 
 }
 @media (max-width: 1050px) {
+    .search-section {
+        margin-top: 55px; /* Ajusta según la altura del menú hamburguesa */
+    }
+
     .search-heading {
         font-size: 20px;
         margin-bottom: 15px;
+        margin-top: 10%;
     }
 
     .search-bar {
@@ -148,16 +153,22 @@
         margin-bottom: 10px;
     }
 
-    .search-date,
-    .search-date-out {
-        width: 350px;
+    .search-date-container {
+        display: flex;
+        justify-content: space-between; /* Asegura que los elementos estén separados */
+        align-items: center; /* Alinea verticalmente */
+        width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    }
+
+    .search-date {
+        width: 70%; /* Ajusta el ancho según lo necesites */
         padding: 10px;
         font-size: 14px;
         height: 30px;
     }
 
     .search-button {
-        width: 10%;
+        width: 25%; /* Ajusta el ancho del botón */
         border-radius: 0 50px 50px 0;
         font-size: 14px;
     }
@@ -213,19 +224,20 @@
 
     .search-date-container {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-between; /* Asegura que los elementos estén separados */
+        align-items: center; /* Alinea verticalmente */
+        width: 100%; /* Asegura que ocupe todo el ancho disponible */
     }
 
-    .search-date,
-    .search-date-out {
-        width: 100px;
+    .search-date {
+        width: 100px; /* Ajusta el ancho del campo de fecha */
         padding: 10px;
         font-size: 14px;
         height: 30px;
     }
 
     .search-button {
-        width: 100%;
+        width: 100%; /* Asegúrate de que el botón ocupe el espacio disponible */
         border-radius: 0 50px 50px 0;
         font-size: 14px;
     }

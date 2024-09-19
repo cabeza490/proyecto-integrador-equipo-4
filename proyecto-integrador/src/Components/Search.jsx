@@ -1,19 +1,12 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { useState, useEffect, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../Styles/Search.modules.css';
-import reservas from '../utils/reservas';
 import axios from 'axios';
-// Obtener la URL base del backend desde las variables de entorno
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+import { fechasReservadas } from '../api/reservas-Apis';
 
-// Convertir fechas reservadas a objetos Date
-const formattedReservas = reservas.map(reserva => ({
-    ...reserva,
-    fecha_reserva: new Date(reserva.fecha_reserva)
-}));
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     const [localSearchTerm, setLocalSearchTerm] = useState('');
@@ -22,10 +15,9 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
     const [allProducts, setAllProducts] = useState([]);
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
-    const suggestionsListRef = useRef(null); // Referencia para el contenedor de sugerencias
+    const suggestionsListRef = useRef(null);
 
     useEffect(() => {
-        // Fetch all products on mount
         const fetchProducts = async () => {
             try {
                 const response = await axios.get(`${API_BASE_URL}/api/productos?pageSize=1000000`);
@@ -51,7 +43,7 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         const value = event.target.value;
         setLocalSearchTerm(value);
 
-        if (value.length > 1) { // Start suggesting only after 2 characters
+        if (value.length > 1) {
             const filteredSuggestions = allProducts.filter(product =>
                 product.nombre.toLowerCase().includes(value.toLowerCase()) ||
                 product.descripcion.toLowerCase().includes(value.toLowerCase()) ||
@@ -60,11 +52,11 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
 
             setSuggestions(filteredSuggestions);
             setShowSuggestions(true);
-            setSelectedSuggestionIndex(-1); // Reset selected suggestion
+            setSelectedSuggestionIndex(-1);
         } else {
             setSuggestions([]);
             setShowSuggestions(false);
-            setSelectedSuggestionIndex(-1); // Reset selected suggestion
+            setSelectedSuggestionIndex(-1);
         }
     };
 
@@ -72,25 +64,16 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         setLocalSearchTerm(suggestion.nombre);
         setSuggestions([]);
         setShowSuggestions(false);
-        setSelectedSuggestionIndex(-1); // Reset selected suggestion
+        setSelectedSuggestionIndex(-1);
     };
 
     const handleDateChange = (date) => {
-        if (isDateDisabled(date)) {
-            setSelectedDate(null); // Impide la selección de fechas reservadas
-        } else {
+        if (date) {
             setSelectedDate(date);
         }
     };
 
-    const isDateDisabled = (date) => {
-        return formattedReservas.some(reserva => {
-            const reservaDate = new Date(reserva.fecha_reserva);
-            return reservaDate.toDateString() === date.toDateString();
-        });
-    };
-
-    const handleSearchClick = () => {
+    const handleSearchClick = async () => {
         if (!localSearchTerm || !selectedDate) {
             alert("Por favor completar todos los campos para la búsqueda");
             return;
@@ -99,13 +82,14 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
         console.log("Término de búsqueda:", localSearchTerm);
         console.log("Fecha seleccionada:", selectedDate);
 
-        // Asegurarse de que selectedDate es un objeto Date válido
         if (!(selectedDate instanceof Date) || isNaN(selectedDate.getTime())) {
             console.error("Fecha seleccionada no es válida");
             return;
         }
 
-        // Filtrar los productos que coinciden con el término de búsqueda y no están reservados para la fecha seleccionada
+        const selectedDateString = selectedDate.toISOString().split('T')[0];
+
+        // Filtrar productos por término de búsqueda
         const filteredProducts = allProducts.filter(product => {
             const matchesKeyword = product.nombre.toLowerCase().includes(localSearchTerm.toLowerCase()) ||
                                     product.descripcion.toLowerCase().includes(localSearchTerm.toLowerCase()) ||
@@ -114,35 +98,43 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
             console.log("Producto:", product);
             console.log("Coincide con palabra clave:", matchesKeyword);
 
-            // Verificar si el producto está reservado en la fecha seleccionada
-            const isAvailable = !formattedReservas.some(reserva => {
-                const reservaDate = new Date(reserva.fecha_reserva);
-                const selectedDateFormatted = new Date(selectedDate);
-
-                console.log("Reserva:", reserva);
-                console.log("Fecha Reserva:", reservaDate.toDateString());
-                console.log("Fecha Seleccionada:", selectedDateFormatted.toDateString());
-
-                return reserva.id === product.id &&
-                       reservaDate.toDateString() === selectedDateFormatted.toDateString();
-            });
-
-            console.log("Disponible en la fecha seleccionada:", isAvailable);
-
-            return matchesKeyword && isAvailable; // Excluye productos reservados
+            return matchesKeyword;
         });
 
-        console.log("Productos filtrados:", filteredProducts);
+        console.log("Productos filtrados antes de comprobar disponibilidad:", filteredProducts);
 
-        if (filteredProducts.length === 0) {
+        // Obtener productos disponibles
+        const availableProducts = await Promise.all(filteredProducts.map(async (product) => {
+            try {
+                const fechasReservadasParaProducto = await fechasReservadas(product.id);
+                const fechasReservadasStrings = fechasReservadasParaProducto.map(fecha => new Date(fecha).toISOString().split('T')[0]);
+                const isAvailable = !fechasReservadasStrings.includes(selectedDateString);
+
+                console.log("Fechas Reservadas para el producto:", fechasReservadasStrings);
+                console.log("Fecha Seleccionada:", selectedDateString);
+                console.log("Disponible en la fecha seleccionada:", isAvailable);
+
+                // Si está disponible, retorna el producto, si no, retorna null
+                return isAvailable ? product : null;
+            } catch (error) {
+                console.error(`Error al obtener fechas reservadas para el producto ${product.id}:`, error);
+                return null;
+            }
+        }));
+
+        // Filtrar productos disponibles
+        const finalProducts = availableProducts.filter(product => product !== null);
+
+        console.log("Productos disponibles:", finalProducts);
+
+        if (finalProducts.length === 0) {
             alert("No hay productos disponibles para la búsqueda y la fecha seleccionada.");
         } else {
             setSearchTerm(localSearchTerm);
             setSearchDate(selectedDate);
-            onSearch(); // Llamar a onSearch
+            onSearch(); // Llamar a onSearch con productos disponibles
         }
 
-        // Ocultar las sugerencias después de hacer la búsqueda
         setSuggestions([]);
         setShowSuggestions(false);
     };
@@ -170,7 +162,7 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
                 if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < suggestions.length) {
                     handleSuggestionClick(suggestions[selectedSuggestionIndex]);
                 } else {
-                    handleSearchClick(); // Ejecutar búsqueda si no hay sugerencia seleccionada
+                    handleSearchClick();
                 }
                 break;
             default:
@@ -212,9 +204,6 @@ const Search = ({ setSearchTerm, setSearchDate, onSearch }) => {
                         placeholderText="Fecha"
                         className="search-date"
                         id="date"
-                        dayClassName={date =>
-                            isDateDisabled(date) ? 'disabled-date' : undefined
-                        }
                     />
                     <button className="search-button" onClick={handleSearchClick}>
                         <img src='/search-icon.png' alt="search-icon" className='search-icon' />
@@ -232,6 +221,3 @@ Search.propTypes = {
 };
 
 export default Search;
-
-
-
