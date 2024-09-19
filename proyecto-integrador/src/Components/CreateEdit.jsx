@@ -592,15 +592,15 @@ const CreateEdit = ({
                                                                 value={url}
                                                                 onChange={(e) => handleChangeImagen(e, index)}
                                                             />
-                                                            {index === 0 ? 
-                                                                null :
+                                                            {imagenes.length > 1 ? 
                                                                 <button 
                                                                     className='no-style delete-img'
                                                                     onClick={() => handleEliminarInput(index)}
                                                                     type="button"
                                                                 >
                                                                     <FontAwesomeIcon icon={faXmark} />
-                                                                </button>
+                                                                </button> :
+                                                                null
                                                             }
                                                         </div>
                                                     ))}
@@ -688,7 +688,7 @@ const CreateEdit = ({
                                                                 onChange={(e) => handleChangeCaracteristicasValor(e, index)}
                                                             />
                                                             
-                                                            {index > 1 ? 
+                                                            {caracteristicas.length > 2 ? 
                                                                 <button
                                                                 type="button"
                                                                 onClick={(e) => handleEliminarCaracteristica(e, index)}
