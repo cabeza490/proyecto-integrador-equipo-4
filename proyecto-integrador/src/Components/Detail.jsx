@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { es } from 'date-fns/locale';
 import { getProductoById } from '../api/productos-Apis';
+import { fechasReservadas } from '../api/reservas-Apis';
+import { useCateringStates } from '../Components/utils/globalContext';
 import '../Styles/Detail.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -105,13 +110,6 @@ const iconMapFlaticon = {
     "https://www.flaticon.com/free-icon/mousse_1351331?term=mousse&page=1&position=2&origin=search&related_id=1351331": mousse,
     "https://www.flaticon.com/free-icon/cake_2682340?term=cake&page=1&position=1&origin=search&related_id=2682340": tartaFrutal,
 };
-
-import DatePicker, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { es } from 'date-fns/locale';
-import reservas from '../utils/reservas';
-import { useCateringStates } from '../Components/utils/globalContext';
-
 // Registrar el idioma español
 registerLocale('es', es);
 
@@ -121,9 +119,8 @@ const Detail = () => {
     const [disabledDates, setDisabledDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
-    const { state } = useCateringStates(); // Obtenemos el estado global
-    const { userData } = state; // Verificamos si el usuario está logueado
-
+    const { state } = useCateringStates(); 
+    const { userData } = state; 
     const navigate = useNavigate();
 
     const handleBackClick = () => {
@@ -140,14 +137,32 @@ const Detail = () => {
     }, [id]);
 
     useEffect(() => {
-        const reservedDates = reservas.map(reserva => new Date(reserva.fecha_reserva));
-        setDisabledDates(reservedDates);
-    }, []);
+        const fetchDisabledDates = async () => {
+            try {
+                const response = await fechasReservadas(id);
+                console.log("Datos de fechas reservadas:", response);
+
+                // Asegúrate de que `fechasReservadas` esté presente y sea un array
+                if (response && Array.isArray(response)) {
+                    const reservedDates = response.map(date => new Date(`${date}T00:00:00`));
+                    console.log("Fechas deshabilitadas:", reservedDates);
+                    setDisabledDates(reservedDates);
+                } else {
+                    console.warn("Formato inesperado en `fechasReservadas`:", response);
+                }
+            } catch (error) {
+                console.error('Error al obtener fechas reservadas:', error);
+            }
+        };
+        fetchDisabledDates();
+    }, [id]);
 
     const isDateDisabled = (date) => {
-        return disabledDates.some(disabledDate =>
-            disabledDate.toDateString() === date.toDateString()
-        );
+        const dateString = date.toISOString().slice(0, 10); // Asegúrate de que las fechas tengan el formato "YYYY-MM-DD"
+        return disabledDates.some(disabledDate => {
+            const disabledDateString = disabledDate.toISOString().slice(0, 10); // Comparación en el mismo formato
+            return disabledDateString === dateString;
+        });
     };
 
     const handleDateChange = (date) => {
@@ -203,14 +218,13 @@ const Detail = () => {
                             )}
                         </div>
                         <div className="secondary-images">
-                {productSelected.imagenes && productSelected.imagenes.slice(1, 5).map((imagen, index) => (
-                    <div key={index} className="secondary-image">
-                        <img src={imagen.url} alt={`Imagen secundaria ${index + 1}`} />
+                            {productSelected.imagenes && productSelected.imagenes.slice(1, 5).map((imagen, index) => (
+                                <div key={index} className="secondary-image">
+                                    <img src={imagen.url} alt={`Imagen secundaria ${index + 1}`} />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
-            </div>
-                    </div>
-
                 </div>
 
                 <div className="view-more-button">
@@ -227,27 +241,27 @@ const Detail = () => {
                 <h3>Características</h3>
                 <div className="caracteristicas">
                     {productSelected.caracteristicas && productSelected.caracteristicas.length > 0 ? (
-                       productSelected.caracteristicas.map((caracteristica) => {
-                        const iconName = extractFontAwesomeIconName(caracteristica.icono);
-                        const flaticonUrl = caracteristica.icono;
-                        return (
-                            <div key={caracteristica.id} className="caracteristica-item">
-                                {iconMap[iconName] ? (
-                                    <FontAwesomeIcon
-                                        icon={iconMap[iconName]}
-                                        className="caracteristica-icon"
-                                    />
-                                ) : (
-                                    <img
-                                        src={iconMapFlaticon[flaticonUrl]}
-                                        alt={caracteristica.valor}
-                                        className="caracteristicas-img"
-                                    />
-                                )}
-                                <p>{caracteristica.productos_caracteristicas.valor}</p>
-                            </div>
-                        );
-                    })
+                        productSelected.caracteristicas.map((caracteristica) => {
+                            const iconName = extractFontAwesomeIconName(caracteristica.icono);
+                            const flaticonUrl = caracteristica.icono;
+                            return (
+                                <div key={caracteristica.id} className="caracteristica-item">
+                                    {iconMap[iconName] ? (
+                                        <FontAwesomeIcon
+                                            icon={iconMap[iconName]}
+                                            className="caracteristica-icon"
+                                        />
+                                    ) : (
+                                        <img
+                                            src={iconMapFlaticon[flaticonUrl]}
+                                            alt={caracteristica.valor}
+                                            className="caracteristicas-img"
+                                        />
+                                    )}
+                                    <p>{caracteristica.productos_caracteristicas.valor}</p>
+                                </div>
+                            );
+                        })
                     ) : (
                         <p>No hay características disponibles.</p>
                     )}
@@ -274,6 +288,7 @@ const Detail = () => {
                                 inline
                                 locale="es"
                                 minDate={new Date()}
+                                excludeDates={disabledDates} // Usar excludeDates
                                 dayClassName={date =>
                                     isDateDisabled(date) ? 'disabled-date' : undefined
                                 }

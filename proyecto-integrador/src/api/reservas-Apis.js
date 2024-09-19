@@ -8,7 +8,7 @@ export const obtenerDetalleReserva = async (reserva) => {
         return response.data;
     } catch (error) {
         console.log(error);
-    };
+    }
 };
 
 
@@ -18,14 +18,18 @@ export const confirmarReserva = async (reserva) => {
         return response.data;
     } catch (error) {
         console.log(error);
-    };
+    }
 };
 
-export const fechasDisponibles = async (consulta) => {
+export const fechasReservadas = async (productoId) => {
     try {
-        let response = await axios.post(`${API_BASE_URL}/api/fechasDisponibles`, consulta);
-        return response.data;
+        // Realizar la petición GET a la API de fechas reservadas
+        let response = await axios.get(`${API_BASE_URL}/api/fechasReservadas/${productoId}`);
+        
+        // Retornar los datos de la respuesta (array de fechas reservadas)
+        return response.data.fechasReservadas;
     } catch (error) {
-        console.log(error);
-    };
+        console.log('Error al obtener las fechas reservadas:', error);
+        throw error;  // Lanzar el error si ocurre
+    }
 };
