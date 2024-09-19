@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../Styles/UserPanel.css';
@@ -11,8 +10,8 @@ import { useCateringStates } from '../Components/utils/globalContext'; // Asegú
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function UserPanel() {
-    const [activeTab, setActiveTab] = useState(null);
-    const [infoDropdownVisible, setInfoDropdownVisible] = useState(false);
+    const [activeTab, setActiveTab] = useState(0); // Cambia el estado inicial a 0 para mostrar la pestaña "Información" por defecto
+    const [infoDropdownVisible, setInfoDropdownVisible] = useState(true); // Cambia el estado inicial para que el dropdown de información esté visible
     const [userDropdownVisible, setUserDropdownVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [, setSelectedUserId] = useState(null);
@@ -65,7 +64,7 @@ function UserPanel() {
         setActiveTab(index);
 
         if (index === 0) {
-            setInfoDropdownVisible(!infoDropdownVisible);
+            setInfoDropdownVisible(true); // Asegúrate de que el dropdown de información esté visible
             setUserDropdownVisible(false);
         } else if (index === 1) {
             setUserDropdownVisible(!userDropdownVisible);
@@ -136,7 +135,8 @@ function UserPanel() {
 
                     {isEditing ? (
                         <EditUserForm userData={user} /> // Pasa los datos del usuario directamente
-                    ) : ( activeTab === 3 ? <Favorites /> :
+                    ) : ( 
+                        activeTab === 3 ? <Favorites /> :
                         activeTab === 4 ? <HistorialReservas /> : // Renderiza HistorialReservas si la pestaña está activa
                         null
                     )}
