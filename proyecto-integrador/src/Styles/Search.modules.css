@@ -230,14 +230,16 @@
     }
 
     .search-date {
-        width: 100px; /* Ajusta el ancho del campo de fecha */
+        width: 100; /* Ajusta el ancho del campo de fecha */
         padding: 10px;
         font-size: 14px;
         height: 30px;
     }
-
+    .react-datepicker{
+        left: 30px;
+    }
     .search-button {
-        width: 100%; /* Asegúrate de que el botón ocupe el espacio disponible */
+        width: 50%; /* Asegúrate de que el botón ocupe el espacio disponible */
         border-radius: 0 50px 50px 0;
         font-size: 14px;
     }
